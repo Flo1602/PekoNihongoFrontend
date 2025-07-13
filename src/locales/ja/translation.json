@@ -1,1 +1,12 @@
-{}
+{
+  "appName": "ペコ日本語",
+  "catalog": "教材",
+  "learn": "学習",
+  "login": "ログイン",
+  "loginFailed": "ユーザー名またはパスワードが間違っています！",
+  "password": "パスワード",
+  "settings": "設定",
+  "stats": "統計",
+  "username": "ユーザー名",
+  "welcome": "ペコ日本語へようこそ"
+}

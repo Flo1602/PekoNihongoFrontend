@@ -1,6 +1,12 @@
 {
+  "appName": "ペコ日本語",
+  "catalog": "",
+  "learn": "",
   "login": "",
   "loginFailed": "",
   "password": "",
-  "username": ""
+  "settings": "",
+  "stats": "",
+  "username": "",
+  "welcome": ""
 }
