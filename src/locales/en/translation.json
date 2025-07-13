@@ -1,12 +1,19 @@
 {
   "appName": "ペコ日本語",
   "catalog": "Catalog",
+  "kanji": "Kanji",
+  "language": "Language",
   "learn": "Learning",
   "login": "Login",
   "loginFailed": "Wrong Username or Password!",
+  "logout": "Logout",
   "password": "Password",
+  "questions": "Questions",
+  "sentences": "Sentences",
   "settings": "Settings",
   "stats": "Statistics",
+  "theme": "Theme",
   "username": "Username",
-  "welcome": "Welcome to ペコ日本語"
+  "welcome": "Welcome to ペコ日本語",
+  "words": "Words"
 }
