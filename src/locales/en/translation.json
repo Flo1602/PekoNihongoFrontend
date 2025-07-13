@@ -1,0 +1,6 @@
+{
+  "login": "Login",
+  "loginFailed": "Wrong Username or Password!",
+  "password": "Password",
+  "username": "Username"
+}
