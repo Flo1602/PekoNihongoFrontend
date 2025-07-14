@@ -1,8 +1,9 @@
+import NotImplemented from "@/components/NotImplemented.tsx";
 
 
 const Stats = () => {
     return (
-        <div className="bg-base-300 flex-1">Stats</div>
+        <NotImplemented/>
     )
 }
 export default Stats

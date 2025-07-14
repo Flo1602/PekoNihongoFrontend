@@ -1,6 +1,8 @@
+import NotImplemented from "@/components/NotImplemented.tsx";
+
 const SentenceList = () => {
     return (
-        <div>SentenceList</div>
+        <NotImplemented/>
     )
 }
 export default SentenceList

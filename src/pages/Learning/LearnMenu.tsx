@@ -1,8 +1,8 @@
 import NotImplemented from "@/components/NotImplemented.tsx";
 
-const KanjiList = () => {
+const LearnMenu = () => {
     return (
         <NotImplemented/>
     )
 }
-export default KanjiList
+export default LearnMenu

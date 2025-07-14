@@ -1,6 +1,8 @@
+import NotImplemented from "@/components/NotImplemented.tsx";
+
 const QuestionList = () => {
     return (
-        <div>QuestionList</div>
+        <NotImplemented/>
     )
 }
 export default QuestionList
