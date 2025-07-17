@@ -1,8 +1,8 @@
 import type { Polygon } from "@/model/Polygon";
-import type { Point } from "motion";
 import type { IPolygonConverter } from "./IPolygonConverter";
 import { calcDistanceBetweenPoints, calculatePolylineLength } from "@/logic/util/PolygonUtil";
 import { deleteMiddleElement } from "@/logic/util/ArrayUtil";
+import type { Point } from "@/model/Point";
 
 export class VertexFixedDistanceSetter implements IPolygonConverter {
     private readonly fixedDistance: number;

@@ -1,5 +1,5 @@
-import type { Point } from "motion";
 import type { Color } from "./Color";
+import type { Point } from "./Point";
 import { Polygon } from "./Polygon";
 
 export class ColoredPolygon extends Polygon {
