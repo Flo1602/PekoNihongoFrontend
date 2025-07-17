@@ -1,0 +1,1 @@
+export type VerifyResult = "NO_MORE_TRIES" | "INCORRECT" | "CORRECT";
