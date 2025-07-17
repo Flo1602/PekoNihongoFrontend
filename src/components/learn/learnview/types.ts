@@ -1,4 +1,4 @@
-export type LearnViewKey = 'jteMatch' | 'jteMatchR' | 'atjMatch' | 'ateMatch' | 'jtkMatch';
+export type LearnViewKey = 'jteMatch' | 'jteMatchR' | 'atjMatch' | 'ateMatch' | 'jtkMatch' | 'kanjiDraw';
 
 export interface LearnManagerContextType {
     onComplete: (correct: boolean) => void;

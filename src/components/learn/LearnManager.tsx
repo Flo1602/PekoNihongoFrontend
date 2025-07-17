@@ -9,6 +9,7 @@ import AudioToJapaneseMatch from "@/components/learn/learnview/match/AudioToJapa
 import AudioToEnglishMatch from "@/components/learn/learnview/match/AudioToEnglishMatch.tsx";
 import JapaneseToKanaMatch from "@/components/learn/learnview/match/JapaneseToKanaMatch.tsx";
 import JapaneseToEnglishMatch from "@/components/learn/learnview/match/JapaneseToEnglishMatch.tsx";
+import KanjiDraw from "@/components/learn/learnview/KanjiDraw.tsx";
 
 interface Props {
     currentView: LearnViewKey;
@@ -24,7 +25,8 @@ const viewRegistry: Record<LearnViewKey, ReactNode> = {
     atjMatch: <AudioToJapaneseMatch/>,
     ateMatch: <AudioToEnglishMatch/>,
     jteMatch: <JapaneseToEnglishMatch/>,
-    jteMatchR: <JapaneseToEnglishMatch reverse={true}/>
+    jteMatchR: <JapaneseToEnglishMatch reverse={true}/>,
+    kanjiDraw: <KanjiDraw/>
 };
 
 const LearnManager = (probs: Props) => {

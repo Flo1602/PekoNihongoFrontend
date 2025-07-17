@@ -6,6 +6,11 @@ export interface KanjiWords{
     words: string[]
 }
 
+export interface Kanji{
+    id: number,
+    symbol: string
+}
+
 export interface KanjiPage{
     content:KanjiWords[],
     pageCount: number
