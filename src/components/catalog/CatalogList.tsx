@@ -1,3 +1,5 @@
+import Loading from "@/components/Loading.tsx";
+
 interface Props{
     loading: boolean;
     pages: number;
@@ -6,13 +8,12 @@ interface Props{
 }
 
 const CatalogList = ({loading, pages, fetchPage, children}: Props) => {
-
     return (
         <div className=" w-full
             max-w-md           /* phones / small tablets */
             md:max-w-2xl       /* ≥768 px  (tailwind md) */
             lg:max-w-3xl       /* ≥1024 px (tailwind lg) */
-            mx-auto"
+            mx-auto max-h-[68vh]"
         >
             <ul className="
                 flex flex-col gap-2
@@ -40,11 +41,7 @@ const CatalogList = ({loading, pages, fetchPage, children}: Props) => {
                 </nav>
             )}
 
-            {loading && (
-                <div className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center">
-                    <span className="loading loading-spinner loading-xl text-white"></span>
-                </div>
-            )}
+            <Loading isLoading={loading}/>
         </div>
     );
 }

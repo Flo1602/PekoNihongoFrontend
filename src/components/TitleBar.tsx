@@ -5,8 +5,13 @@ import HomeIcon from "@/assets/icons/HomeIcon.tsx";
 import CatalogIcon from "@/assets/icons/CatalogIcon.tsx";
 import StatsIcon from "@/assets/icons/StatsIcon.tsx";
 import SettingsIcon from "@/assets/icons/SettingsIcon.tsx";
+import { AnimatePresence, motion } from "framer-motion";
 
-const TitleBar = () => {
+interface Props {
+    isVisible: boolean;
+}
+
+const TitleBar = ({isVisible}: Props) => {
 
     const isMobile = useIsMobile();
     const {t} = useTranslation();
@@ -32,20 +37,35 @@ const TitleBar = () => {
         {id: 4, path: '/settings', icon: SettingsIcon, label: t('translation:settings'), details: null},
     ];
 
-    const onClick = (path: string) => {
-        navigate(path);
-    }
-
     if (isMobile) return (
-        <div className="dock dock dock-lg">
-            {tabs.map(({path, icon: Icon, label}) => (
-                <button key={label} className={pathname.includes(path) ? 'dock-active' : ''}
-                        onClick={() => onClick(path)}>
-                    <Icon className="size-[1.2em]"/>
-                    <span className="dock-label">{label}</span>
-                </button>
-            ))}
-        </div>
+        <AnimatePresence>
+            {isVisible && (
+                <motion.div
+                    key="dock"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 50 }}
+                    transition={{ duration: 0.3 }}
+                    className="
+                    fixed
+                    left-1/2 transform -translate-x-1/2
+                    z-50 w-full bottom-0"
+                >
+                    <div className="dock dock-lg">
+                        {tabs.map(({ path, icon: Icon, label }) => (
+                            <button
+                                key={label}
+                                className={pathname.includes(path) ? "dock-active" : ""}
+                                onClick={() => navigate(path)}
+                            >
+                                <Icon className="size-[1.2em]" />
+                                <span className="dock-label">{label}</span>
+                            </button>
+                        ))}
+                    </div>
+                </motion.div>
+            )}
+        </AnimatePresence>
     );
 
     return (
@@ -58,14 +78,14 @@ const TitleBar = () => {
                             {!details ? (
                                 <Link to={{pathname: path}}
                                       className={"flex items-center gap-2 px-3 py-2 text-gray-300 rounded-md" +
-                                          (pathname.includes(path) ? 'px-3 py-1  bg-primary text-primary-content' : 'hover:text-white hover:bg-gray-700')}>
+                                          (pathname.includes(path) ? 'px-3 py-1  bg-primary text-primary-content' : 'hover:text-white hover:base-200')}>
                                     <Icon className="h-5 w-5"/>
                                     <span className="text-base font-medium">{label}</span>
                                 </Link>
                             ):
                                 <div className="dropdown dropdown-end p-0">
                                     <div tabIndex={0} role="button" className={"flex items-center gap-2 px-3 py-2 text-gray-300 rounded-md rounded-field" +
-                                        (pathname.includes(path) ? 'px-3 py-1  bg-primary text-primary-content' : 'hover:text-white hover:bg-gray-700')}>
+                                        (pathname.includes(path) ? 'px-3 py-1  bg-primary text-primary-content' : 'hover:text-white hover:base-200')}>
                                         <Icon className="h-5 w-5"/>
                                         <span className="text-base font-medium">{label}</span>
                                     </div>

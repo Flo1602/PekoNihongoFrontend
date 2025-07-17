@@ -1,10 +1,10 @@
 import {useTranslation} from "react-i18next";
 import {useAuth} from "@/hooks/useAuth.ts";
 import {type ChangeEvent, useEffect, useRef, useState} from "react";
-import {getSettings, type Settings, updateSettings} from "@/services/api/settingsService.ts";
+import {getSettings, type SettingsType, updateSettings} from "@/services/api/settingsService.ts";
 import {useDebounce} from "react-use";
 
-const Settings = () => {
+export const Settings = () => {
     const {t} = useTranslation();
     const { logout } = useAuth();
     const { i18n } = useTranslation();
@@ -15,13 +15,13 @@ const Settings = () => {
             ? localStorage.getItem('theme') || 'default'
             : 'default'
     );
-    const [settings, setSettings] = useState<Settings>({
+    const [settings, setSettings] = useState<SettingsType>({
         voiceId: 0,
         maxDailyWords: 0,
         maxDailyKanji: 0
     });
 
-    const [debouncedSettings, setDebouncedSettings] = useState<Settings>();
+    const [debouncedSettings, setDebouncedSettings] = useState<SettingsType>();
 
     useDebounce(() => setDebouncedSettings(settings), 2000, [settings]);
 
@@ -44,7 +44,7 @@ const Settings = () => {
         };
     }, []);
 
-    const saveSettings = (settings: Settings) =>{
+    const saveSettings = (settings: SettingsType) =>{
         updateSettings(settings).then((res) => {
             if(res.data !== true) {
                 setError(true)
@@ -113,6 +113,7 @@ const Settings = () => {
                             </label>
                             <select value={theme} onChange={changeTheme} className="select select-bordered w-full">
                                 <option value="dark">Dark</option>
+                                <option value="magenta">Magenta</option>
                                 <option value="synthwave">Synthwave</option>
                                 <option value="halloween">Halloween</option>
                                 <option value="forest">Forest</option>
@@ -156,4 +157,5 @@ const Settings = () => {
         </div>
     );
 }
-export default Settings
+
+export default Settings;

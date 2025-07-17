@@ -1,4 +1,37 @@
 @import "tailwindcss";
+
+@layer utilities {
+  @keyframes pop {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  .animate-pop {
+    animation: pop 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25%, 75% { transform: translateX(-4px); }
+    50%      { transform: translateX(4px); }
+  }
+  .animate-shake {
+    animation: shake 0.5s ease-in-out;
+  }
+
+  .disabled\:bg-gray-400:disabled {
+    @apply bg-blue-400;
+  }
+
+  @keyframes pop-in {
+    0%   { opacity: 0; transform: scale(.85) translateY(0.25rem); }
+    60%  { opacity: 1; transform: scale(1.05) translateY(0); }
+    100% { opacity: 1; transform: scale(1)    translateY(0); }
+  }
+  .animate-pop2 {
+    animation: pop-in .35s ease-out both;
+  }
+}
+
 @plugin "daisyui";
 
 
@@ -34,6 +67,41 @@
   --size-field: 0.25rem;
   --border: 1px;
   --depth: 1;
+  --noise: 0;
+}
+
+@plugin "daisyui/theme" {
+  name: "magenta";
+  default: false;
+  prefersdark: false;
+  color-scheme: "dark";
+  --color-base-100: oklch(35% 0.144 278.697);
+  --color-base-200: oklch(25% 0.09 281.288);
+  --color-base-300: oklch(0% 0 0);
+  --color-base-content: oklch(82% 0.119 306.383);
+  --color-primary: oklch(58% 0.233 277.117);
+  --color-primary-content: oklch(82% 0.119 306.383);
+  --color-secondary: oklch(58% 0.233 277.117);
+  --color-secondary-content: oklch(82% 0.119 306.383);
+  --color-accent: oklch(58% 0.233 277.117);
+  --color-accent-content: oklch(82% 0.119 306.383);
+  --color-neutral: oklch(58% 0.233 277.117);
+  --color-neutral-content: oklch(82% 0.119 306.383);
+  --color-info: oklch(67% 0.182 276.935);
+  --color-info-content: oklch(82% 0.119 306.383);
+  --color-success: oklch(76% 0.233 130.85);
+  --color-success-content: oklch(37% 0.077 168.94);
+  --color-warning: oklch(82% 0.189 84.429);
+  --color-warning-content: oklch(41% 0.112 45.904);
+  --color-error: oklch(71% 0.194 13.428);
+  --color-error-content: oklch(27% 0.105 12.094);
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.1875rem;
+  --size-field: 0.21875rem;
+  --border: 0.5px;
+  --depth: 0;
   --noise: 0;
 }
 

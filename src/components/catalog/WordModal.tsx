@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState, type ChangeEvent, type FormEvent} from "react";
-import type {Word} from "@/services/api/wordService";
+import type {Word} from "@/services/api/wordService.ts";
 import {useTranslation} from "react-i18next";
 
 interface Props {

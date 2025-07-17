@@ -1,8 +1,0 @@
-import NotImplemented from "@/components/NotImplemented.tsx";
-
-const KanjiList = () => {
-    return (
-        <NotImplemented/>
-    )
-}
-export default KanjiList

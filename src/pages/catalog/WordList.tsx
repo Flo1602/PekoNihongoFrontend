@@ -1,8 +1,8 @@
 import {getWordPage, addWord, type Word, updateWord} from "@/services/api/wordService.ts";
-import CatalogList from "@/components/CatalogList.tsx";
+import CatalogList from "@/components/catalog/CatalogList.tsx";
 import {useCallback, useEffect, useState} from "react";
-import WordListEntry from "@/components/WordListEntry.tsx";
-import WordModal from "@/components/WordModal.tsx";
+import WordListEntry from "@/components/catalog/WordListEntry.tsx";
+import WordModal from "@/components/catalog/WordModal.tsx";
 import {useSearchParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 
@@ -18,7 +18,7 @@ const WordList = () => {
 
     const fetchPageFromApi = useCallback((page: number) => {
         setLoading(true);
-        getWordPage({ page: page, size: 10 })
+        getWordPage({ page: page, size: 20 })
             .then((response) => {
                 setWords(response.data.content);
                 setPages(response.data.pageCount);

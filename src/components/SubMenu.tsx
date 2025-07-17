@@ -11,9 +11,9 @@ interface Props {
     children?: ReactNode;
 }
 
-const MobileSubMenu = (props: Props) => {
+const SubMenu = (props: Props) => {
     return (
-        <div className="min-h-screen bg-base-300 flex flex-col items-center p-6">
+        <div className="flex-1 bg-base-300 flex flex-col items-center p-6">
             <h1 className="text-5xl font-bold mb-14">{props.children}</h1>
 
             <ul className="w-full max-w-md flex-1 space-y-8">
@@ -30,4 +30,4 @@ const MobileSubMenu = (props: Props) => {
         </div>
     );
 }
-export default MobileSubMenu
+export default SubMenu

@@ -1,5 +1,5 @@
 import {useTranslation} from "react-i18next";
-import MobileSubMenu from "@/components/MobileSubMenu.tsx";
+import SubMenu from "@/components/SubMenu.tsx";
 import WordsIcon from "@/assets/icons/WordsIcon.tsx";
 import QuestionIcon from "@/assets/icons/QuestionIcon.tsx";
 import KanjiIcon from "@/assets/icons/KanjiIcon.tsx";
@@ -17,7 +17,7 @@ const Catalog = () => {
     ];
 
     return (
-        <MobileSubMenu elements={elements}>{t('translation:catalog')}</MobileSubMenu>
+        <SubMenu elements={elements}>{t('translation:catalog')}</SubMenu>
     );
 }
 export default Catalog
