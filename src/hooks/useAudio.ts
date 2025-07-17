@@ -9,7 +9,7 @@ export function useAudio(
     filename?: string,
     {
         preload = "none",
-        apiUrl = "http://10.0.0.8:8080/audio",
+        apiUrl = "http://10.0.0.8:8080/resources/audio",
     }: UseAudioOptions = {}
 ) {
     const src = filename ? `${apiUrl}/${filename}` : null;
