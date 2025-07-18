@@ -1,0 +1,1 @@
+export type TraceMode = "ALL_HINTS" | "NEXT_HINT" | "NO_HINTS";

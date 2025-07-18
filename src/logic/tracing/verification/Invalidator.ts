@@ -1,0 +1,1 @@
+export type Invalidator = "NO" | "IMAGE" | "LENGTH" | "ANGLE";
