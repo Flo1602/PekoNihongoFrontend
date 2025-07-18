@@ -14,6 +14,7 @@ import type { Invalidator } from "./Invalidator";
 
 const maxGradientHue = 270;
 const whiteBaseColor = new Color(1.0, 1.0, 1.0);
+const contextSettings: CanvasRenderingContext2DSettings = { willReadFrequently: true };
 
 export class VerificationLogic implements ITraceVerificationLogic {
     private readonly toVerifyPolygonConverter: IPolygonConverter;
@@ -200,8 +201,8 @@ export class VerificationLogic implements ITraceVerificationLogic {
     }
 
     private getImageSimilarity(): number {
-        const sourceCtx = this.sourceCanvas.getContext("2d");
-        const toVerifyCtx = this.toVerifyCanvas.getContext("2d");
+        const sourceCtx = this.sourceCanvas.getContext("2d", contextSettings);
+        const toVerifyCtx = this.toVerifyCanvas.getContext("2d", contextSettings);
 
         if (!sourceCtx || !toVerifyCtx) {
             throw new Error("Canvas 2D context not available.");
@@ -310,7 +311,7 @@ export class VerificationLogic implements ITraceVerificationLogic {
     }
 
     private clearCanvas(canvas: HTMLCanvasElement, setBackground: boolean) {
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d', contextSettings);
         if (!ctx)
             return;
 
@@ -323,8 +324,8 @@ export class VerificationLogic implements ITraceVerificationLogic {
     }
 
     private copyContent(sourceCanvas: HTMLCanvasElement, targetCanvas: HTMLCanvasElement) {
-        const sourceCtx = sourceCanvas.getContext('2d');
-        const targetCtx = targetCanvas.getContext('2d');
+        const sourceCtx = sourceCanvas.getContext('2d', contextSettings);
+        const targetCtx = targetCanvas.getContext('2d', contextSettings);
         if (!sourceCtx || !targetCtx)
             return;
 
