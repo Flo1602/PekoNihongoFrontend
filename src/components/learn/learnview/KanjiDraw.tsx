@@ -208,7 +208,7 @@ const KanjiDraw = (props: Props) => {
             }
         };
 
-        const onMouseDown = (e: MouseEvent) => {
+        const onPointerDown = (e: PointerEvent) => {
             if (e.button === 0) {
                 drawNewPoint(userCanvasRef.current, e.offsetX, e.offsetY);
             } else if (e.button === 1) {
@@ -216,19 +216,19 @@ const KanjiDraw = (props: Props) => {
             }
         };
 
-        const onMouseMove = (e: MouseEvent) => {
+        const onPointerMove = (e: PointerEvent) => {
             if (e.buttons === 1) {
                 drawNewPoint(userCanvasRef.current, e.offsetX, e.offsetY);
             }
         };
 
-        const onMouseOut = (e: MouseEvent) => {
+        const onPointerLeave = (e: PointerEvent) => {
             if (e.buttons === 1) {
                 disableUserDrawingFinishPolygon();
             }
         };
 
-        const onMouseUp = (e: MouseEvent) => {
+        const onPointerUp = (e: PointerEvent) => {
             if (e.button === 0) {
                 disableUserDrawingFinishPolygon();
             } else if (e.button === 1) {
@@ -249,10 +249,10 @@ const KanjiDraw = (props: Props) => {
             ctx.lineCap = 'round';
             ctx.lineWidth = traceOptions.lineWidth;
 
-            canvas.removeEventListener('mousedown', onMouseDown);
-            canvas.removeEventListener('mousemove', onMouseMove);
-            canvas.removeEventListener('mouseout', onMouseOut);
-            canvas.removeEventListener('mouseup', onMouseUp);
+            canvas.removeEventListener('pointerdown', onPointerDown);
+            canvas.removeEventListener('pointermove', onPointerMove);
+            canvas.removeEventListener('pointerleave', onPointerLeave);
+            canvas.removeEventListener('pointerup', onPointerUp);
             lastPoint.current = null;
 
             if (callback.current) {
@@ -271,13 +271,13 @@ const KanjiDraw = (props: Props) => {
                 return;
             }
 
-            canvas.addEventListener('mousedown', onMouseDown);
-            canvas.addEventListener('mousemove', onMouseMove);
-            canvas.addEventListener('mouseout', onMouseOut);
-            canvas.addEventListener('mouseup', onMouseUp);
+            canvas.addEventListener('pointerdown', onPointerDown);
+            canvas.addEventListener('pointermove', onPointerMove);
+            canvas.addEventListener('pointerleave', onPointerLeave);
+            canvas.addEventListener('pointerup', onPointerUp);
         };
 
-        const onFinishedMouseDown = (e: MouseEvent) => {
+        const onFinishedPointerDown = (e: PointerEvent) => {
             if (e.button === 2) {
                 drawUserCanvasPolygons(correctlyDrawnPolygons.current);
             } else if (e.button === 1) {
@@ -285,7 +285,7 @@ const KanjiDraw = (props: Props) => {
             }
         };
 
-        const onFinishedMouseUp = (e: MouseEvent) => {
+        const onFinishedPointerUp = (e: PointerEvent) => {
             if (e.button === 2 || e.button === 1) {
                 drawUserCanvasPolygons(correctedPolygons.current);
             }
@@ -300,11 +300,11 @@ const KanjiDraw = (props: Props) => {
             }
 
             if (isFinished) {
-                canvas.addEventListener('mousedown', onFinishedMouseDown);
-                canvas.addEventListener('mouseup', onFinishedMouseUp);
+                canvas.addEventListener('pointerdown', onFinishedPointerDown);
+                canvas.addEventListener('pointerup', onFinishedPointerUp);
             } else {
-                canvas.removeEventListener('mousedown', onFinishedMouseDown);
-                canvas.removeEventListener('mouseup', onFinishedMouseUp);
+                canvas.removeEventListener('pointerdown', onFinishedPointerDown);
+                canvas.removeEventListener('pointerup', onFinishedPointerUp);
             }
         };
 
@@ -368,12 +368,12 @@ const KanjiDraw = (props: Props) => {
             traceLogic.removeTraceLineListener(traceLineListener);
             const canvas = userCanvasRef.current;
             if (canvas) {
-                canvas.removeEventListener('mousedown', onFinishedMouseDown);
-                canvas.removeEventListener('mouseup', onFinishedMouseUp);
-                canvas.removeEventListener('mousedown', onMouseDown);
-                canvas.removeEventListener('mousemove', onMouseMove);
-                canvas.removeEventListener('mouseout', onMouseOut);
-                canvas.removeEventListener('mouseup', onMouseUp);
+                canvas.removeEventListener('pointerdown', onFinishedPointerDown);
+                canvas.removeEventListener('pointerup', onFinishedPointerUp);
+                canvas.removeEventListener('pointerdown', onPointerDown);
+                canvas.removeEventListener('pointermove', onPointerMove);
+                canvas.removeEventListener('pointerleave', onPointerLeave);
+                canvas.removeEventListener('pointerup', onPointerUp);
             }
         };
     }, [learnDataContext]);
