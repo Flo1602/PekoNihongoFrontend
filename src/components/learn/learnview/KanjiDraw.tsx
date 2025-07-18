@@ -25,6 +25,7 @@ import { SmoothPolygonDrawer } from "@/logic/drawing/SmoothPolygonDrawer";
 import type { ITraceLineListener } from "@/logic/tracing/ITraceLineListener";
 import type { ITraceFinishedCallback } from "@/logic/tracing/ITraceFinishCallback";
 import { LearnManagerContext } from "@/contexts/LearnManagerContext";
+import { PolygonCenterer } from "@/logic/provider/polygon/PolygonCenterer";
 
 type DrawingState = {
     traceLogic: ITraceLogic<string> | null;
@@ -118,11 +119,13 @@ const KanjiDraw = (props: Props) => {
             );
 
             const scaler: IPolygonConverter = new PolygonScaler(4);
+            const centerer: IPolygonConverter = new PolygonCenterer(traceOptions.fieldWidth, traceOptions.fieldHeight);
             const fixedDistanceSetter: IPolygonConverter = new VertexFixedDistanceSetter(5);
             const convertingPolygonProvider: IPolygonProvider = {
                 async getAllPolygons() {
                     const polygons = await sourcePolygonProvider.getAllPolygons();
                     scaler.convert(polygons);
+                    centerer.convert(polygons);
                     fixedDistanceSetter.convert(polygons);
                     return polygons;
                 }
