@@ -14,7 +14,6 @@ const WordsLearningMenu = () => {
     useEffect(() => {
         getWordProgress().then((res) =>{
             setProgressData(res.data);
-            console.log(res.data);
         })
     }, []);
 
