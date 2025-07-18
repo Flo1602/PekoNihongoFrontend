@@ -26,6 +26,7 @@ import { LearnManagerContext } from "@/contexts/LearnManagerContext";
 import { PolygonCenterer } from "@/logic/provider/polygon/PolygonCenterer";
 import type { Point } from "@/model/Point";
 import { useIsMobile } from "@/hooks/useIdMobile";
+import getHintArrowImageData from "@/assets/staticImages/hintArrow";
 
 interface DrawingState {
     traceLogic: ITraceLogic<string> | null;
@@ -50,6 +51,13 @@ const KanjiDraw = (props: Props) => {
     const [drawingState, setDrawingState] = useState<DrawingState>(DEFAULT_DRAWING_STATE);
     const [viewportSizeState, setViewportSizeState] = useState<number>(0);
 
+    const imageRef  = useRef<HTMLImageElement>(
+        (() => {
+            const img = new Image();
+            img.src = getHintArrowImageData();
+            return img;
+        })()
+    );
     const hintCanvasRef = useRef<HTMLCanvasElement>(null);
     const hintArrowCanvasRef = useRef<HTMLCanvasElement>(null);
     const userCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -324,7 +332,31 @@ const KanjiDraw = (props: Props) => {
             },
         
             onShowHintArrow(from: Point | null, to: Point | null) {
-                // TODO implement
+                const canvas = hintArrowCanvasRef.current;
+                const img = imageRef.current;
+                if (!canvas)
+                     return;
+
+                const ctx = canvas.getContext('2d');
+                if (!ctx)
+                    return;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                if (!from || !to || !img.complete)
+                    return;
+
+                const scaleFactor = 0.3;
+                const xOffset = img.width * scaleFactor;
+                const yOffset = img.height * scaleFactor;
+                const angle   = Math.atan2(to.y - from.y, to.x - from.x);
+
+                ctx.save();
+                ctx.translate(from.x, from.y);
+                ctx.rotate(angle);
+                ctx.scale(scaleFactor, scaleFactor);
+                ctx.drawImage(img, -xOffset, -yOffset);
+                ctx.restore();
             },
         
             onResetProgress() {
