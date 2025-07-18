@@ -25,6 +25,7 @@ import type { ITraceFinishedCallback } from "@/logic/tracing/ITraceFinishCallbac
 import { LearnManagerContext } from "@/contexts/LearnManagerContext";
 import { PolygonCenterer } from "@/logic/provider/polygon/PolygonCenterer";
 import type { Point } from "@/model/Point";
+import { useIsMobile } from "@/hooks/useIdMobile";
 
 interface DrawingState {
     traceLogic: ITraceLogic<string> | null;
@@ -43,21 +44,25 @@ const DEFAULT_DRAWING_STATE: DrawingState = { traceLogic: null, hintLineDrawer: 
 
 const KanjiDraw = (props: Props) => {
     const learnDataContext = useContext(LearnDataContext);
-    const learnManagerContext = useContext(LearnManagerContext);
-
-    const hintCanvasRef = useRef<HTMLCanvasElement>(null);
-    const hintArrowCanvasRef = useRef<HTMLCanvasElement>(null);
-    const userCanvasRef = useRef<HTMLCanvasElement>(null);
+    const learnManagerContext = useContext(LearnManagerContext);    
+    const isMobile = useIsMobile();
 
     const [drawingState, setDrawingState] = useState<DrawingState>(DEFAULT_DRAWING_STATE);
     const [viewportSizeState, setViewportSizeState] = useState<number>(0);
 
+    const hintCanvasRef = useRef<HTMLCanvasElement>(null);
+    const hintArrowCanvasRef = useRef<HTMLCanvasElement>(null);
+    const userCanvasRef = useRef<HTMLCanvasElement>(null);
     const callback = useRef<ITraceFinishedCallback | null>(null);
     const lastPoint = useRef<Point | null>(null);
     const drawnPoints = useRef<Point[]>([]);
     const correctedPolygons = useRef<Polygon[]>([]);
     const correctlyDrawnPolygons = useRef<Polygon[]>([]);
-    const lastKanjiSymbol = useRef<string>(null);
+    const viewportSizeRef = useRef<number>(0);
+
+    useEffect(() => {
+        viewportSizeRef.current = viewportSizeState;
+    }, [viewportSizeState]);
 
     useEffect(() => {
         if (!learnDataContext?.kanji || !learnManagerContext)
@@ -166,6 +171,10 @@ const KanjiDraw = (props: Props) => {
         };
 
         const drawNewPoint = (canvas: HTMLCanvasElement | null, x: number, y: number) => {
+            const viewportMultiplyer = canvasSize / viewportSizeRef.current;
+            x *= viewportMultiplyer;
+            y *= viewportMultiplyer;
+
             const currentPoint: Point = { x: x, y: y };
 
             if (lastPoint.current) {
@@ -373,7 +382,8 @@ const KanjiDraw = (props: Props) => {
         const handleResize = () => {
             const windowWidth = window.innerWidth;
             const windowHeight = window.innerHeight;
-            const newViewportSize = (windowWidth > windowHeight ? windowHeight : windowWidth) / 2;
+            const windowRatio = isMobile ? 1.3 : 2.5;
+            const newViewportSize = (windowWidth > windowHeight ? windowHeight : windowWidth) / windowRatio;
             console.debug("NEW VIEWPORT SIZE: " + newViewportSize);
             setViewportSizeState(newViewportSize);
         };
@@ -383,7 +393,7 @@ const KanjiDraw = (props: Props) => {
         return () => {
             window.removeEventListener("resize", handleResize);
         }
-    }, []);
+    }, [isMobile]);
 
     useEffect(() => {
         if (drawingState?.traceLogic && learnDataContext?.kanji?.symbol) {
@@ -397,9 +407,9 @@ const KanjiDraw = (props: Props) => {
     return (
         <div className="flex-1 flex">
             <div className="flex justify-center items-center">
-                <canvas ref={hintCanvasRef} className="aspect-square bg-base-100 rounded-2xl z-0, absolute" />
-                <canvas ref={hintArrowCanvasRef} className="aspect-square rounded-2xl z-1 absolute" />
-                <canvas ref={userCanvasRef} className="aspect-square rounded-2xl z-2 absolute" />
+                <canvas ref={hintCanvasRef} className="aspect-square bg-base-100 rounded-2xl z-0, absolute" style={{ width: viewportSizeState, height: viewportSizeState }}/>
+                <canvas ref={hintArrowCanvasRef} className="aspect-square rounded-2xl z-1 absolute" style={{ width: viewportSizeState, height: viewportSizeState }} />
+                <canvas ref={userCanvasRef} className="aspect-square rounded-2xl z-2 absolute" style={{ width: viewportSizeState, height: viewportSizeState }} />
             </div>
         </div>
     );
