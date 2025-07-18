@@ -92,7 +92,6 @@ const MatchView = <Q extends React.ReactNode, A extends React.ReactNode>({matchI
     }, [finishedIds, matchItems.length]);
 
     useEffect(() => {
-        console.log(questions);
         setFinishedIds([]);
     }, [questions]);
 

@@ -21,7 +21,7 @@ const LearnSession = (props: Props) => {
 
     const [loading, setLoading] = useState(false);
 
-    const currentView = useRef(viewSequence[currentIndex]);
+    const currentView = useRef<LearnViewKey>('jteMatch');
     const startTimestamp = useRef(Date.now());
 
     useEffect(() => {

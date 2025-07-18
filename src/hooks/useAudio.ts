@@ -88,5 +88,6 @@ export function useAudio(
         error,
 
         setFilename,
+        filename
     };
 }

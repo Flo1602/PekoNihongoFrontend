@@ -23,6 +23,7 @@ interface Props {
 
 const viewRegistry: Record<LearnViewKey, ReactNode> = {
     jtkMatch: <JapaneseToKanaMatch/>,
+    jtkMatchR: <JapaneseToKanaMatch reverse={true}/>,
     atjMatch: <AudioToJapaneseMatch/>,
     ateMatch: <AudioToEnglishMatch/>,
     jteMatch: <JapaneseToEnglishMatch/>,

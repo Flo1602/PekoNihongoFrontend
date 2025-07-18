@@ -1,5 +1,6 @@
 import * as React from "react";
 import {useAudio} from "@/hooks/useAudio.ts";
+import {useEffect} from "react";
 
 export interface MatchButtonProps {
     id: string | number;
@@ -22,7 +23,13 @@ const MatchButton: React.FC<MatchButtonProps> = ({
                                                      ttsPath = "",
                                                      children,
                                                  }) => {
-    const { play } = useAudio(ttsPath, { preload: "auto" });
+    const { play, setFilename, filename } = useAudio(ttsPath, { preload: "auto" });
+
+    useEffect(() => {
+        if(filename != ttsPath){
+            setFilename(ttsPath);
+        }
+    }, [ttsPath]);
 
     const classes = [
         'btn w-full justify-start whitespace-normal line-clamp-2',
