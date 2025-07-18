@@ -1,7 +1,7 @@
 import { Polygon } from "@/model/Polygon";
 import type { IPolygonProvider } from "./IPolygonProvider";
 import type { IFileProvider } from "../file/IFileProvider";
-import type { ISVGPathParser } from "@/logic/parser/ISvgParser";
+import type { ISvgPathParser } from "@/logic/parser/ISvgParser";
 
 export interface SvgPolyProviderOptionsProps {
     tolerance: number;
@@ -38,10 +38,10 @@ function newCommand(code: string, command: string): Command {
 // --------------------------------------
 export class SVGPolygonProvider implements IPolygonProvider {
     private readonly fileProvider: IFileProvider;
-    private readonly svgParser: ISVGPathParser;
+    private readonly svgParser: ISvgPathParser;
     private readonly options: SvgPolyProviderOptions;
 
-    constructor(fileProvider: IFileProvider, svgParser: ISVGPathParser, options: SvgPolyProviderOptions) {
+    constructor(fileProvider: IFileProvider, svgParser: ISvgPathParser, options: SvgPolyProviderOptions) {
         this.fileProvider = fileProvider;
         this.svgParser = svgParser;
         this.options = options;
@@ -73,52 +73,55 @@ export class SVGPolygonProvider implements IPolygonProvider {
 
         const commands = this.makeAbsolute(this.parseSvgPath(svgPathString));
         for (const cmd of commands) {
-        switch (cmd.code) {
-            case 'M': {
-                poly = new Polygon();
-                polys.push(poly);
-                // fall-through to add first point
-            }
-            // eslint-disable-next-line no-fallthrough
-            case 'L':
-            case 'H':
-            case 'V':
-            case 'Z': {
-                if (!poly) { poly = new Polygon(); polys.push(poly); }
-                    this.add(poly, cmd.x, cmd.y);
+            switch (cmd.code) {
+                case 'M': {
+                    poly = new Polygon();
+                    polys.push(poly);
+                    // fall-through to add first point
+                }
+                // eslint-disable-next-line no-fallthrough
+                case 'L':
+                case 'H':
+                case 'V':
+                case 'Z': {
+                    if (poly)
+                        this.add(poly, cmd.x, cmd.y);
+                    
                     break;
                 }
-            case 'C': {
-                if (!poly) { poly = new Polygon(); polys.push(poly); }
-                    this.sampleCubicBezier(cmd.x0, cmd.y0, cmd.x1, cmd.y1, cmd.x2, cmd.y2, cmd.x, cmd.y, poly, tolerance2);
-                    this.add(poly, cmd.x, cmd.y);
-                    break;
-                }
-            case 'S': {
-                if (!poly)
-                    poly = new Polygon(); polys.push(poly);
-            
-                let x1 = 0, y1 = 0;
-                if (prev) {
-                    if (prev.code === 'C') {
-                        x1 = prev.x * 2 - prev.x2;
-                        y1 = prev.y * 2 - prev.y2;
-                    } else {
-                        x1 = prev.x;
-                        y1 = prev.y;
+                case 'C': {
+                    if (poly) {
+                        this.sampleCubicBezier(cmd.x0, cmd.y0, cmd.x1, cmd.y1, cmd.x2, cmd.y2, cmd.x, cmd.y, poly, tolerance2);
+                        this.add(poly, cmd.x, cmd.y);
                     }
-                }
 
-                this.sampleCubicBezier(cmd.x0, cmd.y0, x1, y1, cmd.x2, cmd.y2, cmd.x, cmd.y, poly, tolerance2);
-                this.add(poly, cmd.x, cmd.y);
-                break;
+                    break;
+                }
+                case 'S': {
+                    if (poly) {
+                        let x1 = 0, y1 = 0;
+                        if (prev) {
+                            if (prev.code === 'C') {
+                                x1 = prev.x * 2 - prev.x2;
+                                y1 = prev.y * 2 - prev.y2;
+                            } else {
+                                x1 = prev.x;
+                                y1 = prev.y;
+                            }
+                        }
+
+                        this.sampleCubicBezier(cmd.x0, cmd.y0, x1, y1, cmd.x2, cmd.y2, cmd.x, cmd.y, poly, tolerance2);
+                        this.add(poly, cmd.x, cmd.y);
+                    }
+
+                    break;
+                }
+                default: {
+                    console.error(`Our deepest apologies, but ${cmd.command} commands (${cmd.code}) are not yet supported.`);
+                    return null;
+                }
             }
-            default: {
-                console.error(`Our deepest apologies, but ${cmd.command} commands (${cmd.code}) are not yet supported.`);
-                return null;
-            }
-        }
-        prev = cmd;
+            prev = cmd;
         }
         return polys;
     }
@@ -135,12 +138,18 @@ export class SVGPolygonProvider implements IPolygonProvider {
         tolerance2: number
     ): void {
         // Midpoints of segments
-        const x01 = (x0 + x1) / 2.0; const y01 = (y0 + y1) / 2.0;
-        const x12 = (x1 + x2) / 2.0; const y12 = (y1 + y2) / 2.0;
-        const x23 = (x2 + x3) / 2.0; const y23 = (y2 + y3) / 2.0;
-        const x012 = (x01 + x12) / 2.0; const y012 = (y01 + y12) / 2.0;
-        const x123 = (x12 + x23) / 2.0; const y123 = (y12 + y23) / 2.0;
-        const x0123 = (x012 + x123) / 2.0; const y0123 = (y012 + y123) / 2.0;
+        const x01 = (x0 + x1) / 2.0; 
+        const y01 = (y0 + y1) / 2.0;
+        const x12 = (x1 + x2) / 2.0; 
+        const y12 = (y1 + y2) / 2.0;
+        const x23 = (x2 + x3) / 2.0; 
+        const y23 = (y2 + y3) / 2.0;
+        const x012 = (x01 + x12) / 2.0;
+        const y012 = (y01 + y12) / 2.0;
+        const x123 = (x12 + x23) / 2.0;
+        const y123 = (y12 + y23) / 2.0;
+        const x0123 = (x012 + x123) / 2.0;
+        const y0123 = (y012 + y123) / 2.0;
 
         // Try straight-line approximation
         const dx = x3 - x0;

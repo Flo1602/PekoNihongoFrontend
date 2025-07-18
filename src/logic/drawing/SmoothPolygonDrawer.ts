@@ -15,13 +15,9 @@ export class SmoothPolygonDrawer extends ContextPreservingPolygonDrawer {
         const vertices = polygon.getVertices();
         const vertexCount = polygon.getVerticesCount();
 
-        if (vertexCount < 3) {
-            return null; // Not enough points to draw smooth polygon
-        }
-
         gc.beginPath();
         gc.moveTo(vertices[0].x, vertices[0].y);
-        gc.strokeStyle = this.strokeColor.toRGBA();
+        gc.strokeStyle = this.strokeColor.toHex();
         gc.globalCompositeOperation = "source-over"; // equivalent to BlendMode.SRC_OVER
         gc.lineWidth = this.lineWidth;
 

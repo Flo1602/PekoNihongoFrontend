@@ -4,7 +4,7 @@ import type { TraceMode } from "./TraceMode";
 import type { ITraceVerificationLogic } from "./verification/ITraceVerificationLogic";
 
 export interface ITraceLogic<T> extends ITraceTargetChanger<T> {
-  startTracing(traceMode: TraceMode): void;
+  startTracing(traceMode: TraceMode): Promise<void>;
 
   addTraceLineListener(listenerToAdd: ITraceLineListener): void;
 

@@ -36,75 +36,71 @@ export class Color {
     }
 
     public toHex(): string {
-        const toHexPart = (n: number) => {
-            const hex = n.toString(16);
-            return hex.length === 1 ? "0" + hex : hex;
+        const toHex = (c: number) => {
+            const hex = Math.round(c * 255).toString(16).padStart(2, '0');
+            return hex;
         };
 
-        return `#${toHexPart(this.r)}${toHexPart(this.g)}${toHexPart(this.b)}`;
-    }
-
-    public toRGBA(): string {
-        return `rgba(${this.r},${this.g},${this.b},${this.a})`;
+        return `#${toHex(this.r)}${toHex(this.g)}${toHex(this.b)}`;
     }
 
     public static hsb(h: number, s: number, v: number): Color {
-        h = h % 360;
-        if (h < 0) h += 360;
-
+        h = ((h % 360) + 360) % 360;        // wrap negatives, ensure 0–360
         s = Math.min(Math.max(s, 0), 1);
         v = Math.min(Math.max(v, 0), 1);
 
-        const c = v * s;
-        const hh = h / 60;
-        const x = c * (1 - Math.abs(hh % 2 - 1));
-        let r = 0, g = 0, b = 0;
-
-        if (hh >= 0 && hh < 1) {
-            r = c; g = x; b = 0;
-        } else if (hh >= 1 && hh < 2) {
-            r = x; g = c; b = 0;
-        } else if (hh >= 2 && hh < 3) {
-            r = 0; g = c; b = x;
-        } else if (hh >= 3 && hh < 4) {
-            r = 0; g = x; b = c;
-        } else if (hh >= 4 && hh < 5) {
-            r = x; g = 0; b = c;
-        } else if (hh >= 5 && hh < 6) {
-            r = c; g = 0; b = x;
+        if (s === 0) {
+            // Achromatic (grey)
+            return new Color(v, v, v);
         }
 
-        const m = v - c;
+        const sector = h / 60;              // six sectors: 0–5.999…
+        const i = Math.floor(sector);       // integer part
+        const f = sector - i;               // fractional part
 
-        return new Color(
-            Math.round((r + m) * 255),
-            Math.round((g + m) * 255),
-            Math.round((b + m) * 255)
-        );
+        const p = v * (1 - s);
+        const q = v * (1 - s * f);
+        const t = v * (1 - s * (1 - f));
+
+        switch (i) {
+            case 0: return new Color(v, t, p);
+            case 1: return new Color(q, v, p);
+            case 2: return new Color(p, v, t);
+            case 3: return new Color(p, q, v);
+            case 4: return new Color(t, p, v);
+            default: // i === 5
+            return new Color(v, p, q );
+        }
     }
 
     public getHue(): number {
-        const max = Math.max(this.r, this.g, this.b);
-        const min = Math.min(this.r, this.g, this.b);
+        // Clamp inputs to the legal range in case of rounding errors
+        const r = Math.min(Math.max(this.r, 0), 1);
+        const g = Math.min(Math.max(this.g, 0), 1);
+        const b = Math.min(Math.max(this.b, 0), 1);
+
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
         const delta = max - min;
 
-        let hue: number;
+        // Achromatic: hue is conventionally set to 0
+        if (delta === 0) return 0;
 
-        if (delta === 0) {
-            hue = 0;
-        } else if (max === this.r) {
-            hue = ((this.g - this.b) / delta) % 6;
-        } else if (max === this.g) {
-            hue = (this.b - this.r) / delta + 2;
-        } else {
-            hue = (this.r - this.g) / delta + 4;
+        let h: number;
+
+        if (max === r) {
+            h = (g - b) / delta;           // between yellow & magenta
+        } else if (max === g) {
+            h = 2 + (b - r) / delta;       // between cyan & yellow
+        } else { // max === b
+            h = 4 + (r - g) / delta;       // between magenta & cyan
         }
 
-        hue *= 60;
-        if (hue < 0)
-          hue += 360;
+        h *= 60;                         // turn into degrees
 
-        return hue;
+        if (h < 0) h += 360;             // wrap negatives into [0,360)
+
+        return h;
     }
 
     public equals(other: Color): boolean {

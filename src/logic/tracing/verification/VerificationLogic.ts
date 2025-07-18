@@ -62,17 +62,12 @@ export class VerificationLogic implements ITraceVerificationLogic {
         this.currentMaxHue = Number.MIN_VALUE;
         this.clearCanvas(this.sourceCanvas, true);
         this.clearCanvas(this.toVerifyCanvas, true);
-        this.clearCanvas(this.debugCanvas, false);
 
-        const sourceCtx = this.sourceCanvas.getContext("2d");
-        const toVerifyCtx = this.toVerifyCanvas.getContext("2d");
+        if (this.verificationOptions.debug)
+            this.clearCanvas(this.debugCanvas, false);
 
-        if (!sourceCtx || !toVerifyCtx) {
-            throw new Error("Canvas 2D contexts could not be retrieved.");
-        }
-
-        this.coloredSourcePolygon = this.sourceDrawer.drawPolygon(sourceCtx, source);
-        this.toVerifyDrawer.drawPolygon(toVerifyCtx, toVerify);
+        this.coloredSourcePolygon = this.sourceDrawer.drawPolygon(this.sourceCanvas, source);
+        this.toVerifyDrawer.drawPolygon(this.toVerifyCanvas, toVerify);
 
         if (this.verificationOptions.debug) {
             this.copyContent(this.sourceCanvas, this.debugCanvas);
@@ -86,10 +81,13 @@ export class VerificationLogic implements ITraceVerificationLogic {
         this.currentTry = 0;
     }
 
+    public getDebugCanvas(): HTMLCanvasElement {
+        return this.debugCanvas;
+    }
+
     private calculateVerificationResult(source: Polygon, toVerify: Polygon): VerifyResult {
         let minWrongSimilarity = 1.0;
         let invalidator: Invalidator = "NO";
-
         const imageSimilarity = this.getImageSimilarity();
         const lengthSimilarity = this.getLengthSimilarity(source, toVerify);
         const angularSimilarity = this.getAngularSimilarity(source, toVerify);
@@ -317,7 +315,7 @@ export class VerificationLogic implements ITraceVerificationLogic {
             return;
 
         if (setBackground) {
-            ctx.fillStyle = whiteBaseColor.toRGBA();
+            ctx.fillStyle = whiteBaseColor.toHex();
             ctx.fillRect(0, 0, canvas.width, canvas.height);
         } else {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -339,14 +337,14 @@ export class VerificationLogic implements ITraceVerificationLogic {
         for (let x = 0; x < width; x++) {
             for (let y = 0; y < height; y++) {
                 const index = (y * width + x) * 4;
-                const r = data[index];
-                const g = data[index + 1];
-                const b = data[index + 2];
+                const r = data[index] / 255;
+                const g = data[index + 1] / 255;
+                const b = data[index + 2] / 255;
                 const a = data[index + 3] / 255;
 
                 const color = new Color(r, g, b, a);
                 if (!color.equals(whiteBaseColor)) {
-                    targetCtx.fillStyle = color.toRGBA();
+                    targetCtx.fillStyle = color.toHex();
                     targetCtx.fillRect(x, y, 1, 1);
                 }
             }

@@ -54,7 +54,7 @@ export class LayeredGradientPolygonDrawer extends ContextPreservingPolygonDrawer
             const color = Color.hsb(this.maxHue * progress, saturation, 1.0);
 
             colors.push(color);
-            gc.strokeStyle = color.toRGBA();
+            gc.strokeStyle = color.toHex();
             gc.beginPath();
             gc.moveTo(fromVertex.x, fromVertex.y);
             gc.lineTo(toVertex.x, toVertex.y);

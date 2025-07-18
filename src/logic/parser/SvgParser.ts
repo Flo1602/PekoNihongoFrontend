@@ -1,6 +1,6 @@
-import type { ISVGPathParser } from "./ISvgParser";
+import type { ISvgPathParser } from "./ISvgParser";
 
-export class SVGPathParser implements ISVGPathParser {
+export class SvgPathParser implements ISvgPathParser {
     async parse(file: File): Promise<string[]> {
         const regex = /d="([^"]+)"\/?>/g;
         const parsedSVGPaths: string[] = [];

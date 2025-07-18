@@ -18,8 +18,6 @@ export class KanjiSessionStrategy extends AbstractLearnSessionStrategy {
     }
 
     getLearnData = async(): Promise<LearnData> => {
-
-
         return {
             kanji: { id: 5, symbol: '遊'},
             setResults: this.setResults

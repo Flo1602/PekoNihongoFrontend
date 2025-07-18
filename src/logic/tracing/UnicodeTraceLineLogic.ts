@@ -7,10 +7,10 @@ import type { TraceMode } from "./TraceMode";
 import type { ITraceVerificationLogic } from "./verification/ITraceVerificationLogic";
 import type { ITraceFinishedCallback } from "./ITraceFinishCallback";
 
-export class UnicodeTraceLineLogic implements ITraceLogic<String> {
+export class UnicodeTraceLineLogic implements ITraceLogic<string> {
     private readonly verificationLogic: ITraceVerificationLogic;
     private readonly polygonProvider: IPolygonProvider;
-    private readonly targetChanger: ITraceTargetChanger<String>;
+    private readonly targetChanger: ITraceTargetChanger<string>;
     private readonly traceFinishedCallback: ITraceFinishedCallback = {
         onTraceFinished: this.onTraceFinished.bind(this),
     };
@@ -20,7 +20,7 @@ export class UnicodeTraceLineLogic implements ITraceLogic<String> {
     private nextPolygonToDraw = 0;
     private currentTraceMode: TraceMode | null = null;
 
-    constructor(verificationLogic: ITraceVerificationLogic, polygonProvider: IPolygonProvider, targetChanger: ITraceTargetChanger<String>) {
+    constructor(verificationLogic: ITraceVerificationLogic, polygonProvider: IPolygonProvider, targetChanger: ITraceTargetChanger<string>) {
         this.verificationLogic = verificationLogic;
         this.polygonProvider = polygonProvider;
         this.targetChanger = targetChanger;
@@ -53,7 +53,7 @@ export class UnicodeTraceLineLogic implements ITraceLogic<String> {
         return this.verificationLogic;
     }
 
-    public changeTarget(targetIdentifier: String): void {
+    public changeTarget(targetIdentifier: string): void {
         this.targetChanger.changeTarget(targetIdentifier);
     }
 

@@ -26,7 +26,7 @@ const viewRegistry: Record<LearnViewKey, ReactNode> = {
     ateMatch: <AudioToEnglishMatch/>,
     jteMatch: <JapaneseToEnglishMatch/>,
     jteMatchR: <JapaneseToEnglishMatch reverse={true}/>,
-    kanjiDraw: <KanjiDraw/>
+    kanjiDraw: <KanjiDraw traceMode="ALL_HINTS" debug={true} />
 };
 
 const LearnManager = (probs: Props) => {

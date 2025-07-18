@@ -18,7 +18,7 @@ export class DottedColorProvidedPolygonDrawer extends ContextPreservingPolygonDr
 
         for (let i = 0; i < polygon.getVerticesCount(); i++) {
             const color = this.colorProvider.getColor(i, polygon);
-            gc.fillStyle = color.toRGBA();
+            gc.fillStyle = color.toHex();
             colors.push(color);
 
             const pointOffset = this.lineWidth / 2;
