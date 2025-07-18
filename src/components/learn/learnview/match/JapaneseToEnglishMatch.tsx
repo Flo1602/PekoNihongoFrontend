@@ -7,7 +7,7 @@ import type {Word} from "@/services/api/wordService.ts";
 interface Props{
     reverse?: boolean;
 }
-const JapaneseToEnglishMatch = (probs: Props) => {
+const JapaneseToEnglishMatch = (props: Props) => {
 
     const [ matchItems, setMatchItems] = useState<MatchItem<string, string>[]>([]);
     const learnDataContext = useContext(LearnDataContext);
@@ -16,10 +16,10 @@ const JapaneseToEnglishMatch = (probs: Props) => {
         if (!learnDataContext?.words) return;
         setMatchItems(learnDataContext.words.map<MatchItem<string, string>>((word: Word) => ({
             id: word.id,
-            question: (probs.reverse) ? word.english : word.japanese,
-            answer: (probs.reverse) ? word.japanese : word.english,
-            questionAudio: (probs.reverse) ? "" : word.ttsPath,
-            answerAudio: (probs.reverse) ? word.ttsPath : "",
+            question: (props.reverse) ? word.english : word.japanese,
+            answer: (props.reverse) ? word.japanese : word.english,
+            questionAudio: (props.reverse) ? "" : word.ttsPath,
+            answerAudio: (props.reverse) ? word.ttsPath : "",
         })));
     }, [learnDataContext])
 

@@ -1,4 +1,4 @@
-import type {LearnViewKey} from "@/components/learn/learnview/types.ts";
+import type {LearnViewKey, ToolbarAction} from "@/components/learn/learnview/types.ts";
 import {LearnManagerContext} from "@/contexts/LearnManagerContext";
 import {type ReactNode, useContext, useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
@@ -10,6 +10,7 @@ import AudioToEnglishMatch from "@/components/learn/learnview/match/AudioToEngli
 import JapaneseToKanaMatch from "@/components/learn/learnview/match/JapaneseToKanaMatch.tsx";
 import JapaneseToEnglishMatch from "@/components/learn/learnview/match/JapaneseToEnglishMatch.tsx";
 import KanjiDraw from "@/components/learn/learnview/KanjiDraw.tsx";
+import WordKanjiSelect from "@/components/learn/learnview/WordKanjiSelect.tsx";
 
 interface Props {
     currentView: LearnViewKey;
@@ -26,13 +27,15 @@ const viewRegistry: Record<LearnViewKey, ReactNode> = {
     ateMatch: <AudioToEnglishMatch/>,
     jteMatch: <JapaneseToEnglishMatch/>,
     jteMatchR: <JapaneseToEnglishMatch reverse={true}/>,
-    kanjiDraw: <KanjiDraw traceMode="ALL_HINTS" debug={true} />
+    kanjiDraw: <KanjiDraw traceMode="ALL_HINTS" debug={true} />,
+    wordKanjiSelect: <WordKanjiSelect/>
 };
 
 const LearnManager = (probs: Props) => {
     const navigate = useNavigate();
     const [learnViewCorrect, setLearnViewCorrect] = useState<boolean | null>(null);
     const [numberCorrect, setNumberCorrect] = useState<number>(0);
+    const [toolbarActions, setToolbarActions] = useState<ToolbarAction[]>([]);
     const falseViews = useRef<{view: LearnViewKey, data: LearnData | null}[]>([]);
 
     const learnDataContext = useContext(LearnDataContext);
@@ -56,7 +59,11 @@ const LearnManager = (probs: Props) => {
         setLearnViewCorrect(correct);
     };
 
-    const CurrentView = viewRegistry[probs.currentView];
+    const currentView = viewRegistry[probs.currentView];
+
+    useEffect(() => {
+        setToolbarActions([]);
+    }, [currentView]);
 
     const onNextHandler = () => {
         setLearnViewCorrect(null);
@@ -88,15 +95,14 @@ const LearnManager = (probs: Props) => {
                     </div>
                 </div>
             </div>
-            <LearnManagerContext.Provider value={{onComplete}}>
-                {CurrentView}
+            <LearnManagerContext.Provider value={{onComplete: onComplete, setToolbarActions: setToolbarActions}}>
+                {currentView}
             </LearnManagerContext.Provider>
 
             <div
                 className={
                     [
-                        "relative flex items-center h-30 pr-5 lg:pr-10 w-screen border-t border-gray-800",
-                        // smooth background glide
+                        "relative flex items-center h-30 pr-5 pl-5 lg:pr-10 lg:pl-10 w-screen border-t border-gray-800",
                         "transition-colors duration-500",
                         learnViewCorrect === true && "bg-base-100",
                         learnViewCorrect === false && "bg-base-100"
@@ -122,6 +128,25 @@ const LearnManager = (probs: Props) => {
                     {learnViewCorrect === true && "Correct"}
                     {learnViewCorrect === false && "Wrong"}
                 </span>
+
+                {toolbarActions.map((a) => (
+                    <button
+                        key={a.key}
+                        onClick={a.onClick}
+                        disabled={a.disabled}
+                        className={[
+                            a.className,
+                            "btn btn-soft",
+                            "lg:text-xl",
+                            "h-5/12",
+                            "hover:scale-110 hover:bg-base-100",
+                        ]
+                            .filter(Boolean)
+                            .join(" ")}
+                    >
+                        {a.label}
+                    </button>
+                ))}
 
                 <button
                     disabled={learnViewCorrect === null}

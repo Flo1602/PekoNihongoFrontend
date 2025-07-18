@@ -10,7 +10,7 @@ export class WordSessionStrategy extends AbstractLearnSessionStrategy {
 
     private learningWords: Word[] | null = null;
 
-    private results: LearnResult[] = [];
+    results: LearnResult[] = [];
 
     constructor() {
         super();
@@ -18,7 +18,7 @@ export class WordSessionStrategy extends AbstractLearnSessionStrategy {
         this.viewSequence = [];
 
         let listening: boolean = false;
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < 5; i++) {
             const listeningAvailable: boolean = !listening && i > 2;
             switch (nextInt((listeningAvailable) ? 4 : 3)){
                 case 0:
@@ -64,16 +64,7 @@ export class WordSessionStrategy extends AbstractLearnSessionStrategy {
     };
 
     getResultsAndSave = (): number => {
-        let countCorrect: number = 0;
-        this.results.forEach(result => {
-            if(result.correct) {
-                countCorrect++;
-            }
-        })
-
-        this.saveLearningData();
-
-        return 100 / this.results.length * countCorrect;
+        return super.getResultsAndSaveImpl("words");
     };
 
     setResults = (learnResult: LearnResult[]): void => {
@@ -91,9 +82,5 @@ export class WordSessionStrategy extends AbstractLearnSessionStrategy {
         return api.get('/learning/words', {
             params: { count: 15 }
         }).then(res => res.data as Word[]);
-    }
-
-    private saveLearningData(): void {
-        api.post('/learning/words', this.results);
     }
 }

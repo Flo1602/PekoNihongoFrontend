@@ -1,4 +1,5 @@
 import Loading from "@/components/Loading.tsx";
+import {useEffect, useState} from "react";
 
 interface Props{
     loading: boolean;
@@ -8,6 +9,49 @@ interface Props{
 }
 
 const CatalogList = ({loading, pages, fetchPage, children}: Props) => {
+    const [currentPage, setCurrentPage] = useState<number>(0);
+
+    useEffect(() => {
+        if (currentPage >= pages) {
+            setCurrentPage(pages - 1);
+        }
+    }, [pages, currentPage]);
+
+    const handleClick = (page: number) => {
+        setCurrentPage(page);
+        fetchPage(page);
+    };
+
+    const getPageList = (): (number | string)[] => {
+        const pageList: (number | string)[] = [];
+        const delta = 1;
+        const range: number[] = [];
+
+        for (let i = Math.max(0, currentPage - delta); i <= Math.min(pages - 1, currentPage + delta); i++) {
+            range.push(i);
+        }
+
+        if (range[0] > 0) {
+            pageList.push(0);
+            if (range[0] > 1) {
+                pageList.push("start-ellipsis");
+            }
+        }
+
+        range.forEach(i => pageList.push(i));
+
+        if (range[range.length - 1] < pages - 1) {
+            if (range[range.length - 1] < pages - 2) {
+                pageList.push("end-ellipsis");
+            }
+            pageList.push(pages - 1);
+        }
+
+        return pageList;
+    };
+
+    const pageList = getPageList();
+
     return (
         <div className=" w-full
             max-w-md           /* phones / small tablets */
@@ -28,20 +72,27 @@ const CatalogList = ({loading, pages, fetchPage, children}: Props) => {
             {pages > 1 && (
                 <nav className="mt-4 flex justify-center">
                     <div className="join">
-                        {Array.from({ length: pages }, (_, i) => (
-                            <button
-                                key={i}
-                                onClick={() => fetchPage(i)}
-                                className="join-item btn btn-sm"
-                            >
-                                {i + 1}
-                            </button>
-                        ))}
+                        {pageList.map((item, idx) => {
+                            if (typeof item === 'string') {
+                                return (
+                                    <span key={`${item}-${idx}`} className="join-item btn btn-disabled btn-sm">…</span>
+                                );
+                            }
+                            return (
+                                <button
+                                    key={item}
+                                    onClick={() => handleClick(item as number)}
+                                    className={`join-item btn btn-sm ${item === currentPage ? 'btn-active' : ''}`}
+                                >
+                                    {item + 1}
+                                </button>
+                            );
+                        })}
                     </div>
                 </nav>
             )}
 
-            <Loading isLoading={loading}/>
+            <Loading isLoading={loading} />
         </div>
     );
 }

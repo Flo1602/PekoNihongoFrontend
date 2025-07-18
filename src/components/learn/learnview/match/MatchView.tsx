@@ -1,11 +1,11 @@
 import type {MatchItem} from "@/components/learn/learnview/match/types.ts";
 import * as React from "react";
-import {shuffle} from "@/services/util/arrayUtils.ts";
 import {useContext, useEffect, useRef} from "react";
 import MatchButton from "@/components/learn/learnview/match/MatchButton.tsx";
 import {LearnManagerContext} from "@/contexts/LearnManagerContext.tsx";
 import {LearnDataContext} from "@/contexts/LearnDataContext.tsx";
 import type {LearnResult} from "@/components/learn/session/types.ts";
+import {shuffle} from "@/services/util/ArrayUtils.ts";
 
 interface Props<Q extends React.ReactNode, A extends React.ReactNode> {
     matchItems: MatchItem<Q, A>[];
@@ -92,6 +92,7 @@ const MatchView = <Q extends React.ReactNode, A extends React.ReactNode>({matchI
     }, [finishedIds, matchItems.length]);
 
     useEffect(() => {
+        console.log(questions);
         setFinishedIds([]);
     }, [questions]);
 

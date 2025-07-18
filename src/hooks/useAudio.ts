@@ -6,13 +6,18 @@ interface UseAudioOptions {
 }
 
 export function useAudio(
-    filename?: string,
+    initialFilename?: string,
     {
         preload = "none",
         apiUrl = "http://10.0.0.8:8080/resources/audio",
     }: UseAudioOptions = {}
 ) {
+    const [filename, setFilename] = useState<string | undefined>(
+        initialFilename
+    );
+
     const src = filename ? `${apiUrl}/${filename}` : null;
+
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
     const [playing, setPlaying] = useState(false);
@@ -21,7 +26,7 @@ export function useAudio(
     useEffect(() => {
         if (audioRef.current) {
             audioRef.current.pause();
-            audioRef.current.src = "";            // unload
+            audioRef.current.src = "";
             audioRef.current.load();
             audioRef.current = null;
         }
@@ -34,28 +39,27 @@ export function useAudio(
         const audio = new Audio(src);
         audio.preload = preload;
 
-        const handleEnded = () => setPlaying(false);
-        const handlePlay  = () => setPlaying(true);
-        const handlePause = () => setPlaying(false);
+        const onPlay   = () => setPlaying(true);
+        const onPause  = () => setPlaying(false);
+        const onEnded  = () => setPlaying(false);
 
-        audio.addEventListener("ended", handleEnded);
-        audio.addEventListener("play",  handlePlay);
-        audio.addEventListener("pause", handlePause);
+        audio.addEventListener("play", onPlay);
+        audio.addEventListener("pause", onPause);
+        audio.addEventListener("ended", onEnded);
 
         audioRef.current = audio;
 
         return () => {
-            audio.removeEventListener("ended", handleEnded);
-            audio.removeEventListener("play",  handlePlay);
-            audio.removeEventListener("pause", handlePause);
-
+            audio.removeEventListener("play", onPlay);
+            audio.removeEventListener("pause", onPause);
+            audio.removeEventListener("ended", onEnded);
             audio.pause();
             audio.currentTime = 0;
         };
     }, [src, preload]);
 
     const play = useCallback(async () => {
-        if (!audioRef.current) return;          // no-op if no file
+        if (!audioRef.current) return;
         try {
             await audioRef.current.play();
         } catch (err) {
@@ -75,5 +79,14 @@ export function useAudio(
         }
     }, [playing, play, pause]);
 
-    return { play, pause, toggle, playing, error };
+    return {
+        play,
+        pause,
+        toggle,
+
+        playing,
+        error,
+
+        setFilename,
+    };
 }

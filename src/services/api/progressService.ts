@@ -9,3 +9,7 @@ export interface ProgressData {
 export async function getWordProgress() {
     return api.get('learning/words/progress');
 }
+
+export async function getKanjiProgress() {
+    return api.get('learning/kanji/progress');
+}

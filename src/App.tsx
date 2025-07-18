@@ -19,6 +19,7 @@ import Settings from "@/pages/Settings.tsx";
 import { AnimatePresence } from "framer-motion";
 import AnimatedPage from "@/components/AnimatedPage.tsx";
 import DailyWords from "@/pages/learn/DailyWords.tsx";
+import DailyKanji from "@/pages/learn/DailyKanji.tsx";
 
 function App() {
     const location = useLocation();
@@ -47,7 +48,10 @@ function App() {
                                         <Route index element={<WordsLearningMenu/>}/>
                                         <Route path="daily" element={<DailyWords/>}/>
                                     </Route>
-                                    <Route path="kanji" element={<KanjiLearnMenu/>}/>
+                                    <Route path="kanji">
+                                        <Route index element={<KanjiLearnMenu/>}/>
+                                        <Route path="daily" element={<DailyKanji/>}/>
+                                    </Route>
                                     <Route path="sentences" element={<SentenceLearnMenu/>}/>
                                     <Route path="questions" element={<QuestionLearnMenu/>}/>
                                 </Route>

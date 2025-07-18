@@ -21,7 +21,7 @@ const LearnSession = (props: Props) => {
 
     const [loading, setLoading] = useState(false);
 
-    let currentView: LearnViewKey = viewSequence[currentIndex];
+    const currentView = useRef(viewSequence[currentIndex]);
     const startTimestamp = useRef(Date.now());
 
     useEffect(() => {
@@ -34,6 +34,7 @@ const LearnSession = (props: Props) => {
                 if (!cancelled) {
                     setLearnData(data)
                     setLoading(false)
+                    currentView.current = viewSequence[currentIndex];
                 }
             })
             .catch((err) => {
@@ -59,7 +60,7 @@ const LearnSession = (props: Props) => {
     }
 
     const pushFalseView = (view: LearnViewKey, data: LearnData | null) => {
-        currentView = view;
+        currentView.current = view;
 
         if (data !== null) {
             setLearnData({
@@ -84,7 +85,7 @@ const LearnSession = (props: Props) => {
     return (
         <>
             <LearnDataContext.Provider value={learnData}>
-                <LearnManager currentView={currentView}
+                <LearnManager currentView={currentView.current}
                               nextView={handleViewComplete}
                               viewCount={viewSequence.length}
                               retry={retry}

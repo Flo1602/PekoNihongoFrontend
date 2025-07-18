@@ -1,6 +1,8 @@
 import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
 import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
+import {saveStat} from "@/services/api/statsService.ts";
+import { Temporal } from '@js-temporal/polyfill';
 
 interface Props{
     duration: number;
@@ -31,6 +33,10 @@ const Result = ({ duration, correctness }: Props) => {
             d.stop();
         };
     }, [correctness, duration, correctnessMotion, durationMotion]);
+
+    useEffect(() => {
+        saveStat(Temporal.Duration.from({ milliseconds: duration }));
+    }, []);
 
     return (
         <motion.div

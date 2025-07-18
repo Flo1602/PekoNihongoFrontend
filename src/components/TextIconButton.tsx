@@ -8,11 +8,11 @@ interface Props {
 const TextIconButton = ({label, icon: Icon}: Props) => {
     return (
         <div className={`
-        card  bg-base-100
+        card  bg-base-100 
         flex flex-row items-center justify-between
         p-5 rounded-lg
         border-2 border-transparent
-        shadow-sm hover:shadow-md
+        shadow-sm hover:drop-shadow-xl
         transition active:scale-95`}>
             <span className="text-2xl font-medium text-base-content">
                 {label}
