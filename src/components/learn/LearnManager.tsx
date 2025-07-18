@@ -27,7 +27,7 @@ const viewRegistry: Record<LearnViewKey, ReactNode> = {
     ateMatch: <AudioToEnglishMatch/>,
     jteMatch: <JapaneseToEnglishMatch/>,
     jteMatchR: <JapaneseToEnglishMatch reverse={true}/>,
-    kanjiDraw: <KanjiDraw traceMode="ALL_HINTS" debug={true} />,
+    kanjiDraw: <KanjiDraw traceMode="NO_HINTS" debug={true} />,
     wordKanjiSelect: <WordKanjiSelect/>
 };
 

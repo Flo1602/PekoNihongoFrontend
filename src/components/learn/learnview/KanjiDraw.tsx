@@ -65,7 +65,7 @@ const KanjiDraw = (props: Props) => {
     }, [viewportSizeState]);
 
     useEffect(() => {
-        if (!learnDataContext?.kanji || !learnManagerContext)
+        if (!learnDataContext?.kanji)
             return;
 
         console.debug("RELOAD TRACING LOGIC");
@@ -376,7 +376,7 @@ const KanjiDraw = (props: Props) => {
                 canvas.removeEventListener('mouseup', onMouseUp);
             }
         };
-    }, [learnDataContext, learnManagerContext]);
+    }, [learnDataContext]);
 
     useEffect(() => {
         const handleResize = () => {
