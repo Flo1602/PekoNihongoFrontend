@@ -22,8 +22,7 @@ const MatchButton: React.FC<MatchButtonProps> = ({
                                                      ttsPath = "",
                                                      children,
                                                  }) => {
-
-    const { play } = useAudio(ttsPath);
+    const { play } = useAudio(ttsPath, { preload: "auto" });
 
     const classes = [
         'btn w-full justify-start whitespace-normal line-clamp-2',

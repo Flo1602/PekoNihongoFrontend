@@ -2,6 +2,7 @@ import {AbstractLearnSessionStrategy, type LearnData, type LearnResult} from "@/
 import type {LearnViewKey} from "@/components/learn/learnview/types.ts";
 import type {Word} from "@/services/api/wordService.ts";
 import {api} from "@/services/api/client.ts";
+import {extractKanji} from "@/services/util/KanjiUtil.tsx";
 
 export class KanjiSessionStrategy extends AbstractLearnSessionStrategy {
     readonly key = "words";
@@ -9,21 +10,25 @@ export class KanjiSessionStrategy extends AbstractLearnSessionStrategy {
 
     private kanji: KanjiLearningDto | null = null;
     private randomWordsIndex: number = 0;
+    private randomKanji: string[] = [];
 
     results: LearnResult[] = [];
 
     constructor() {
         super();
-
-        this.viewSequence = ['kanjiDraw'];
+        this.viewSequence = ['wordKanjiSelect', "jtkMatch"];
     }
 
     getLearnData = async(): Promise<LearnData> => {
         if (!this.kanji) {
             this.kanji = await this.fetchWords();
+
+            this.kanji.randomWords.forEach(word => {
+                this.randomKanji.push(...extractKanji(word.japanese));
+            })
         }
 
-        const words = this.kanji.kanjiWords;
+        const words = [...this.kanji.kanjiWords];
         let counter = 0;
 
         while (counter < 5) {
@@ -38,6 +43,7 @@ export class KanjiSessionStrategy extends AbstractLearnSessionStrategy {
         return {
             kanji: { id: this.kanji.id, symbol: this.kanji.symbol},
             words: words,
+            extraData: this.randomKanji,
             setResults: this.setResults
         };
     };
@@ -47,7 +53,19 @@ export class KanjiSessionStrategy extends AbstractLearnSessionStrategy {
     };
 
     setResults = (learnResult: LearnResult[]): void => {
-        this.results.push(...learnResult);
+        if(this.kanji != null && learnResult.length > 1){
+            let counter = 0;
+            learnResult.forEach(result => {
+                counter += result.correct ? 1 : 0;
+            })
+            if(100/learnResult.length*counter > 50){
+                this.results.push({id: this.kanji.id, correct: true});
+            } else {
+                this.results.push({id: this.kanji.id, correct: false});
+            }
+        } else {
+            this.results.push(...learnResult);
+        }
     }
 
     private fetchWords(): Promise<KanjiLearningDto> {

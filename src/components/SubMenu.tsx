@@ -19,7 +19,7 @@ const SubMenu = (props: Props) => {
             <ul className="w-full max-w-md flex-1 space-y-8">
                 {props.elements.map(({path, icon: Icon, label}) => {
                     return (
-                        <li key={label}>
+                        <li key={label} className="hover:scale-105">
                             <Link to={path} className="block">
                                 <TextIconButton label={label} icon={Icon}/>
                             </Link>

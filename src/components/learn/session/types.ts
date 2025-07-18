@@ -13,6 +13,7 @@ export interface LearnSessionStrategy {
 export interface LearnData {
     words?: Word[];
     kanji?: Kanji;
+    extraData?: string[];
     setResults: (results: LearnResult[]) => void;
     refresh?: boolean;
 }

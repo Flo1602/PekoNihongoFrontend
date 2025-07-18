@@ -1,9 +1,14 @@
-export type LearnViewKey = 'jteMatch' | 'jteMatchR' | 'atjMatch' | 'ateMatch' | 'jtkMatch' | 'kanjiDraw';
+export type LearnViewKey = 'jteMatch' | 'jteMatchR' | 'atjMatch' | 'ateMatch' | 'jtkMatch' | 'kanjiDraw' | 'wordKanjiSelect';
+
+export interface ToolbarAction {
+    key: string;
+    label: string;
+    onClick: () => void;
+    className?: string;
+    disabled?: boolean;
+}
 
 export interface LearnManagerContextType {
     onComplete: (correct: boolean) => void;
-
-    /** Neu: der Manager übergibt Dir diese Funktion,
-     *  mit der Du Deine Toolbar füllst */
-    //setToolbarActions: (actions: ToolbarAction[]) => void;
+    setToolbarActions: (actions: ToolbarAction[]) => void;
 }
