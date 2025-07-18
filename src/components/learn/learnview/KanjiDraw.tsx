@@ -407,9 +407,15 @@ const KanjiDraw = (props: Props) => {
     return (
         <div className="flex-1 flex">
             <div className="flex justify-center items-center">
-                <canvas ref={hintCanvasRef} className="aspect-square bg-base-100 rounded-2xl z-0, absolute" style={{ width: viewportSizeState, height: viewportSizeState }}/>
-                <canvas ref={hintArrowCanvasRef} className="aspect-square rounded-2xl z-1 absolute" style={{ width: viewportSizeState, height: viewportSizeState }} />
-                <canvas ref={userCanvasRef} className="aspect-square rounded-2xl z-2 absolute" style={{ width: viewportSizeState, height: viewportSizeState }} />
+                <canvas ref={hintCanvasRef} className="aspect-square bg-base-100 rounded-2xl z-0, absolute touch-none" style={{ width: viewportSizeState, height: viewportSizeState }}/>
+                <canvas ref={hintArrowCanvasRef} className="aspect-square rounded-2xl z-1 absolute touch-none" style={{ width: viewportSizeState, height: viewportSizeState }} />
+                <canvas ref={userCanvasRef} 
+                    className="aspect-square rounded-2xl z-2 absolute touch-none"
+                    style={{ width: viewportSizeState, height: viewportSizeState }}
+                    onContextMenu={(e) => {
+                        e.preventDefault();
+                    }}
+                />
             </div>
         </div>
     );
