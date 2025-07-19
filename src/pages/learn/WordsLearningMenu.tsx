@@ -31,6 +31,7 @@ const WordsLearningMenu = () => {
                 className="fixed bottom-20 lg:bottom-0 left-0 w-full bg-base-300/80 backdrop-blur p-4 z-50">
                 <LearnProgress
                     label={t('translation:words')}
+                    todayDueText={t("translation:wordsDueToday")}
                     dueToday={progressData.dueToday}
                     completedToday={progressData.completedToday}
                     totalPending={progressData.totalPending}

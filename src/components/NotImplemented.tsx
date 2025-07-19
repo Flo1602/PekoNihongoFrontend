@@ -19,7 +19,7 @@ const NotImplemented = () => {
                     </p>
                     <div className="mt-6 flex justify-center lg:justify-start space-x-4">
                         <Link to="/" className="btn btn-primary">
-                            {t("translation:backHome")}
+                            ← {t("translation:backHome")}
                         </Link>
                         <button className="btn btn-outline" onClick={() => window.location.reload()}>
                             {t("translation:retry")}

@@ -9,7 +9,8 @@ export function useAudio(
     initialFilename?: string,
     {
         preload = "none",
-        apiUrl = "http://10.0.0.8:8080/resources/audio",
+        // @ts-ignore
+        apiUrl = server_base_url + "resources/audio",
     }: UseAudioOptions = {}
 ) {
     const [filename, setFilename] = useState<string | undefined>(

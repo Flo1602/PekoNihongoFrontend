@@ -1,15 +1,18 @@
 import { motion } from 'framer-motion';
 import {useEffect, useRef} from "react";
+import {useTranslation} from "react-i18next";
 
 interface Props {
     dueToday: number;
     completedToday: number;
     totalPending: number;
     label: string;
+    todayDueText: string;
 }
 
-const LearnProgress = ({dueToday, completedToday, totalPending, label}: Props) => {
+const LearnProgress = ({dueToday, completedToday, totalPending, label, todayDueText}: Props) => {
     const percent = dueToday > 0 ? (completedToday / dueToday) * 100 : 0;
+    const {t} = useTranslation();
 
     const storageKey = `learn-progress-${label}`;
     const today = new Date().toISOString().split('T')[0];
@@ -41,7 +44,7 @@ const LearnProgress = ({dueToday, completedToday, totalPending, label}: Props) =
             {/* Kopfzeile */}
             <div className="flex justify-between items-baseline mb-1">
         <span className="font-semibold">
-          {label}{label.endsWith('s') ? '' : 's'} today
+            {todayDueText}
         </span>
                 <span className="text-sm">
           {completedToday}/{dueToday}
@@ -65,7 +68,7 @@ const LearnProgress = ({dueToday, completedToday, totalPending, label}: Props) =
             </div>
 
             <div className="text-xs text-right mt-1 opacity-80">
-                {totalPending.toLocaleString()} pending overall
+                {totalPending.toLocaleString()} {t("translation:pendingAll")}
             </div>
         </div>
     );

@@ -1,4 +1,4 @@
-export type LearnViewKey = 'jteMatch' | 'jteMatchR' | 'atjMatch' | 'ateMatch' | 'jtkMatch' | 'jtkMatchR' | 'kanjiDraw' | 'wordKanjiSelect';
+export type LearnViewKey = 'jteMatch' | 'jteMatchR' | 'atjMatch' | 'ateMatch' | 'jtkMatch' | 'jtkMatchR' | 'kanjiDrawHint' | 'kanjiDrawNextHint' | 'kanjiDrawNoHint' | 'wordKanjiSelect';
 
 export interface ToolbarAction {
     key: string;
@@ -11,4 +11,5 @@ export interface ToolbarAction {
 export interface LearnManagerContextType {
     onComplete: (correct: boolean) => void;
     setToolbarActions: (actions: ToolbarAction[]) => void;
+    skipToLastView: () => void;
 }

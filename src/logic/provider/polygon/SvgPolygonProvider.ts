@@ -74,6 +74,7 @@ export class SVGPolygonProvider implements IPolygonProvider {
         const commands = this.makeAbsolute(this.parseSvgPath(svgPathString));
         for (const cmd of commands) {
             switch (cmd.code) {
+                // @ts-ignore
                 case 'M': {
                     poly = new Polygon();
                     polys.push(poly);

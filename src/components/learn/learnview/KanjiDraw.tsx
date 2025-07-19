@@ -26,7 +26,10 @@ import { LearnManagerContext } from "@/contexts/LearnManagerContext";
 import { PolygonCenterer } from "@/logic/provider/polygon/PolygonCenterer";
 import type { Point } from "@/model/Point";
 import { useIsMobile } from "@/hooks/useIdMobile";
-import getHintArrowImageData from "@/assets/staticImages/hintArrow";
+import getHintArrowImageData from "@/assets/staticImages/HintArrow";
+import {nextInt} from "@/services/util/RandomUtils.ts";
+import SpeakerIcon from "@/assets/icons/SpeakerIcon.tsx";
+import {useAudio} from "@/hooks/useAudio.ts";
 
 interface DrawingState {
     traceLogic: ITraceLogic<string> | null;
@@ -47,9 +50,11 @@ const KanjiDraw = (props: Props) => {
     const learnDataContext = useContext(LearnDataContext);
     const learnManagerContext = useContext(LearnManagerContext);    
     const isMobile = useIsMobile();
+    const audio = useAudio();
 
     const [drawingState, setDrawingState] = useState<DrawingState>(DEFAULT_DRAWING_STATE);
     const [viewportSizeState, setViewportSizeState] = useState<number>(0);
+    const [displayedKanjiWord, setDisplayedKanjiWord] = useState<string>("");
 
     const imageRef  = useRef<HTMLImageElement>(
         (() => {
@@ -96,7 +101,7 @@ const KanjiDraw = (props: Props) => {
             hintColor: new Color(0.3, 0.3, 0.3),  // Gray
             fieldWidth: canvasSize,
             fieldHeight: canvasSize,
-            lineWidth: 15
+            lineWidth: (isMobile ? 20 : 15)
         };
 
         const verificationOptions: VerificationOptions = {
@@ -104,21 +109,22 @@ const KanjiDraw = (props: Props) => {
             minGradientLineWidth: traceOptions.lineWidth * 2,
             maxGradientLineWidth: traceOptions.lineWidth * 7,
             toVerifyDotSize: traceOptions.lineWidth,
-            colorCorrectnessExp: 0.6,
-            lengthCorrectnessExp: 0.5,
+            colorCorrectnessExp: 0.4,
+            lengthCorrectnessExp: 0.4,
             maxAngleRangeToScore: 180,
             angularDiffMaxCheckSamples: 20,
             maxTries: 3,
-            minImageSimilarity: 0.6,
-            minLengthSimilarity: 0.4,
-            minAngularSimilarity: 0.6,
+            minImageSimilarity: 0.5,
+            minLengthSimilarity: 0.3,
+            minAngularSimilarity: 0.5,
             fieldWidth: traceOptions.fieldWidth,
             fieldHeight: traceOptions.fieldHeight,
             debug: !!props.debug
         };
 
         const fileProvider = new UnicodeFilenameFileProvider(
-            "http://localhost:8080/resources/kanji",
+            // @ts-ignore
+            server_base_url + "resources/kanji",
             "0",
             5,
             "svg"
@@ -133,7 +139,7 @@ const KanjiDraw = (props: Props) => {
             svgPolyProviderOptions
         );
 
-        const scaler: IPolygonConverter = new PolygonScaler(4);
+        const scaler: IPolygonConverter = new PolygonScaler((isMobile ? 5 : 4));
         const centerer: IPolygonConverter = new PolygonCenterer(traceOptions.fieldWidth, traceOptions.fieldHeight);
         const fixedDistanceSetter: IPolygonConverter = new VertexFixedDistanceSetter(5);
         const convertingPolygonProvider: IPolygonProvider = {
@@ -316,6 +322,32 @@ const KanjiDraw = (props: Props) => {
             }
         };
 
+        const calcDisplayedKanjiWord = () => {
+            const words = learnDataContext.words;
+            const kanji = learnDataContext.kanji;
+
+            if(words && kanji){
+                const wordsWithKanji: string[] = [];
+
+                words.forEach(word => {
+                    if(word.japanese.includes(kanji.symbol)){
+                        let displayText: string = word.japanese + " (" + word.kana + ")";
+                        displayText = displayText.replace(kanji.symbol, "_");
+                        wordsWithKanji.push(displayText);
+                    }
+                })
+
+                const rand = nextInt(wordsWithKanji.length);
+
+                if(audio.filename !== words[rand].ttsPath){
+                    audio.setFilename(words[rand].ttsPath);
+                }
+
+                setTimeout(audio.play, 100);
+                setDisplayedKanjiWord(wordsWithKanji[rand]);
+            }
+        }
+
         const traceLineListener: ITraceLineListener = {
             onShowHint(polygonToShowHintFor: Polygon) {
                 hintLineDrawer.drawPolygon(hintCanvasRef.current, polygonToShowHintFor);
@@ -360,7 +392,7 @@ const KanjiDraw = (props: Props) => {
             },
         
             onResetProgress() {
-                // updateWordWithKanji is missing here
+                calcDisplayedKanjiWord();
                 clearCanvas(userCanvasRef.current);
                 clearCanvas(hintArrowCanvasRef.current);
                 clearCanvas(hintCanvasRef.current);
@@ -438,7 +470,13 @@ const KanjiDraw = (props: Props) => {
 
     return (
         <div className="flex-1 flex">
-            <div className="flex justify-center items-center">
+            <div className="flex flex-1 justify-center items-center">
+                <span className="self-start pt-5 flex gap-5 items-center">
+                    <span onClick={audio.play}>
+                        <SpeakerIcon className={"h-7 w-7 hover:scale-120"}/>
+                    </span>
+                    <h1 className="text-xl sm:text-2xl font-semibold">{displayedKanjiWord}</h1>
+                </span>
                 <canvas ref={hintCanvasRef} className="aspect-square bg-base-100 rounded-2xl z-0, absolute touch-none" style={{ width: viewportSizeState, height: viewportSizeState }}/>
                 <canvas ref={hintArrowCanvasRef} className="aspect-square rounded-2xl z-1 absolute touch-none" style={{ width: viewportSizeState, height: viewportSizeState }} />
                 <canvas ref={userCanvasRef} 

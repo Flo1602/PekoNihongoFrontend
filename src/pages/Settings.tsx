@@ -18,7 +18,8 @@ export const Settings = () => {
     const [settings, setSettings] = useState<SettingsType>({
         voiceId: 0,
         maxDailyWords: 0,
-        maxDailyKanji: 0
+        maxDailyKanji: 0,
+        useAlwaysVoiceVox: false,
     });
 
     const [debouncedSettings, setDebouncedSettings] = useState<SettingsType>();
@@ -36,6 +37,7 @@ export const Settings = () => {
                 voiceId: res.data.voiceId ?? 0,
                 maxDailyWords: res.data.maxDailyWords ?? 0,
                 maxDailyKanji: res.data.maxDailyKanji ?? 0,
+                useAlwaysVoiceVox: res.data.useAlwaysVoiceVox ?? false,
             });
         });
 
@@ -77,11 +79,12 @@ export const Settings = () => {
     }, [i18n.language]);
 
     const changeSettings = (e: ChangeEvent<HTMLInputElement>) => {
-        setSettings({
-            ...settings,
-            [e.target.id]: e.target.value
-        })
-    }
+        const { id, type, value, checked } = e.target;
+        setSettings(prev => ({
+            ...prev,
+            [id]: (type === 'checkbox' ? checked : (type === 'number' ? Number(value) : value))
+        }));
+    };
 
     return (
         <div className="flex-1 flex items-center justify-center bg-base-300 p-6">
@@ -144,6 +147,14 @@ export const Settings = () => {
                                 </span>
                             </label>
                             <input id="maxDailyKanji" value={settings.maxDailyKanji} onChange={changeSettings} type="number" className="input w-full" min="1"/>
+                        </div>
+                        <div className="form-control w-full">
+                            <label className="label pr-2">
+                                <span className="label-text flex items-center gap-2">
+                                    {t("translation:useAlwaysVoiceVox")}:
+                                </span>
+                            </label>
+                            <input id="useAlwaysVoiceVox" checked={settings.useAlwaysVoiceVox} onChange={changeSettings} type="checkbox" className="checkbox checkbox-primary"/>
                         </div>
                     </section>
 

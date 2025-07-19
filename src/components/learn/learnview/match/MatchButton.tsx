@@ -5,6 +5,7 @@ import {useEffect} from "react";
 export interface MatchButtonProps {
     id: string | number;
     onClick: () => void;
+    onContextMenu: () => void;
     disabled?: boolean;
     isCorrect?: boolean;
     isWrong?: boolean;
@@ -16,6 +17,7 @@ export interface MatchButtonProps {
 const MatchButton: React.FC<MatchButtonProps> = ({
                                                      id,
                                                      onClick,
+                                                     onContextMenu,
                                                      disabled = false,
                                                      isCorrect = false,
                                                      isWrong = false,
@@ -54,6 +56,7 @@ const MatchButton: React.FC<MatchButtonProps> = ({
                     play();
                 }
             }}
+            onContextMenu={(e) => {e.preventDefault(); onContextMenu();}}
             disabled={(!isCorrect && disabled)}
             className={classes}
             data-id={id}

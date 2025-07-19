@@ -74,6 +74,10 @@ const LearnSession = (props: Props) => {
         setLearnData(data);
     }
 
+    const skipToIndex = (index: number) =>{
+        setCurrentIndex(index);
+    }
+
     if (error) {
         return <div>{error}</div>
     }
@@ -90,7 +94,8 @@ const LearnSession = (props: Props) => {
                               viewCount={viewSequence.length}
                               retry={retry}
                               setRetry={setRetry}
-                              pushFalseView={pushFalseView}/>
+                              pushFalseView={pushFalseView}
+                              skipToIndex={skipToIndex}/>
             </LearnDataContext.Provider>
 
             <Loading isLoading={loading}/>

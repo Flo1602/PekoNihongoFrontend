@@ -21,7 +21,7 @@ export class KanjiSessionStrategy extends AbstractLearnSessionStrategy {
 
     constructor() {
         super();
-        this.viewSequence = ['wordKanjiSelect', 'kanjiDraw'];
+        this.viewSequence = ['wordKanjiSelect', 'kanjiDrawHint'];
     }
 
     getLearnData = async(): Promise<LearnData> => {
@@ -34,9 +34,6 @@ export class KanjiSessionStrategy extends AbstractLearnSessionStrategy {
 
             this.calcDifficulty();
             this.setViewSequence();
-
-            console.log(this.difficulty);
-            console.log(this.viewSequence);
         }
 
         const words = [...this.kanji.kanjiWords];
@@ -94,7 +91,7 @@ export class KanjiSessionStrategy extends AbstractLearnSessionStrategy {
     private setViewSequence(): void {
         switch (this.difficulty) {
             case 'easy':
-                this.viewSequence = [...this.viewSequence, 'kanjiDraw'];
+                this.viewSequence = [...this.viewSequence, 'kanjiDrawHint'];
                 this.lowDifficulty();
                 break;
             case 'medium':
@@ -105,7 +102,7 @@ export class KanjiSessionStrategy extends AbstractLearnSessionStrategy {
                 break;
         }
 
-        this.viewSequence = [...this.viewSequence, 'kanjiDraw', 'kanjiDraw']
+        this.viewSequence = [...this.viewSequence, 'kanjiDrawNoHint', 'kanjiDrawNoHint']
     }
 
     private lowDifficulty(): void {
@@ -116,9 +113,11 @@ export class KanjiSessionStrategy extends AbstractLearnSessionStrategy {
                 case 0:
                 case 1:
                 case 2:
-                    this.viewSequence = [...this.viewSequence, 'kanjiDraw'];
+                    this.viewSequence = [...this.viewSequence, 'kanjiDrawNextHint'];
                     break;
                 case 3:
+                    this.viewSequence = [...this.viewSequence, 'jtkMatchR'];
+                    break;
                 case 4:
                     this.viewSequence = [...this.viewSequence, 'jtkMatch'];
             }
@@ -132,9 +131,11 @@ export class KanjiSessionStrategy extends AbstractLearnSessionStrategy {
             switch (rand) {
                 case 0:
                 case 1:
-                    this.viewSequence = [...this.viewSequence, 'kanjiDraw'];
+                    this.viewSequence = [...this.viewSequence, 'kanjiDrawNextHint'];
                     break;
                 case 2:
+                    this.viewSequence = [...this.viewSequence, 'jtkMatchR'];
+                    break;
                 case 3:
                 case 4:
                     this.viewSequence = [...this.viewSequence, 'jtkMatch'];
@@ -150,9 +151,11 @@ export class KanjiSessionStrategy extends AbstractLearnSessionStrategy {
                 case 0:
                 case 1:
                 case 2:
-                    this.viewSequence = [...this.viewSequence, 'kanjiDraw'];
+                    this.viewSequence = [...this.viewSequence, 'kanjiDrawNextHint'];
                     break;
                 case 3:
+                    this.viewSequence = [...this.viewSequence, 'jtkMatchR'];
+                    break;
                 case 4:
                 case 5:
                     this.viewSequence = [...this.viewSequence, 'jtkMatch'];

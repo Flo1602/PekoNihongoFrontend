@@ -113,6 +113,11 @@ const MatchView = <Q extends React.ReactNode, A extends React.ReactNode>({matchI
         setSelectedAnswerId(prev => prev === id ? null : id);
     }
 
+    const handleContextMenuClick = (id: number) =>{
+        setFinishedIds(prev => [...prev, id]);
+        result.current.push({ id: matchItems[id].id, correct: false})
+    }
+
     return (
         <div className="flex flex-1 w-full items-center justify-center bg-base-300">
             <div className="w-full max-w-screen-md md:max-w-screen-lg lg:max-w-screen-xl px-2 sm:px-4 lg:px-8">
@@ -123,6 +128,7 @@ const MatchView = <Q extends React.ReactNode, A extends React.ReactNode>({matchI
                                 key={q.id}
                                 id={q.id}
                                 onClick={() => handleQuestionClick(q.id)}
+                                onContextMenu={() => handleContextMenuClick(q.id)}
                                 disabled={finishedIds.includes(q.id)}
                                 isCorrect={correctIds[0] === q.id}
                                 isWrong={wrongIds[0] === q.id}
@@ -140,6 +146,7 @@ const MatchView = <Q extends React.ReactNode, A extends React.ReactNode>({matchI
                                 key={a.id}
                                 id={a.id}
                                 onClick={() => handleAnswerClick(a.id)}
+                                onContextMenu={() => handleContextMenuClick(a.id)}
                                 disabled={finishedIds.includes(a.id)}
                                 isCorrect={correctIds[1] === a.id}
                                 isWrong={wrongIds[1] === a.id}

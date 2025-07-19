@@ -3,7 +3,8 @@ import {isJwtValid} from "@/lib/jwtUtils.ts";
 import {useAuth} from "@/hooks/useAuth.ts";
 
 export const api = axios.create({
-    baseURL: "http://10.0.0.8:8080/api",
+    // @ts-ignore
+    baseURL: server_base_url + "api",
     headers: { "Content-Type": "application/json" },
 });
 

@@ -7,8 +7,9 @@ import {useAudio} from "@/hooks/useAudio.ts";
 import {LearnManagerContext} from "@/contexts/LearnManagerContext.tsx";
 import {useTranslation} from "react-i18next";
 
-const WordKanjiSelect = () => {
+const SKIP_SYMBOL = "\u3000";
 
+const WordKanjiSelect = () => {
     const learnDataContext = useContext(LearnDataContext);
     const learnManagerContext = useContext(LearnManagerContext);
     const {t} = useTranslation();
@@ -16,6 +17,7 @@ const WordKanjiSelect = () => {
     const [word, setWord] = useState<{word: string, options: string[]}>();
     const [selectedIndex, setSelectedIndex] = useState<number>(-1);
     const [disabled, setDisabled] = useState<boolean>();
+    const [skipKanji, setSkipKanji] = useState<string | undefined>(SKIP_SYMBOL);
     const toolBarActive = useRef(false);
     const correctWord = useRef<string>("");
     const correctKanjiId = useRef<number>(0);
@@ -91,7 +93,7 @@ const WordKanjiSelect = () => {
                 <div onClick={audio.play} className="p-4">
                     <SpeakerIcon className={"h-7 w-7 hover:scale-120"}/>
                 </div>
-                <span className="text-white text-4xl font-semibold">{word?.word}</span>
+                <span className="text-4xl font-semibold">{word?.word}</span>
             </div>
 
             <div className="grid grid-cols-2 gap-6 w-full max-w-md">
@@ -111,13 +113,16 @@ const WordKanjiSelect = () => {
                 ))}
             </div>
 
-            {/*<div className="mt-10">*/}
-            {/*    <button*/}
-            {/*        className="flex items-center text-gray-400 hover:text-gray-200 transition"*/}
-            {/*    >*/}
-            {/*        <span className="font-bold mr-1">Skip:</span>*/}
-            {/*    </button>*/}
-            {/*</div>*/}
+            <div className="mt-10">
+                <button
+                    className="flex items-center text-gray-400 hover:text-gray-200 transition"
+                >
+                    <button onMouseEnter={() => {setSkipKanji(learnDataContext?.kanji?.symbol)}}
+                            onMouseLeave={() => {setSkipKanji(SKIP_SYMBOL)}}
+                            onClick={learnManagerContext?.skipToLastView}
+                            className="text-lg btn btn-primary btn-soft font-bold whitespace-pre inline-block">{t("translation:skip")}: {skipKanji}</button>
+                </button>
+            </div>
         </div>
     );
 }

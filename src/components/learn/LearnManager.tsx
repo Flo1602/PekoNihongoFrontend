@@ -11,6 +11,7 @@ import JapaneseToKanaMatch from "@/components/learn/learnview/match/JapaneseToKa
 import JapaneseToEnglishMatch from "@/components/learn/learnview/match/JapaneseToEnglishMatch.tsx";
 import KanjiDraw from "@/components/learn/learnview/KanjiDraw.tsx";
 import WordKanjiSelect from "@/components/learn/learnview/WordKanjiSelect.tsx";
+import {useTranslation} from "react-i18next";
 
 interface Props {
     currentView: LearnViewKey;
@@ -19,6 +20,7 @@ interface Props {
     retry: boolean;
     setRetry: (finishedRetry: boolean) => void;
     pushFalseView: (view: LearnViewKey, data: LearnData | null) => void;
+    skipToIndex: (index: number) => void;
 }
 
 const viewRegistry: Record<LearnViewKey, ReactNode> = {
@@ -28,12 +30,15 @@ const viewRegistry: Record<LearnViewKey, ReactNode> = {
     ateMatch: <AudioToEnglishMatch/>,
     jteMatch: <JapaneseToEnglishMatch/>,
     jteMatchR: <JapaneseToEnglishMatch reverse={true}/>,
-    kanjiDraw: <KanjiDraw traceMode="NO_HINTS" debug={true} />,
+    kanjiDrawNoHint: <KanjiDraw traceMode="NO_HINTS"/>,
+    kanjiDrawNextHint: <KanjiDraw traceMode="NEXT_HINT"/>,
+    kanjiDrawHint: <KanjiDraw traceMode="ALL_HINTS"/>,
     wordKanjiSelect: <WordKanjiSelect/>
 };
 
 const LearnManager = (probs: Props) => {
     const navigate = useNavigate();
+    const {t} = useTranslation();
     const [learnViewCorrect, setLearnViewCorrect] = useState<boolean | null>(null);
     const [numberCorrect, setNumberCorrect] = useState<number>(0);
     const [toolbarActions, setToolbarActions] = useState<ToolbarAction[]>([]);
@@ -81,6 +86,12 @@ const LearnManager = (probs: Props) => {
         }
     }
 
+    const skipToLastView = () =>{
+
+        probs.skipToIndex(probs.viewCount - 1);
+        setNumberCorrect(probs.viewCount - 1)
+    }
+
     const percentage = Math.round((numberCorrect / probs.viewCount) * 100);
 
     return (
@@ -96,7 +107,7 @@ const LearnManager = (probs: Props) => {
                     </div>
                 </div>
             </div>
-            <LearnManagerContext.Provider value={{onComplete: onComplete, setToolbarActions: setToolbarActions}}>
+            <LearnManagerContext.Provider value={{onComplete: onComplete, setToolbarActions: setToolbarActions, skipToLastView: skipToLastView}}>
                 {currentView}
             </LearnManagerContext.Provider>
 
@@ -126,8 +137,8 @@ const LearnManager = (probs: Props) => {
                             .join(" ")
                     }
                 >
-                    {learnViewCorrect === true && "Correct"}
-                    {learnViewCorrect === false && "Wrong"}
+                    {learnViewCorrect === true && t("translation:correct")}
+                    {learnViewCorrect === false &&  t("translation:wrong")}
                 </span>
 
                 {toolbarActions.map((a) => (
@@ -164,7 +175,7 @@ const LearnManager = (probs: Props) => {
                     }
                     onClick={onNextHandler}
                 >
-                    Continue
+                    {t("translation:continue")}
                 </button>
             </div>
         </div>

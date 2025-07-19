@@ -3,6 +3,7 @@ import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {saveStat} from "@/services/api/statsService.ts";
 import { Temporal } from '@js-temporal/polyfill';
+import {useTranslation} from "react-i18next";
 
 interface Props{
     duration: number;
@@ -18,6 +19,7 @@ const formatDuration = (millis: number) => {
 
 const Result = ({ duration, correctness }: Props) => {
     const navigate = useNavigate();
+    const {t} = useTranslation();
     const correctnessMotion = useMotionValue(0);
     const correctnessText = useTransform(correctnessMotion, v => `${Math.round(v)}%`);
     const barWidth = useTransform(correctnessMotion, v => `${v}%`);
@@ -59,12 +61,12 @@ const Result = ({ duration, correctness }: Props) => {
                         animate={{ scale: 1 }}
                         transition={{ type: 'spring', stiffness: 300 }}
                     >
-                        🎉 Session Completed 🎉
+                        🎉 {t("translation:sessionCompleted")} 🎉
                     </motion.h1>
 
                     <div className="mb-6 text-left">
                         <div className="flex justify-between mb-2">
-                            <span className="font-medium">Correctness</span>
+                            <span className="font-medium">{t("translation:correctness")}</span>
                             <motion.span className="font-semibold" style={{ display: 'block' }}>
                                 {correctnessText}
                             </motion.span>
@@ -79,14 +81,14 @@ const Result = ({ duration, correctness }: Props) => {
                     </div>
 
                     <div className="mb-8 text-left">
-                        <span className="font-medium">Duration:</span>
+                        <span className="font-medium">{t("translation:duration")}:</span>
                         <motion.span className="ml-2 font-semibold inline-block">
                             {durationText}
                         </motion.span>
                     </div>
 
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                        <button onClick={() => navigate(-1)} className="btn btn-primary btn-lg w-full">Finish</button>
+                        <button onClick={() => navigate(-1)} className="btn btn-primary btn-lg w-full">{t("translation:finish")}</button>
                     </motion.div>
                 </div>
             </motion.div>
