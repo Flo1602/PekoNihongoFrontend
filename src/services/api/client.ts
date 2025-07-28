@@ -2,9 +2,10 @@ import axios from "axios";
 import {isJwtValid} from "@/lib/jwtUtils.ts";
 import {useAuth} from "@/hooks/useAuth.ts";
 
+const SERVER_BASE_URL = window._env_.SERVER_BASE_URL;
+
 export const api = axios.create({
-    // @ts-ignore
-    baseURL: server_base_url + "api",
+    baseURL: SERVER_BASE_URL + "api",
     headers: { "Content-Type": "application/json" },
 });
 

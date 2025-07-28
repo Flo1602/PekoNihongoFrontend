@@ -1,56 +1,48 @@
 import Loading from "@/components/Loading.tsx";
-import {useEffect, useState} from "react";
+import {type ReactNode, useMemo} from "react";
 
 interface Props{
     loading: boolean;
     pages: number;
     fetchPage: (page: number) => void;
-    children: React.ReactNode;
+    children: ReactNode;
+    currentPage: number;
 }
 
-const CatalogList = ({loading, pages, fetchPage, children}: Props) => {
-    const [currentPage, setCurrentPage] = useState<number>(0);
+const CatalogList = ({loading, pages, fetchPage, children, currentPage}: Props) => {
+    const pageList = useMemo<(number | string)[]>(() => {
+        if (pages <= 1) return [];
 
-    useEffect(() => {
-        if (currentPage >= pages) {
-            setCurrentPage(pages - 1);
-        }
-    }, [pages, currentPage]);
-
-    const handleClick = (page: number) => {
-        setCurrentPage(page);
-        fetchPage(page);
-    };
-
-    const getPageList = (): (number | string)[] => {
-        const pageList: (number | string)[] = [];
+        const list: (number | string)[] = [];
         const delta = 1;
         const range: number[] = [];
 
-        for (let i = Math.max(0, currentPage - delta); i <= Math.min(pages - 1, currentPage + delta); i++) {
+        for (
+            let i = Math.max(0, currentPage - delta);
+            i <= Math.min(pages - 1, currentPage + delta);
+            i++
+        ) {
             range.push(i);
         }
 
         if (range[0] > 0) {
-            pageList.push(0);
-            if (range[0] > 1) {
-                pageList.push("start-ellipsis");
-            }
+            list.push(0);
+            if (range[0] > 1) list.push("start-ellipsis");
         }
 
-        range.forEach(i => pageList.push(i));
+        list.push(...range);
 
         if (range[range.length - 1] < pages - 1) {
-            if (range[range.length - 1] < pages - 2) {
-                pageList.push("end-ellipsis");
-            }
-            pageList.push(pages - 1);
+            if (range[range.length - 1] < pages - 2) list.push("end-ellipsis");
+            list.push(pages - 1);
         }
 
-        return pageList;
-    };
+        return list;
+    }, [pages, currentPage]);
 
-    const pageList = getPageList();
+    const handleClick = (page: number) => {
+        if (page !== currentPage) fetchPage(page);
+    };
 
     return (
         <div className=" w-full
@@ -80,9 +72,9 @@ const CatalogList = ({loading, pages, fetchPage, children}: Props) => {
                             }
                             return (
                                 <button
-                                    key={item}
+                                    key={idx}
                                     onClick={() => handleClick(item as number)}
-                                    className={`join-item btn btn-sm ${item === currentPage ? 'btn-active' : ''}`}
+                                    className={`join-item btn btn-sm ${item === currentPage ? 'btn-active btn-primary' : ''}`}
                                 >
                                     {item + 1}
                                 </button>

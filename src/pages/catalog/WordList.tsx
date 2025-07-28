@@ -14,17 +14,19 @@ const WordList = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const {t} = useTranslation();
 
-    const currentPage = parseInt(searchParams.get("page") ?? "0", 10);
+    const pageParam = Number.parseInt(searchParams.get("page") ?? "1", 10);
+    const currentPage = Math.max(0, (isFinite(pageParam) ? pageParam : 1) - 1);
 
     const fetchPageFromApi = useCallback((page: number) => {
         setLoading(true);
         getWordPage({ page: page, size: 20 })
             .then((response) => {
                 setWords(response.data.content);
+
                 setPages(response.data.pageCount);
 
                 if(page >= response.data.pageCount && response.data.pageCount > 0){
-                    setSearchParams({ page: String(response.data.pageCount - 1) });
+                    setSearchParams({ page: String(response.data.pageCount) });
                 }
             })
             .catch(console.error)
@@ -36,7 +38,7 @@ const WordList = () => {
     }, [currentPage, fetchPageFromApi]);
 
     const goToPage = (page: number) => {
-        setSearchParams({ page: String(page) });
+        setSearchParams({ page: String(page + 1) });
     };
 
     const refetchPage = () => {
@@ -98,6 +100,7 @@ const WordList = () => {
                     loading={loading}
                     pages={pages}
                     fetchPage={goToPage}
+                    currentPage={currentPage}
                 >
                     {words.map(word => (
                         <WordListEntry key={word.id} word={word} refetechPage={refetchPage} openEditWordModal={openEditWordModal}/>

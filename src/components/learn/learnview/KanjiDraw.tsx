@@ -44,6 +44,8 @@ interface Props {
     debug?: boolean
 }
 
+const SERVER_BASE_URL = window._env_.SERVER_BASE_URL;
+
 const DEFAULT_DRAWING_STATE: DrawingState = { traceLogic: null, hintLineDrawer: null, correctingLineDrawer: null, traceOptions: null, traceLineListener: null };
 
 const KanjiDraw = (props: Props) => {
@@ -123,8 +125,7 @@ const KanjiDraw = (props: Props) => {
         };
 
         const fileProvider = new UnicodeFilenameFileProvider(
-            // @ts-ignore
-            server_base_url + "resources/kanji",
+            SERVER_BASE_URL + "resources/kanji",
             "0",
             5,
             "svg"

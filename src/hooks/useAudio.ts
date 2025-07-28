@@ -5,12 +5,13 @@ interface UseAudioOptions {
     apiUrl?: string;
 }
 
+const SERVER_BASE_URL = window._env_.SERVER_BASE_URL;
+
 export function useAudio(
     initialFilename?: string,
     {
         preload = "none",
-        // @ts-ignore
-        apiUrl = server_base_url + "resources/audio",
+        apiUrl = SERVER_BASE_URL + "resources/audio",
     }: UseAudioOptions = {}
 ) {
     const [filename, setFilename] = useState<string | undefined>(

@@ -114,14 +114,14 @@ const WordKanjiSelect = () => {
             </div>
 
             <div className="mt-10">
-                <button
+                <div
                     className="flex items-center text-gray-400 hover:text-gray-200 transition"
                 >
                     <button onMouseEnter={() => {setSkipKanji(learnDataContext?.kanji?.symbol)}}
                             onMouseLeave={() => {setSkipKanji(SKIP_SYMBOL)}}
                             onClick={learnManagerContext?.skipToLastView}
                             className="text-lg btn btn-primary btn-soft font-bold whitespace-pre inline-block">{t("translation:skip")}: {skipKanji}</button>
-                </button>
+                </div>
             </div>
         </div>
     );

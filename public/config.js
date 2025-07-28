@@ -1,1 +1,3 @@
-const server_base_url = "http://10.0.0.8:8080/"
+window._env_ = {
+    SERVER_BASE_URL: "http://10.0.0.8:8080/"
+};

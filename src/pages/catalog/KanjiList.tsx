@@ -12,7 +12,8 @@ const KanjiList = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const {t} = useTranslation();
 
-    const currentPage = parseInt(searchParams.get("page") ?? "0", 10);
+    const pageParam = Number.parseInt(searchParams.get("page") ?? "1", 10);
+    const currentPage = Math.max(0, (isFinite(pageParam) ? pageParam : 1) - 1);
 
     const fetchPageFromApi = useCallback((page: number) => {
         setLoading(true);
@@ -22,7 +23,7 @@ const KanjiList = () => {
                 setPages(response.data.pageCount);
 
                 if(page >= response.data.pageCount && response.data.pageCount > 0){
-                    setSearchParams({ page: String(response.data.pageCount - 1) });
+                    setSearchParams({ page: String(response.data.pageCount) });
                 }
             })
             .catch(console.error)
@@ -34,7 +35,7 @@ const KanjiList = () => {
     }, [currentPage, fetchPageFromApi]);
 
     const goToPage = (page: number) => {
-        setSearchParams({ page: String(page) });
+        setSearchParams({ page: String(page + 1) });
     };
 
     const refetchPage = () => {
@@ -60,6 +61,7 @@ const KanjiList = () => {
                     loading={loading}
                     pages={pages}
                     fetchPage={goToPage}
+                    currentPage={currentPage}
                 >
                     {kanji.map(kanjiEntry => (
                         <KanjiListEntry key={kanjiEntry.id} kanji={kanjiEntry} refetechPage={refetchPage}/>
