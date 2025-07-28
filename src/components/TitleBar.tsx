@@ -83,16 +83,16 @@ const TitleBar = ({isVisible}: Props) => {
                                     <span className="text-base font-medium">{label}</span>
                                 </Link>
                             ):
-                                <div className="dropdown dropdown-end p-0">
-                                    <div tabIndex={0} role="button" className={"flex items-center gap-2 px-3 py-2 text-gray-300 rounded-md rounded-field" +
+                                <div className="dropdown dropdown-hover dropdown-end p-0">
+                                    <Link to={{pathname: path}} onClick={e => e.currentTarget.blur()} role="button" className={"flex items-center gap-2 px-3 py-2 text-gray-300 rounded-md rounded-field" +
                                         (pathname.includes(path) ? 'px-3 py-1  bg-primary text-primary-content' : 'hover:text-white hover:base-200')}>
                                         <Icon className="h-5 w-5"/>
                                         <span className="text-base font-medium">{label}</span>
-                                    </div>
-                                    <ul tabIndex={0} className="menu dropdown-content bg-base-200 rounded-box z-1 mt-4 p-2 shadow-sm w-full">
+                                    </Link>
+                                    <ul className="menu dropdown-content bg-base-200 rounded-box z-10 p-2 -translate-y-2 shadow-sm w-full">
                                         {details.map(({id, innerPath, innerLabel}) => (
                                             <li key={id} className="">
-                                                <Link to={{pathname: innerPath}}>
+                                                <Link to={{pathname: innerPath}} onClick={e => e.currentTarget.blur()}>
                                                     <span className="text-base font-medium">{innerLabel}</span>
                                                 </Link>
                                             </li>

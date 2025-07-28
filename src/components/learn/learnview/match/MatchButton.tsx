@@ -51,7 +51,10 @@ const MatchButton: React.FC<MatchButtonProps> = ({
         <button
             type="button"
             onClick={() => {
+                if(isCorrect || isWrong) return;
+
                 onClick();
+
                 if(ttsPath){
                     play();
                 }

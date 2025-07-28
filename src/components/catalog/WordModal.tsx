@@ -1,6 +1,6 @@
-import {useEffect, useRef, useState, type ChangeEvent, type FormEvent} from "react";
-import type {Word} from "@/services/api/wordService.ts";
-import {useTranslation} from "react-i18next";
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent, type KeyboardEvent } from "react";
+import type { Word } from "@/services/api/wordService.ts";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     elementId: string;
@@ -41,8 +41,30 @@ const WordModal = ({word, onSubmitHandler, elementId, title }: Props) => {
         dialogRef.current?.close();
     };
 
-    const handleOpen = () =>
-        setTimeout(() => firstInput.current?.focus(), 50);
+    const handleKeyDown = (e: KeyboardEvent<HTMLFormElement>) => {
+        if (e.key === 'Enter' && e.ctrlKey) {
+            e.preventDefault();
+            onSubmitHandler(formData);
+
+            if (!word) setFormData(emptyWord);
+            setTimeout(() => firstInput.current?.focus(), 0);
+        }
+    };
+
+    useEffect(() => {
+        const dlg = dialogRef.current;
+        if (!dlg) return;
+
+        const originalShow = dlg.showModal;
+        dlg.showModal = function patchedShow(this: HTMLDialogElement) {
+            originalShow.call(this);
+            setTimeout(() => firstInput.current?.focus(), 50);
+        };
+
+        return () => {
+            dlg.showModal = originalShow;
+        };
+    }, []);
 
     const isValid = formData.japanese && formData.kana && formData.english;
 
@@ -51,7 +73,6 @@ const WordModal = ({word, onSubmitHandler, elementId, title }: Props) => {
             id={elementId}
             ref={dialogRef}
             className="modal modal-bottom sm:modal-middle"
-            onAnimationEnd={handleOpen}
         >
             <div className="modal-box">
                 <form method="dialog">
@@ -65,7 +86,7 @@ const WordModal = ({word, onSubmitHandler, elementId, title }: Props) => {
 
                 <h3 className="font-bold text-lg mb-4 text-center">{title}</h3>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} onKeyDown={handleKeyDown} className="space-y-4">
                     <div className="form-control">
                         <label className="label" htmlFor="japanese">
                             <span className="label-text">{t("translation:japanese")}</span>
