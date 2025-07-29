@@ -15,14 +15,16 @@ export interface WordPage{
 
 export interface WordPageRequest{
     page: number,
-    size: number
+    size: number,
+    search?: string
 }
 
 export async function getWordPage(request: WordPageRequest) {
     return api.get('/words', {
         params: {
             pageSize: request.size,
-            page: request.page
+            page: request.page,
+            search: request.search
         }
     });
 }

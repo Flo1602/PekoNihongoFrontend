@@ -5,6 +5,7 @@ import WordListEntry from "@/components/catalog/WordListEntry.tsx";
 import WordModal from "@/components/catalog/WordModal.tsx";
 import {useSearchParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
+import CatalogSearchField from "@/components/catalog/CatalogSearchField.tsx";
 
 const WordList = () => {
     const [words, setWords] = useState<Word[]>([])
@@ -16,17 +17,24 @@ const WordList = () => {
 
     const pageParam = Number.parseInt(searchParams.get("page") ?? "1", 10);
     const currentPage = Math.max(0, (isFinite(pageParam) ? pageParam : 1) - 1);
+    const searchParam = searchParams.get("search") || "";
 
-    const fetchPageFromApi = useCallback((page: number) => {
+    const [search, setSearch] = useState<string>(searchParam);
+
+    useEffect(() => {
+        setSearch(searchParam);
+    }, [searchParam]);
+
+    const fetchPageFromApi = useCallback((page: number, query: string) => {
         setLoading(true);
-        getWordPage({ page: page, size: 20 })
+        getWordPage({ page: page, size: 20, search: query })
             .then((response) => {
                 setWords(response.data.content);
 
                 setPages(response.data.pageCount);
 
                 if(page >= response.data.pageCount && response.data.pageCount > 0){
-                    setSearchParams({ page: String(response.data.pageCount) });
+                    setSearchParams({ page: String(response.data.pageCount), search: query });
                 }
             })
             .catch(console.error)
@@ -34,15 +42,20 @@ const WordList = () => {
     }, [setSearchParams]);
 
     useEffect(() => {
-        fetchPageFromApi(currentPage);
-    }, [currentPage, fetchPageFromApi]);
+        fetchPageFromApi(currentPage, search);
+    }, [currentPage, search]);
 
     const goToPage = (page: number) => {
-        setSearchParams({ page: String(page + 1) });
+        setSearchParams({ page: String(page + 1), search });
+    };
+
+    const onSearchChange = (value: string) => {
+        if(value === search) return;
+        setSearchParams({ page: "1", search: value });
     };
 
     const refetchPage = () => {
-        fetchPageFromApi(currentPage);
+        fetchPageFromApi(currentPage, search);
     };
 
     const addWordFetch = (formdata: Word) => {
@@ -84,16 +97,18 @@ const WordList = () => {
                   flex flex-col gap-4"
                 >
 
-                <header className="flex items-center justify-between">
+                <header className="flex flex-col">
                     <h1 className="text-lg font-semibold">{t("translation:wordCatalog")}</h1>
+                    <div className="flex items-center justify-between mt-3 gap-8">
+                        <CatalogSearchField defaultSearch={search} setSearchDebounced={onSearchChange}/>
 
-                    <label
-                        onClick={openAddWordModal}
-                        htmlFor="addWordModal"
-                        className="btn btn-primary btn-sm md:btn-md"
-                    >
-                        + {t("translation:addWord")}
-                    </label>
+                        <button
+                            onClick={openAddWordModal}
+                            className="btn btn-primary btn-sm md:btn-md"
+                        >
+                            + {t("translation:addWord")}
+                        </button>
+                    </div>
                 </header>
 
                 <CatalogList

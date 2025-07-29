@@ -1,6 +1,7 @@
 import {deleteKanji, type KanjiWords} from "@/services/api/kanjiService.ts";
 import {useTranslation} from "react-i18next";
 import DeleteIcon from "@/assets/icons/DeleteIcon.tsx";
+import {Link} from "react-router-dom";
 
 interface Props {
     kanji: KanjiWords;
@@ -50,12 +51,14 @@ const KanjiListEntry = ({ kanji, refetechPage }: Props) => {
                     <DeleteIcon className="h-4 w-4"/>
                 </button>)}
 
-                <button
-                    aria-label="Example sentence"
-                    className="btn btn-ghost btn-sm tooltip btn-outline btn-info"
-                >
-                    {t("translation:words")}
-                </button>
+                <Link to={"/catalog/words?search=" + kanji.symbol}>
+                    <button
+                        aria-label="Example sentence"
+                        className="btn btn-ghost btn-sm tooltip btn-outline btn-info"
+                    >
+                        {t("translation:words")}
+                    </button>
+                </Link>
             </div>
         </li>
     )

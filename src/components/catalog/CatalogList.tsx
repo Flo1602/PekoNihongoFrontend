@@ -49,7 +49,7 @@ const CatalogList = ({loading, pages, fetchPage, children, currentPage}: Props) 
             max-w-md           /* phones / small tablets */
             md:max-w-2xl       /* ≥768 px  (tailwind md) */
             lg:max-w-3xl       /* ≥1024 px (tailwind lg) */
-            mx-auto max-h-[68vh]"
+            mx-auto max-h-[60vh] lg:max-h-[66vh]"
         >
             <ul className="
                 flex flex-col gap-2

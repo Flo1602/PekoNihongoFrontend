@@ -96,12 +96,12 @@ export const Settings = () => {
 
                     <section className="space-y-6">
                         <div className="form-control w-full">
-                            <label className="label">
+                            <label htmlFor="languageSelect" className="label">
                                 <span className="label-text flex items-center gap-2">
                                     {t("translation:language")}
                                 </span>
                             </label>
-                            <select value={language} onChange={changeLanguage} className="select select-bordered w-full">
+                            <select id="languageSelect" value={language} onChange={changeLanguage} className="select select-bordered w-full">
                                 <option value="en">English</option>
                                 <option value="de">Deutsch</option>
                                 <option value="ja">日本語</option>
@@ -109,12 +109,12 @@ export const Settings = () => {
                         </div>
 
                         <div className="form-control w-full">
-                            <label className="label">
+                            <label htmlFor="themeSelect" className="label">
                                 <span className="label-text flex items-center gap-2">
                                     {t("translation:theme")}
                                 </span>
                             </label>
-                            <select value={theme} onChange={changeTheme} className="select select-bordered w-full">
+                            <select id="themeSelect" value={theme} onChange={changeTheme} className="select select-bordered w-full">
                                 <option value="dark">Dark</option>
                                 <option value="magenta">Magenta</option>
                                 <option value="synthwave">Synthwave</option>
@@ -125,7 +125,7 @@ export const Settings = () => {
                             </select>
                         </div>
                         <div className="form-control w-full">
-                            <label className="label">
+                            <label htmlFor="voiceId" className="label">
                                 <span className="label-text flex items-center gap-2">
                                     {t("translation:voiceId")}
                                 </span>
@@ -133,7 +133,7 @@ export const Settings = () => {
                             <input id="voiceId" value={settings.voiceId} onChange={changeSettings} type="number" className="input w-full" min="0" max="89"/>
                         </div>
                         <div className="form-control w-full">
-                            <label className="label">
+                            <label htmlFor="maxDailyWords" className="label">
                                 <span className="label-text flex items-center gap-2">
                                     {t("translation:maxDailyWords")}
                                 </span>
@@ -141,7 +141,7 @@ export const Settings = () => {
                             <input id="maxDailyWords" value={settings.maxDailyWords} onChange={changeSettings} type="number" className="input w-full" min="1"/>
                         </div>
                         <div className="form-control w-full">
-                            <label className="label">
+                            <label htmlFor="maxDailyKanji" className="label">
                                 <span className="label-text flex items-center gap-2">
                                     {t("translation:maxDailyKanji")}
                                 </span>
@@ -149,7 +149,7 @@ export const Settings = () => {
                             <input id="maxDailyKanji" value={settings.maxDailyKanji} onChange={changeSettings} type="number" className="input w-full" min="1"/>
                         </div>
                         <div className="form-control w-full">
-                            <label className="label pr-2">
+                            <label htmlFor="useAlwaysVoiceVox" className="label pr-2">
                                 <span className="label-text flex items-center gap-2">
                                     {t("translation:useAlwaysVoiceVox")}:
                                 </span>
