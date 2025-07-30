@@ -17,9 +17,12 @@ export class WordSessionStrategy extends AbstractLearnSessionStrategy {
 
         this.viewSequence = [];
 
+        const savedNoAudioExercises = localStorage.getItem("noAudioExercises");
+        const audioExercisesDisabled =  savedNoAudioExercises !== null ? JSON.parse(savedNoAudioExercises) : false;
+
         let listening: boolean = false;
         for (let i = 0; i < 5; i++) {
-            const listeningAvailable: boolean = !listening && i > 2;
+            const listeningAvailable: boolean = !listening && i > 2 && !audioExercisesDisabled;
             switch (nextInt((listeningAvailable) ? 4 : 3)){
                 case 0:
                     this.viewSequence = [...this.viewSequence, 'jteMatchR'];

@@ -56,7 +56,7 @@ const KanjiDraw = (props: Props) => {
 
     const [drawingState, setDrawingState] = useState<DrawingState>(DEFAULT_DRAWING_STATE);
     const [viewportSizeState, setViewportSizeState] = useState<number>(0);
-    const [displayedKanjiWord, setDisplayedKanjiWord] = useState<string>("");
+    const [displayedKanjiWord, setDisplayedKanjiWord] = useState<{display: string, tooltip: string}>({display: "", tooltip: ""});
 
     const imageRef  = useRef<HTMLImageElement>(
         (() => {
@@ -345,7 +345,7 @@ const KanjiDraw = (props: Props) => {
                 }
 
                 setTimeout(audio.play, 100);
-                setDisplayedKanjiWord(wordsWithKanji[rand]);
+                setDisplayedKanjiWord({display: wordsWithKanji[rand], tooltip: words[rand].english});
             }
         }
 
@@ -476,7 +476,7 @@ const KanjiDraw = (props: Props) => {
                     <span onClick={audio.play}>
                         <SpeakerIcon className={"h-7 w-7 hover:scale-120"}/>
                     </span>
-                    <h1 className="text-xl sm:text-2xl font-semibold">{displayedKanjiWord}</h1>
+                    <h1 className="text-xl sm:text-2xl font-semibold tooltip tooltip-bottom" data-tip={displayedKanjiWord.tooltip}>{displayedKanjiWord.display}</h1>
                 </span>
                 <canvas ref={hintCanvasRef} className="aspect-square bg-base-100 rounded-2xl z-0, absolute touch-none" style={{ width: viewportSizeState, height: viewportSizeState }}/>
                 <canvas ref={hintArrowCanvasRef} className="aspect-square rounded-2xl z-1 absolute touch-none" style={{ width: viewportSizeState, height: viewportSizeState }} />

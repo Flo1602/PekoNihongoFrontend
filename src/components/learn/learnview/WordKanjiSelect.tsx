@@ -14,7 +14,7 @@ const WordKanjiSelect = () => {
     const learnManagerContext = useContext(LearnManagerContext);
     const {t} = useTranslation();
 
-    const [word, setWord] = useState<{word: string, options: string[]}>();
+    const [word, setWord] = useState<{word: string, english: string, options: string[]}>();
     const [selectedIndex, setSelectedIndex] = useState<number>(-1);
     const [disabled, setDisabled] = useState<boolean>();
     const [skipKanji, setSkipKanji] = useState<string | undefined>(SKIP_SYMBOL);
@@ -51,7 +51,7 @@ const WordKanjiSelect = () => {
 
         shuffle(options);
 
-        setWord({word: words[0].kana, options: options});
+        setWord({word: words[0].kana, english: words[0].english, options: options});
         correctWord.current = words[0].japanese;
         correctKanjiId.current = learnDataContext.kanji.id;
         setDisabled(false);
@@ -93,7 +93,7 @@ const WordKanjiSelect = () => {
                 <div onClick={audio.play} className="p-4">
                     <SpeakerIcon className={"h-7 w-7 hover:scale-120"}/>
                 </div>
-                <span className="text-4xl font-semibold">{word?.word}</span>
+                <span className="text-4xl font-semibold tooltip tooltip-top" data-tip={word?.english}>{word?.word}</span>
             </div>
 
             <div className="grid grid-cols-2 gap-6 w-full max-w-md">

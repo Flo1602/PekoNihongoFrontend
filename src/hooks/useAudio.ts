@@ -39,6 +39,9 @@ export function useAudio(
         }
 
         const audio = new Audio(src);
+        const savedVolume = localStorage.getItem("volume");
+        const volumeNumber = savedVolume !== null ? Number(savedVolume) : 0.5
+        audio.volume = volumeNumber > 1 ? 1 : volumeNumber < 0 ? 0 : volumeNumber;
         audio.preload = preload;
 
         const onPlay   = () => setPlaying(true);

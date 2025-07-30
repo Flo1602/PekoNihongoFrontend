@@ -9,6 +9,14 @@ export const Settings = () => {
     const { logout } = useAuth();
     const { i18n } = useTranslation();
     const [language, setLanguage] = useState(i18n.language);
+    const [volume, setVolume] = useState<number>(() => {
+        const saved = localStorage.getItem("volume");
+        return saved !== null ? Number(saved)*100 : 50;
+    });
+    const [noAudioExercises, setNoAudioExercises] = useState<boolean>(() => {
+        const saved = localStorage.getItem("noAudioExercises");
+        return saved !== null ? JSON.parse(saved) : false;
+    });
     const [error, setError] = useState(false);
     const [theme, setLocalTheme] = useState(() =>
         typeof window !== 'undefined'
@@ -25,6 +33,7 @@ export const Settings = () => {
     const [debouncedSettings, setDebouncedSettings] = useState<SettingsType>();
 
     useDebounce(() => setDebouncedSettings(settings), 2000, [settings]);
+    useDebounce(() => localStorage.setItem("volume", (volume/100).toString()), 200, [volume]);
 
     const settingsRef = useRef(settings);
     useEffect(() => {
@@ -74,6 +83,15 @@ export const Settings = () => {
         localStorage.setItem('theme', e.target.value);
     }
 
+    const changeVolume = (e: ChangeEvent<HTMLInputElement>) => {
+        setVolume(Number(e.target.value));
+    }
+
+    const changeAudioExercises = (e: ChangeEvent<HTMLInputElement>) => {
+        localStorage.setItem('noAudioExercises', e.target.checked.toString());
+        setNoAudioExercises(e.target.checked);
+    }
+
     useEffect(() => {
         setLanguage(i18n.language);
     }, [i18n.language]);
@@ -87,9 +105,9 @@ export const Settings = () => {
     };
 
     return (
-        <div className="flex-1 flex items-center justify-center bg-base-300 p-6">
-            <div className="card w-full max-w-xl bg-base-200 shadow-2xl">
-                <div className="card-body space-y-8">
+        <div className="flex-1 flex lg:items-center justify-center bg-base-300 p-6">
+            <div className="card w-full h-full max-w-xl bg-base-200 shadow-2xl">
+                <div className="card-body space-y-8 max-h-[80vh] overflow-y-auto scrollbar-thin">
                     <h1 className="card-title justify-center text-4xl font-bold tracking-wide">
                         {t("translation:settings")}
                     </h1>
@@ -149,12 +167,30 @@ export const Settings = () => {
                             <input id="maxDailyKanji" value={settings.maxDailyKanji} onChange={changeSettings} type="number" className="input w-full" min="1"/>
                         </div>
                         <div className="form-control w-full">
-                            <label htmlFor="useAlwaysVoiceVox" className="label pr-2">
+                            <label htmlFor="volume" className="label pr-2">
+                                <span className="label-text flex items-center gap-2">
+                                    {t("translation:volume")}
+                                </span>
+                            </label>
+                            <input id="volume" type="range" onChange={changeVolume} min={0} max="100" defaultValue={volume} className="range range-primary w-full"/>
+                        </div>
+                        <div className="w-full flex flex-wrap justify-between gap-y-6">
+                            <div className="form-control">
+                                <label htmlFor="noAudioExercises" className="label pr-2">
+                                <span className="label-text flex items-center gap-2">
+                                    {t("translation:noAudioExercises")}:
+                                </span>
+                                </label>
+                                <input id="noAudioExercises" checked={noAudioExercises} onChange={changeAudioExercises} type="checkbox" className="checkbox checkbox-primary"/>
+                            </div>
+                            <div className="form-control">
+                                <label htmlFor="useAlwaysVoiceVox" className="label pr-2">
                                 <span className="label-text flex items-center gap-2">
                                     {t("translation:useAlwaysVoiceVox")}:
                                 </span>
-                            </label>
-                            <input id="useAlwaysVoiceVox" checked={settings.useAlwaysVoiceVox} onChange={changeSettings} type="checkbox" className="checkbox checkbox-primary"/>
+                                </label>
+                                <input id="useAlwaysVoiceVox" checked={settings.useAlwaysVoiceVox} onChange={changeSettings} type="checkbox" className="checkbox checkbox-primary"/>
+                            </div>
                         </div>
                     </section>
 
