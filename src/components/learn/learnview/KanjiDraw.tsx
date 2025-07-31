@@ -330,12 +330,14 @@ const KanjiDraw = (props: Props) => {
             if(words && kanji){
                 const wordsWithKanji: string[] = [];
 
-                words.forEach(word => {
+                words.some(word => {
                     if(word.japanese.includes(kanji.symbol)){
                         let displayText: string = word.japanese + " (" + word.kana + ")";
                         displayText = displayText.replace(kanji.symbol, "_");
                         wordsWithKanji.push(displayText);
+                        return false;
                     }
+                    return true;
                 })
 
                 const rand = nextInt(wordsWithKanji.length);
@@ -345,6 +347,7 @@ const KanjiDraw = (props: Props) => {
                 }
 
                 setTimeout(audio.play, 100);
+
                 setDisplayedKanjiWord({display: wordsWithKanji[rand], tooltip: words[rand].english});
             }
         }
