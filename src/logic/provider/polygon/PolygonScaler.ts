@@ -10,10 +10,6 @@ export class PolygonScaler implements IPolygonConverter {
     }
 
     convert(toConvert: Polygon[]): void {
-        if (this.isScaled){
-            return;
-        }
-        this.isScaled = true;
         for (const polygon of toConvert) {
             this.scalePolygon(polygon);
         }

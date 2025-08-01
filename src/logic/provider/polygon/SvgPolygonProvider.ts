@@ -53,7 +53,7 @@ export class SVGPolygonProvider implements IPolygonProvider {
      * Load SVG, extract all path strings, convert to polygons.
      */
     async getAllPolygons(): Promise<Polygon[]> {
-        if (this.allPolygonsCache) return this.allPolygonsCache;
+        if (this.allPolygonsCache) this.clonePolygons(this.allPolygonsCache);
         const input = await this.fileProvider.provideFile();
         const svgPathStrings = await this.svgParser.parse(input);
         const allPolygons: Polygon[] = [];
@@ -61,9 +61,13 @@ export class SVGPolygonProvider implements IPolygonProvider {
             const polys = this.svgPathToPolygons(svgPathString);
             if (polys) allPolygons.push(...polys);
         }
-        this.allPolygonsCache = allPolygons;
+        this.allPolygonsCache = this.clonePolygons(allPolygons);
 
         return allPolygons;
+    }
+
+    private clonePolygons(polygonsToClone: Polygon[]): Polygon[] {
+        return polygonsToClone.map(p => p.clone());
     }
 
     // --------------------------------------------------

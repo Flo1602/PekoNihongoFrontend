@@ -16,4 +16,8 @@ export class Polygon {
     public getVerticesCount(): number {
         return this.vertices.length;
     }
+
+    public clone() {
+        return new Polygon(this.vertices.map(v => ({ x: v.x, y: v.y} as Point)));
+    }
 }
