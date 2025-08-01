@@ -74,16 +74,34 @@ const KanjiDraw = (props: Props) => {
     const correctedPolygons = useRef<Polygon[]>([]);
     const correctlyDrawnPolygons = useRef<Polygon[]>([]);
     const viewportSizeRef = useRef<number>(0);
+    const lastKanji = useRef<string>("");
+
+    const finished = useRef<((flag: boolean) => undefined) | null>(null)
+
+    useEffect(() => {
+        finished.current = (correct: boolean) => {
+            const kanjiId = learnDataContext?.kanji?.id;
+            if (kanjiId) {
+                learnDataContext?.setResults([{id: kanjiId, correct: correct}]);
+                learnManagerContext?.onComplete(correct);
+            } else {
+                console.error("onFinished: Kanji was null");
+            }
+        }
+    }, [learnManagerContext]);
 
     useEffect(() => {
         viewportSizeRef.current = viewportSizeState;
     }, [viewportSizeState]);
 
     useEffect(() => {
-        if (!learnDataContext?.kanji)
+        if (!learnDataContext?.kanji || lastKanji.current === learnDataContext.kanji.symbol)
             return;
 
+        lastKanji.current = learnDataContext.kanji.symbol;
+
         console.debug("RELOAD TRACING LOGIC");
+
         const setCanvasSize = (canvasRef: RefObject<HTMLCanvasElement | null>, size: number) => {
             const canvas = canvasRef.current;
             if (!canvas)
@@ -407,13 +425,9 @@ const KanjiDraw = (props: Props) => {
         
             onFinished(correct: boolean) {
                 setIsFinished(true);
-                const kanjiId = learnDataContext?.kanji?.id;
-                if (kanjiId) {
-                    learnDataContext?.setResults([{id: kanjiId, correct: correct}]);
-                    learnManagerContext?.onComplete(correct);
-                } else {
-                    console.error("onFinished: Kanji was null");
-                }
+
+                if(finished.current)
+                    finished.current(correct);
             }
         };
 
@@ -432,18 +446,18 @@ const KanjiDraw = (props: Props) => {
             traceLineListener: traceLineListener
         });
 
-        return () => {
-            traceLogic.removeTraceLineListener(traceLineListener);
-            const canvas = userCanvasRef.current;
-            if (canvas) {
-                canvas.removeEventListener('pointerdown', onFinishedPointerDown);
-                canvas.removeEventListener('pointerup', onFinishedPointerUp);
-                canvas.removeEventListener('pointerdown', onPointerDown);
-                canvas.removeEventListener('pointermove', onPointerMove);
-                canvas.removeEventListener('pointerleave', onPointerLeave);
-                canvas.removeEventListener('pointerup', onPointerUp);
-            }
-        };
+        // return () => {
+        //     traceLogic.removeTraceLineListener(traceLineListener);
+        //     const canvas = userCanvasRef.current;
+        //     if (canvas) {
+        //         canvas.removeEventListener('pointerdown', onFinishedPointerDown);
+        //         canvas.removeEventListener('pointerup', onFinishedPointerUp);
+        //         canvas.removeEventListener('pointerdown', onPointerDown);
+        //         canvas.removeEventListener('pointermove', onPointerMove);
+        //         canvas.removeEventListener('pointerleave', onPointerLeave);
+        //         canvas.removeEventListener('pointerup', onPointerUp);
+        //     }
+        // };
     }, [learnDataContext]);
 
     useEffect(() => {
@@ -464,13 +478,14 @@ const KanjiDraw = (props: Props) => {
     }, [isMobile]);
 
     useEffect(() => {
-        if (drawingState?.traceLogic && learnDataContext?.kanji?.symbol) {
+        if (drawingState?.traceLogic && learnDataContext?.kanji?.symbol && learnDataContext.currentLearnView) {
+            if(!learnDataContext.currentLearnView.includes("kanjiDraw")) return;
             console.debug('CHANGE TARGET TO ' + learnDataContext.kanji.symbol);
             const logic = drawingState.traceLogic;
             logic.changeTarget(learnDataContext.kanji.symbol);
             logic.startTracing(props.traceMode);
         }
-    }, [drawingState, learnDataContext]);
+    }, [drawingState, learnDataContext, props.traceMode]);
 
     return (
         <div className="flex-1 flex">

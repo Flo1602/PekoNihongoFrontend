@@ -37,6 +37,8 @@ const WordKanjiSelect = () => {
 
     useEffect(() => {
         if (!learnDataContext?.kanji || !learnDataContext?.words || !learnDataContext?.extraData) return;
+        if(learnDataContext.currentLearnView !== "wordKanjiSelect") return;
+
         const words = learnDataContext.words;
         const options = [words[0].japanese, words[0].japanese, words[0].japanese]
 

@@ -14,6 +14,7 @@ const JapaneseToEnglishMatch = (props: Props) => {
 
     useEffect(() => {
         if (!learnDataContext?.words) return;
+        if(learnDataContext.currentLearnView !== "jteMatch" && learnDataContext.currentLearnView !== "jteMatchR") return;
         setMatchItems(learnDataContext.words.map<MatchItem<string, string>>((word: Word) => ({
             id: word.id,
             question: (props.reverse) ? word.english : word.japanese,

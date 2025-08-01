@@ -11,6 +11,7 @@ const AudioToEnglishMatch = () => {
 
     useEffect(() => {
         if (!learnDataContext?.words) return;
+        if(learnDataContext.currentLearnView !== "ateMatch") return;
         setMatchItems(learnDataContext.words.map<MatchItem<ReactNode, string>>((word: Word) => ({
             id: word.id,
             question: (<SpeakerIcon className="w-8 h-8 lg:w-10 lg:h-10"/>),

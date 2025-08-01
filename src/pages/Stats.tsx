@@ -25,7 +25,7 @@ interface CumulativePoint {
 }
 
 const durationToMinutes = (d: Temporal.Duration): number =>
-    d.hours * 60 + d.minutes + d.seconds / 60;
+    Number((d.hours * 60 + d.minutes + d.seconds / 60).toFixed(2));
 
 export const Stats = () => {
     const {t} = useTranslation();

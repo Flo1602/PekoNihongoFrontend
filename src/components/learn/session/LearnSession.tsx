@@ -21,7 +21,7 @@ const LearnSession = (props: Props) => {
 
     const [loading, setLoading] = useState(false);
 
-    const currentView = useRef<LearnViewKey>('jteMatch');
+    const currentView = useRef<LearnViewKey>('empty');
     const startTimestamp = useRef(Date.now());
 
     useEffect(() => {
@@ -32,9 +32,12 @@ const LearnSession = (props: Props) => {
         getLearnData()
             .then((data) => {
                 if (!cancelled) {
-                    setLearnData(data)
-                    setLoading(false)
                     currentView.current = viewSequence[currentIndex];
+                    setLearnData({
+                        ...data,
+                        currentLearnView: viewSequence[currentIndex]
+                    });
+                    setLoading(false);
                 }
             })
             .catch((err) => {
@@ -48,7 +51,7 @@ const LearnSession = (props: Props) => {
         return () => {
             cancelled = true
         }
-    }, [getLearnData, currentIndex])
+    }, [currentIndex])
 
     const handleViewComplete = () => {
         if (currentIndex < viewSequence.length-1) {
@@ -67,6 +70,7 @@ const LearnSession = (props: Props) => {
                 ...data,
                 setResults: () => {},
                 refresh: !data.refresh,
+                currentLearnView: view
             });
             return;
         }

@@ -24,6 +24,7 @@ interface Props {
 }
 
 const viewRegistry: Record<LearnViewKey, ReactNode> = {
+    empty: <></>,
     jtkMatch: <JapaneseToKanaMatch/>,
     jtkMatchR: <JapaneseToKanaMatch reverse={true}/>,
     atjMatch: <AudioToJapaneseMatch/>,
@@ -46,6 +47,12 @@ const LearnManager = (probs: Props) => {
 
     const learnDataContext = useContext(LearnDataContext);
 
+    const [ currentView, setCurrentView] = useState<ReactNode>(viewRegistry['empty']);
+
+    useEffect(() => {
+        setCurrentView(viewRegistry[probs.currentView]);
+    }, [probs.currentView]);
+
     useEffect(() => {
         if (probs.retry){
             if(falseViews.current.length === 0){
@@ -64,8 +71,6 @@ const LearnManager = (probs: Props) => {
         }
         setLearnViewCorrect(correct);
     };
-
-    const currentView = viewRegistry[probs.currentView];
 
     useEffect(() => {
         setToolbarActions([]);

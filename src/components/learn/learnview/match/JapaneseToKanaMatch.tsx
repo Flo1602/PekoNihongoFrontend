@@ -14,6 +14,7 @@ const JapaneseToKanaMatch = (props: Props) => {
 
     useEffect(() => {
         if (!learnDataContext?.words) return;
+        if(learnDataContext.currentLearnView !== "jtkMatch" && learnDataContext.currentLearnView !== "jtkMatchR") return;
         let matchItems = learnDataContext.words.map<MatchItem<string, string>>((word: Word) => ({
             id: word.id,
             question: (props.reverse) ? word.kana : word.japanese,

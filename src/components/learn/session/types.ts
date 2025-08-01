@@ -11,6 +11,7 @@ export interface LearnSessionStrategy {
 }
 
 export interface LearnData {
+    currentLearnView?: LearnViewKey;
     words?: Word[];
     kanji?: Kanji;
     extraData?: string[];

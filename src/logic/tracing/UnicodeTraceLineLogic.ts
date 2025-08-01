@@ -64,7 +64,7 @@ export class UnicodeTraceLineLogic implements ITraceLogic<string> {
     }
 
     private reset(): void {
-        this.iterateListeners(listener => listener.onResetProgress());
+        this.iterateListeners(listener => {listener.onResetProgress()});
         this.nextPolygonToDraw = 0;
         this.verificationLogic.resetTries();
     }

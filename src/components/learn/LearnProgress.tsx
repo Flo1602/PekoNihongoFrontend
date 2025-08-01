@@ -59,12 +59,21 @@ const LearnProgress = ({dueToday, completedToday, totalPending, label, todayDueT
                 aria-valuenow={completedToday}
                 aria-label={`${completedToday} von ${dueToday} ${label} erledigt`}
             >
-                <motion.div
-                    className="absolute top-0 left-0 h-full bg-primary"
-                    initial={{ width: `${initialPrevRef.current}%` }} // ← korrekter Startwert
-                    animate={{ width: `${percent}%` }}
-                    transition={{ type: 'spring', stiffness: 120, damping: 20 }}
-                />
+                {(percent === 0 && initialPrevRef.current > 0) ? (
+                    <motion.div
+                        className="absolute top-0 left-0 h-full bg-primary"
+                        initial={{ width: `${initialPrevRef.current}%` }}
+                        animate={{ width: `${initialPrevRef.current}%` }}
+                        transition={{ type: 'spring', stiffness: 120, damping: 20 }}
+                    />
+                ) : (
+                    <motion.div
+                        className="absolute top-0 left-0 h-full bg-primary"
+                        initial={{ width: `${initialPrevRef.current}%` }}
+                        animate={{ width: `${percent}%` }}
+                        transition={{ type: 'spring', stiffness: 120, damping: 20 }}
+                    />
+                )}
             </div>
 
             <div className="text-xs text-right mt-1 opacity-80">
