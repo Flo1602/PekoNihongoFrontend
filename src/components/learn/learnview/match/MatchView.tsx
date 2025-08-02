@@ -6,6 +6,8 @@ import {LearnManagerContext} from "@/contexts/LearnManagerContext.tsx";
 import {LearnDataContext} from "@/contexts/LearnDataContext.tsx";
 import type {LearnResult} from "@/components/learn/session/types.ts";
 import {shuffle} from "@/services/util/ArrayUtils.ts";
+import KanjiInfoModal from "@/components/learn/learnview/match/KanjiInfoModal.tsx";
+import {extractKanji} from "@/services/util/KanjiUtil.tsx";
 
 interface Props<Q extends React.ReactNode, A extends React.ReactNode> {
     matchItems: MatchItem<Q, A>[];
@@ -51,6 +53,7 @@ const MatchView = <Q extends React.ReactNode, A extends React.ReactNode>({matchI
     const [finishedIds, setFinishedIds] = React.useState<number[]>([]);
     const [correctIds, setCorrectIds] = React.useState<number[]>([]);
     const [wrongIds, setWrongIds] = React.useState<number[]>([]);
+    const [kanjiInfoKanji, setKanjiInfoKanji] = React.useState<string[] | null>(null);
     const result = useRef<LearnResult[]>([])
 
     const learnManagerContext = useContext(LearnManagerContext);
@@ -121,6 +124,17 @@ const MatchView = <Q extends React.ReactNode, A extends React.ReactNode>({matchI
         result.current.push({ id: matchItems[id].id, correct: false})
     }
 
+    const handleAuxClick = (id: number) => {
+        if (matchItems[id].answer && matchItems[id].question) {
+            const kanji = [...extractKanji(matchItems[id].answer.toString()), ...extractKanji(matchItems[id].question.toString())];
+
+            if(kanji.length > 0){
+                setKanjiInfoKanji(kanji);
+                (document.getElementById('kanjiInfoModal') as HTMLDialogElement)?.showModal();
+            }
+        }
+    };
+
     return (
         <div className="flex flex-1 w-full items-center justify-center bg-base-300">
             <div className="w-full max-w-screen-md md:max-w-screen-lg lg:max-w-screen-xl px-2 sm:px-4 lg:px-8">
@@ -132,6 +146,7 @@ const MatchView = <Q extends React.ReactNode, A extends React.ReactNode>({matchI
                                 id={q.id}
                                 onClick={() => handleQuestionClick(q.id)}
                                 onContextMenu={() => handleContextMenuClick(q.id)}
+                                onKanjiInfoOpen={() => handleAuxClick(q.id)}
                                 disabled={finishedIds.includes(q.id)}
                                 isCorrect={correctIds[0] === q.id}
                                 isWrong={wrongIds[0] === q.id}
@@ -150,6 +165,7 @@ const MatchView = <Q extends React.ReactNode, A extends React.ReactNode>({matchI
                                 id={a.id}
                                 onClick={() => handleAnswerClick(a.id)}
                                 onContextMenu={() => handleContextMenuClick(a.id)}
+                                onKanjiInfoOpen={() => handleAuxClick(a.id)}
                                 disabled={finishedIds.includes(a.id)}
                                 isCorrect={correctIds[1] === a.id}
                                 isWrong={wrongIds[1] === a.id}
@@ -161,6 +177,7 @@ const MatchView = <Q extends React.ReactNode, A extends React.ReactNode>({matchI
                         ))}
                     </div>
                 </div>
+                <KanjiInfoModal elementId={"kanjiInfoModal"} kanji={kanjiInfoKanji} />
             </div>
         </div>
     );

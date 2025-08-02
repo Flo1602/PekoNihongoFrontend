@@ -7,9 +7,10 @@ interface Props{
     fetchPage: (page: number) => void;
     children: ReactNode;
     currentPage: number;
+    noCard?: boolean;
 }
 
-const CatalogList = ({loading, pages, fetchPage, children, currentPage}: Props) => {
+const CatalogList = ({loading, pages, fetchPage, children, currentPage, noCard}: Props) => {
     const pageList = useMemo<(number | string)[]>(() => {
         if (pages <= 1) return [];
 
@@ -51,18 +52,12 @@ const CatalogList = ({loading, pages, fetchPage, children, currentPage}: Props) 
             lg:max-w-3xl       /* ≥1024 px (tailwind lg) */
             mx-auto max-h-[60vh] lg:max-h-[66vh]"
         >
-            <ul className="
-                flex flex-col gap-2
-                p-4
-                bg-base-200/60 rounded-xl shadow-lg
-                overflow-auto scrollbar-thin
-                w-full h-full"
-            >
+            <ul className={" flex flex-col gap-2 p-4 overflow-y-auto overflow-x-hidden scrollbar-thin w-full h-full " + (!noCard && "bg-base-200/60 rounded-xl shadow-lg")}>
                 {children}
             </ul>
 
             {pages > 1 && (
-                <nav className="mt-4 flex justify-center">
+                <nav className="pt-4 pb-4 flex justify-center">
                     <div className="join">
                         {pageList.map((item, idx) => {
                             if (typeof item === 'string') {

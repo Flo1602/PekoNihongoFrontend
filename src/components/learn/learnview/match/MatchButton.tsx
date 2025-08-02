@@ -1,11 +1,13 @@
 import * as React from "react";
 import {useAudio} from "@/hooks/useAudio.ts";
 import {useEffect} from "react";
+import {useSwipeable} from "react-swipeable";
 
 export interface MatchButtonProps {
     id: string | number;
     onClick: () => void;
     onContextMenu: () => void;
+    onKanjiInfoOpen?: () => void;
     disabled?: boolean;
     isCorrect?: boolean;
     isWrong?: boolean;
@@ -18,6 +20,7 @@ const MatchButton: React.FC<MatchButtonProps> = ({
                                                      id,
                                                      onClick,
                                                      onContextMenu,
+                                                     onKanjiInfoOpen,
                                                      disabled = false,
                                                      isCorrect = false,
                                                      isWrong = false,
@@ -47,8 +50,24 @@ const MatchButton: React.FC<MatchButtonProps> = ({
             : '',
     ].filter(Boolean).join(' ');
 
+    const handlers = useSwipeable({
+        onSwipedUp: () => {if(onKanjiInfoOpen) onKanjiInfoOpen()},
+        delta: 50,
+        preventScrollOnSwipe: true,
+        trackTouch: true,
+    })
+
+    const handleAuxClick = (e: React.MouseEvent) => {
+        if (e.button === 1 && onKanjiInfoOpen) {
+            onKanjiInfoOpen();
+
+            e.preventDefault()
+        }
+    };
+
     return (
         <button
+            {...handlers}
             type="button"
             onClick={() => {
                 if(isCorrect || isWrong) return;
@@ -60,6 +79,7 @@ const MatchButton: React.FC<MatchButtonProps> = ({
                 }
             }}
             onContextMenu={(e) => {e.preventDefault(); onContextMenu();}}
+            onAuxClick={handleAuxClick}
             disabled={(!isCorrect && disabled)}
             className={classes}
             data-id={id}

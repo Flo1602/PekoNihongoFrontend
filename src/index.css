@@ -285,7 +285,10 @@
   --noise: 0;
 }
 
-
 html {
+  scrollbar-gutter: auto !important;
+}
+
+.modal {
   scrollbar-gutter: auto !important;
 }

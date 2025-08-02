@@ -8,9 +8,9 @@ import {useTranslation} from "react-i18next";
 import CatalogSearchField from "@/components/catalog/CatalogSearchField.tsx";
 
 const WordList = () => {
-    const [words, setWords] = useState<Word[]>([])
-    const [loading, setLoading] = useState(true)
-    const [pages, setPages] = useState(0)
+    const [words, setWords] = useState<Word[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [pages, setPages] = useState(0);
     const [editWord, setEditWord] = useState<Word>();
     const [searchParams, setSearchParams] = useSearchParams();
     const {t} = useTranslation();
@@ -118,7 +118,7 @@ const WordList = () => {
                     currentPage={currentPage}
                 >
                     {words.map(word => (
-                        <WordListEntry key={word.id} word={word} refetechPage={refetchPage} openEditWordModal={openEditWordModal}/>
+                        <WordListEntry key={word.id} word={word} refetchPage={refetchPage} openEditWordModal={openEditWordModal}/>
                     ))}
                 </CatalogList>
             </div>

@@ -29,6 +29,16 @@ export async function getWordPage(request: WordPageRequest) {
     });
 }
 
+export async function getWordPageKanjiFilter(request: WordPageRequest) {
+    return api.get('/words', {
+        params: {
+            pageSize: request.size,
+            page: request.page,
+            kanjiFilter: request.search
+        }
+    });
+}
+
 export async function addWord(word: Word) {
     return api.post('/words', word);
 }

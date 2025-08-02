@@ -8,25 +8,28 @@ import SpeakerDisabledIcon from "@/assets/icons/SpeakerDisabledIcon.tsx";
 
 interface Props {
     word: Word;
-    refetechPage: () => void;
-    openEditWordModal: (word: Word) => void;
+    refetchPage?: () => void;
+    openEditWordModal?: (word: Word) => void;
+    noEdit?: boolean;
 }
 
-const WordListEntry = ({word, refetechPage, openEditWordModal}: Props) => {
+const WordListEntry = ({word, refetchPage, openEditWordModal, noEdit}: Props) => {
 
     const {t} = useTranslation();
     const { play, error } = useAudio(word.ttsPath, { preload: "metadata" });
 
     const deleteHandler = () => {
+        if(!refetchPage) return;
         deleteWord(word.id).then((res) => {
             if(res.data === true){
-                refetechPage();
+                refetchPage();
             }
         }
         )
     }
 
     const editHandler = () => {
+        if(!openEditWordModal) return;
         openEditWordModal(word);
     }
 
@@ -69,23 +72,25 @@ const WordListEntry = ({word, refetechPage, openEditWordModal}: Props) => {
 
                 </button>
 
-                <button
-                    aria-label="Example sentence"
-                    className="btn btn-circle btn-ghost btn-xs tooltip"
-                    data-tip={t("translation:edit")}
-                    onClick={editHandler}
-                >
-                    <SentenceIcon className="h-4 w-4"/>
-                </button>
+                {!noEdit && (<>
+                    <button
+                        aria-label="Example sentence"
+                        className="btn btn-circle btn-ghost btn-xs tooltip"
+                        data-tip={t("translation:edit")}
+                        onClick={editHandler}
+                    >
+                        <SentenceIcon className="h-4 w-4"/>
+                    </button>
 
-                <button
-                    aria-label="Delete word"
-                    className="btn btn-circle btn-ghost btn-xs tooltip text-error"
-                    data-tip={t("translation:delete")}
-                    onClick={deleteHandler}
-                >
-                    <DeleteIcon className="h-4 w-4"/>
-                </button>
+                    <button
+                        aria-label="Delete word"
+                        className="btn btn-circle btn-ghost btn-xs tooltip text-error"
+                        data-tip={t("translation:delete")}
+                        onClick={deleteHandler}
+                    >
+                        <DeleteIcon className="h-4 w-4"/>
+                    </button>
+                </>)}
             </div>
         </li>
     )
