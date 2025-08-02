@@ -479,7 +479,7 @@ const KanjiDraw = (props: Props) => {
 
     useEffect(() => {
         if (drawingState?.traceLogic && learnDataContext?.kanji?.symbol && learnDataContext.currentLearnView) {
-            if(!learnDataContext.currentLearnView.includes("kanjiDraw")) return;
+            if (!learnDataContext.currentLearnView.includes("kanjiDraw")) return;
             console.debug('CHANGE TARGET TO ' + learnDataContext.kanji.symbol);
             const logic = drawingState.traceLogic;
             logic.changeTarget(learnDataContext.kanji.symbol);

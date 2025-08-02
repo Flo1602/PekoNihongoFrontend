@@ -27,9 +27,13 @@ export class UnicodeTraceLineLogic implements ITraceLogic<string> {
     }
     
     public async startTracing(traceMode: TraceMode): Promise<void> {
+        // DO NOT CHANGE STATE BEFORE AWAIT !!!
+        const loadedPolygons = await this.loadPolygons();
+
         this.reset();
         this.currentTraceMode = traceMode;
-        await this.loadPolygons();
+        this.loadedPolygons = loadedPolygons;
+        this.nextPolygonToDraw = this.loadedPolygons.length === 0 ? -1 : 0;
 
         if (traceMode === "ALL_HINTS") {
             for (const polygon of this.loadedPolygons) {
@@ -64,14 +68,13 @@ export class UnicodeTraceLineLogic implements ITraceLogic<string> {
     }
 
     private reset(): void {
-        this.iterateListeners(listener => {listener.onResetProgress()});
+        this.iterateListeners(listener => listener.onResetProgress());
         this.nextPolygonToDraw = 0;
         this.verificationLogic.resetTries();
     }
 
-    private async loadPolygons(): Promise<void> {
-        this.loadedPolygons = [... await this.polygonProvider.getAllPolygons()];
-        this.nextPolygonToDraw = this.loadedPolygons.length === 0 ? -1 : 0;
+    private async loadPolygons(): Promise<Polygon[]> {
+        return [... await this.polygonProvider.getAllPolygons()];
     }
 
     private traceNextPolygon(): void {
