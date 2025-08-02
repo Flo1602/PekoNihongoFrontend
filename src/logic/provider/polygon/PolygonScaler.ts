@@ -3,7 +3,6 @@ import type { IPolygonConverter } from "./IPolygonConverter";
 
 export class PolygonScaler implements IPolygonConverter {
     private readonly scaleFactor: number;
-    private isScaled: boolean = false;
 
     constructor(scaleFactor: number) {
         this.scaleFactor = scaleFactor;

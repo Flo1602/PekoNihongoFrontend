@@ -24,7 +24,7 @@ interface Props {
 }
 
 const viewRegistry: Record<LearnViewKey, ReactNode> = {
-    empty: <></>,
+    empty: <div className="flex-1"></div>,
     jtkMatch: <JapaneseToKanaMatch/>,
     jtkMatchR: <JapaneseToKanaMatch reverse={true}/>,
     atjMatch: <AudioToJapaneseMatch/>,

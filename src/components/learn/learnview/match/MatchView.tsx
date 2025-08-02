@@ -109,12 +109,15 @@ const MatchView = <Q extends React.ReactNode, A extends React.ReactNode>({matchI
     const handleQuestionClick = (id: number) => {
         setSelectedQuestionId(prev => prev === id ? null : id);
     }
+
     const handleAnswerClick = (id: number) => {
         setSelectedAnswerId(prev => prev === id ? null : id);
     }
 
     const handleContextMenuClick = (id: number) =>{
         setFinishedIds(prev => [...prev, id]);
+        setSelectedQuestionId(null);
+        setSelectedAnswerId(null);
         result.current.push({ id: matchItems[id].id, correct: false})
     }
 
