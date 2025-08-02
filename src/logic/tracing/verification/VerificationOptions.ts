@@ -31,14 +31,6 @@ export interface VerificationOptions {
   colorCorrectnessExp: number;
 
   /**
-   * Exponent to punish length inaccuracy.
-   * - 1.0: Requires exact length for 100%.
-   * - <1.0: Decreases difficulty.
-   * - >1.0: Increases difficulty.
-   */
-  lengthCorrectnessExp: number;
-
-  /**
    * Max angle range (in degrees) to score points. (1 - 360)
    */
   maxAngleRangeToScore: number;
@@ -82,4 +74,6 @@ export interface VerificationOptions {
    * Enable debug output and/or canvas.
    */
   debug: boolean;
+  fixedVerificationVertexDistance: number;
+  viewportInfluence: number;
 }

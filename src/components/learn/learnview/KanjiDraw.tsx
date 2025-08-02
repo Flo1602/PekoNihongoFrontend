@@ -124,22 +124,24 @@ const KanjiDraw = (props: Props) => {
             lineWidth: (isMobile ? 20 : 15)
         };
 
+        const fixedVerificationVertexDistance = 7;
         const verificationOptions: VerificationOptions = {
             gradientLines: 10,
             minGradientLineWidth: traceOptions.lineWidth * 2,
             maxGradientLineWidth: traceOptions.lineWidth * 7,
             toVerifyDotSize: traceOptions.lineWidth,
             colorCorrectnessExp: 0.4,
-            lengthCorrectnessExp: 0.4,
             maxAngleRangeToScore: 180,
             angularDiffMaxCheckSamples: 20,
             maxTries: 3,
             minImageSimilarity: 0.5,
-            minLengthSimilarity: 0.3,
+            minLengthSimilarity: 0.6,
             minAngularSimilarity: 0.5,
             fieldWidth: traceOptions.fieldWidth,
             fieldHeight: traceOptions.fieldHeight,
-            debug: !!props.debug
+            fixedVerificationVertexDistance: fixedVerificationVertexDistance,
+            viewportInfluence: 5,
+            debug: !!props.debug,
         };
 
         const fileProvider = new UnicodeFilenameFileProvider(
@@ -160,7 +162,7 @@ const KanjiDraw = (props: Props) => {
 
         const scaler: IPolygonConverter = new PolygonScaler((isMobile ? 5 : 4));
         const centerer: IPolygonConverter = new PolygonCenterer(traceOptions.fieldWidth, traceOptions.fieldHeight);
-        const fixedDistanceSetter: IPolygonConverter = new VertexFixedDistanceSetter(5);
+        const fixedDistanceSetter: IPolygonConverter = new VertexFixedDistanceSetter(fixedVerificationVertexDistance);
         const convertingPolygonProvider: IPolygonProvider = {
             async getAllPolygons() {
                 const polygons = await sourcePolygonProvider.getAllPolygons();

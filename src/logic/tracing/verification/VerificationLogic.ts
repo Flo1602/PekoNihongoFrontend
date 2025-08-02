@@ -186,15 +186,18 @@ export class VerificationLogic implements ITraceVerificationLogic {
         const toVerifyCount = toVerify.getVerticesCount();
         const verticesCountDiff = Math.abs(sourceCount - toVerifyCount);
 
-        const baseDiff = 1.0 - verticesCountDiff / sourceCount;
-        const result = 1.0 - Math.pow(verticesCountDiff / sourceCount, 1.0 / this.verificationOptions.lengthCorrectnessExp);
+        const baseDiff = ((sourceCount > toVerifyCount) ? (toVerifyCount / sourceCount) : (sourceCount / toVerifyCount));
+        const sourceLength = (source.getVerticesCount() - 1) * this.verificationOptions.fixedVerificationVertexDistance;
+        const minViewportSize = Math.min(this.verificationOptions.fieldWidth, this.verificationOptions.fieldHeight);
+        const viewportBonusFactor =  1 - Math.min(1, (sourceLength / minViewportSize) * this.verificationOptions.viewportInfluence);
+        const result = baseDiff + baseDiff * viewportBonusFactor;
 
         console.debug("\nLENGTH SIMILARITY:");
         console.debug("\tSource vertices:\t", sourceCount);
         console.debug("\tTo verify vertices:\t", toVerifyCount);
         console.debug("\tVertices diff:\t\t", verticesCountDiff);
         console.debug("\tBase diff:\t\t\t", baseDiff);
-        console.debug("\tDiff factor:\t\t", result / baseDiff);
+        console.debug("\tBonus score %:\t\t", viewportBonusFactor)
         console.debug("\tResult:\t\t\t\t", result);
 
         return result;
