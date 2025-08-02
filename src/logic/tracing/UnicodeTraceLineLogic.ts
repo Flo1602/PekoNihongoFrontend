@@ -6,6 +6,7 @@ import type { ITraceTargetChanger } from "./ITraceTargetChanger";
 import type { TraceMode } from "./TraceMode";
 import type { ITraceVerificationLogic } from "./verification/ITraceVerificationLogic";
 import type { ITraceFinishedCallback } from "./ITraceFinishCallback";
+import type { Point } from "@/model/Point";
 
 export class UnicodeTraceLineLogic implements ITraceLogic<string> {
     private readonly verificationLogic: ITraceVerificationLogic;
@@ -90,17 +91,30 @@ export class UnicodeTraceLineLogic implements ITraceLogic<string> {
             this.iterateListeners(l => l.onShowHint(source));
         }
 
-        if (source.getVerticesCount() > 3) {
-            const vertices = source.getVertices();
-            const hintArrowFrom = vertices[2];
-            const hintArrowTo = vertices[Math.ceil(source.getVerticesCount() * 0.3)];
-
-            if (this.currentTraceMode !== "NO_HINTS" || this.nextPolygonToDraw === 0) {
-            this.iterateListeners(l => l.onShowHintArrow(hintArrowFrom, hintArrowTo));
-            }
+        if (this.currentTraceMode !== 'NO_HINTS' || this.nextPolygonToDraw === 0) {
+            this.showHintArrow(source);
         }
 
         this.iterateListeners(l => l.onBeginTracing(this.traceFinishedCallback));
+    }
+
+    private showHintArrow(polygon: Polygon) {
+        const vertices = polygon.getVertices();
+        let hintArrowFrom: Point | null = null;
+        let hintArrowTo: Point | null = null;
+
+        if (polygon.getVerticesCount() > 6) {
+            hintArrowFrom = vertices[2];
+            hintArrowTo = vertices[Math.ceil(polygon.getVerticesCount() * 0.3)];
+        } else if (polygon.getVerticesCount() > 3) {
+            hintArrowFrom = vertices[1];
+            hintArrowTo = vertices[polygon.getVerticesCount() - 2];
+        } else if (polygon.getVerticesCount() > 1) {
+            hintArrowFrom = vertices[0];
+            hintArrowTo = vertices[polygon.getVerticesCount() - 1];
+        }
+
+        this.iterateListeners(l => l.onShowHintArrow(hintArrowFrom, hintArrowTo));
     }
 
     private onTraceFinished(tracedPolygon: Polygon): boolean {
@@ -111,7 +125,7 @@ export class UnicodeTraceLineLogic implements ITraceLogic<string> {
             this.iterateListeners(l => l.onResetProgress());
 
             for (const loadedPolygon of this.loadedPolygons) {
-            this.iterateListeners(l => l.onShowHint(loadedPolygon));
+                this.iterateListeners(l => l.onShowHint(loadedPolygon));
             }
 
             this.iterateListeners(l => l.onFinished(false));
