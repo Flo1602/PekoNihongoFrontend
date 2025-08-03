@@ -12,6 +12,8 @@ import JapaneseToEnglishMatch from "@/components/learn/learnview/match/JapaneseT
 import KanjiDraw from "@/components/learn/learnview/KanjiDraw.tsx";
 import WordKanjiSelect from "@/components/learn/learnview/WordKanjiSelect.tsx";
 import {useTranslation} from "react-i18next";
+import {useSwipeable} from "react-swipeable";
+import * as React from "react";
 
 interface Props {
     currentView: LearnViewKey;
@@ -97,10 +99,24 @@ const LearnManager = (probs: Props) => {
         setNumberCorrect(probs.viewCount - 1)
     }
 
+    const handlers = useSwipeable({
+        onSwipedLeft: () => {if(learnViewCorrect !== null) onNextHandler()},
+        delta: 50,
+        preventScrollOnSwipe: true,
+        trackTouch: true,
+    })
+
+    const handleAuxClick = (e: React.MouseEvent) => {
+        if (e.button === 1 && learnViewCorrect !== null) {
+            onNextHandler();
+            e.preventDefault()
+        }
+    };
+
     const percentage = Math.round((numberCorrect / probs.viewCount) * 100);
 
     return (
-        <div className="flex-1 flex flex-col items-center justify-center bg-base-300">
+        <div className="flex-1 flex flex-col items-center justify-center bg-base-300" {...handlers} onAuxClick={handleAuxClick}>
             <div className="flex items-center pt-6 w-screen">
                 <div onClick={() => navigate(-1)} className="absolute lg:ml-6 ml-4 ">
                     <BackArrowIcon className={"h-7 w-7 hover:scale-120"}/>
