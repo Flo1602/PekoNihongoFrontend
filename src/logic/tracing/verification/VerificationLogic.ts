@@ -57,7 +57,9 @@ export class VerificationLogic implements ITraceVerificationLogic {
     }
 
     public verify(source: Polygon, toVerify: Polygon): VerifyResult {
-        const polygonsToConvert: Polygon[] = [toVerify, source];
+        const sourceCopy = source.clone();
+        const toVerifyCopy = toVerify.clone();
+        const polygonsToConvert: Polygon[] = [toVerifyCopy, sourceCopy];
         this.toVerifyPolygonConverter.convert(polygonsToConvert);
 
         this.currentMaxHue = Number.MIN_VALUE;
@@ -67,15 +69,15 @@ export class VerificationLogic implements ITraceVerificationLogic {
         if (this.verificationOptions.debug)
             this.clearCanvas(this.debugCanvas, false);
 
-        this.coloredSourcePolygon = this.sourceDrawer.drawPolygon(this.sourceCanvas, source);
-        this.toVerifyDrawer.drawPolygon(this.toVerifyCanvas, toVerify);
+        this.coloredSourcePolygon = this.sourceDrawer.drawPolygon(this.sourceCanvas, sourceCopy);
+        this.toVerifyDrawer.drawPolygon(this.toVerifyCanvas, toVerifyCopy);
 
         if (this.verificationOptions.debug) {
             this.copyContent(this.sourceCanvas, this.debugCanvas);
             this.copyContent(this.toVerifyCanvas, this.debugCanvas);
         }
 
-        return this.calculateVerificationResult(source, toVerify);
+        return this.calculateVerificationResult(sourceCopy, toVerifyCopy);
     }
 
     public resetTries(): void {
