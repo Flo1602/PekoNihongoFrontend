@@ -1,10 +1,11 @@
 import type {LearnData, LearnSessionStrategy} from "@/components/learn/session/types.ts";
 import LearnManager from "@/components/learn/LearnManager.tsx";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import type {LearnViewKey} from "@/components/learn/learnview/types.ts";
 import {LearnDataContext} from "@/contexts/LearnDataContext.tsx";
 import Loading from "@/components/Loading.tsx";
 import Result from "@/components/learn/Result.tsx";
+import useConfirmNavigation from "@/hooks/useConfirmNavigation.tsx";
 
 interface Props{
     strategy: LearnSessionStrategy;
@@ -23,6 +24,8 @@ const LearnSession = (props: Props) => {
 
     const currentView = useRef<LearnViewKey>('empty');
     const startTimestamp = useRef(Date.now());
+    const block = useMemo<boolean>(() => currentIndex>0, [currentIndex]);
+    useConfirmNavigation(block);
 
     useEffect(() => {
         let cancelled = false
@@ -46,10 +49,18 @@ const LearnSession = (props: Props) => {
                     setError('Error while loading learn data!')
                     setLoading(false)
                 }
-            })
+            });
+
+        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+            if (!block) return;
+            event.preventDefault();
+        };
+
+        window.addEventListener("beforeunload", handleBeforeUnload);
 
         return () => {
-            cancelled = true
+            cancelled = true;
+            window.removeEventListener("beforeunload", handleBeforeUnload)
         }
     }, [currentIndex])
 

@@ -5,6 +5,7 @@ import SpeakerIcon from "@/assets/icons/SpeakerIcon.tsx";
 import {useTranslation} from "react-i18next";
 import {useAudio} from "@/hooks/useAudio.ts";
 import SpeakerDisabledIcon from "@/assets/icons/SpeakerDisabledIcon.tsx";
+import * as React from "react";
 
 interface Props {
     word: Word;
@@ -33,6 +34,11 @@ const WordListEntry = ({word, refetchPage, openEditWordModal, noEdit}: Props) =>
         openEditWordModal(word);
     }
 
+    const handleContextClick = (e: React.MouseEvent) => {
+        window.open("https://jpdb.io/search?q=" + word.japanese +"&lang=english#a", "_blank");
+        e.preventDefault();
+    };
+
     return (
         <li className="
             flex items-center justify-between gap-3
@@ -41,6 +47,7 @@ const WordListEntry = ({word, refetchPage, openEditWordModal, noEdit}: Props) =>
             hover:bg-base-300/60
             transition-colors cursor-pointer
             shadow-sm focus-within:ring focus-within:ring-primary/50"
+            onContextMenu={handleContextClick}
         >
             <div className="flex flex-col min-w-0">
                 <span className="font-medium leading-tight truncate">

@@ -1,11 +1,12 @@
 import './i18n';
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App.tsx'
-import {BrowserRouter} from "react-router-dom";
+import {AuthProvider} from "@/contexts/AuthProvider.tsx";
+import {RouterProvider} from "react-router-dom";
+import {router} from "@/app-router.tsx";
 
 createRoot(document.getElementById('root')!).render(
-    <BrowserRouter>
-        <App/>
-    </BrowserRouter>
+    <AuthProvider>
+        <RouterProvider router={router} />
+    </AuthProvider>
 )
