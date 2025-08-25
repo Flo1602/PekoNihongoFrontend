@@ -21,6 +21,12 @@ const WordListEntry = ({word, refetchPage, openEditWordModal, noEdit}: Props) =>
 
     const deleteHandler = () => {
         if(!refetchPage) return;
+
+        const confirmed = window.confirm(
+            t("translation:confirmDeleteWord")
+        );
+        if (!confirmed) return;
+
         deleteWord(word.id).then((res) => {
             if(res.data === true){
                 refetchPage();

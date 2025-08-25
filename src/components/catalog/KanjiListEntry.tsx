@@ -13,6 +13,11 @@ const KanjiListEntry = ({ kanji, refetechPage }: Props) => {
     const {t} = useTranslation();
 
     const deleteHandler = () => {
+        const confirmed = window.confirm(
+            t("translation:confirmDeleteKanji")
+        );
+        if (!confirmed) return;
+
         deleteKanji(kanji.id).then((res) => {
                 if(res.data === true){
                     refetechPage();
