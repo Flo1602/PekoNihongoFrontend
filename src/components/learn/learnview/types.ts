@@ -1,4 +1,4 @@
-export type LearnViewKey = 'empty' | 'jteMatch' | 'jteMatchR' | 'atjMatch' | 'ateMatch' | 'jtkMatch' | 'jtkMatchR' | 'kanjiDrawHint' | 'kanjiDrawNextHint' | 'kanjiDrawNoHint' | 'wordKanjiSelect';
+export type LearnViewKey = 'empty' | 'jteMatch' | 'jteMatchR' | 'atjMatch' | 'ateMatch' | 'jtkMatch' | 'jtkMatchR' | 'kanjiDrawHint' | 'kanjiDrawNextHint' | 'kanjiDrawNoHint' | 'wordKanjiSelect' |'wordSpeaking';
 
 export interface ToolbarAction {
     key: string;

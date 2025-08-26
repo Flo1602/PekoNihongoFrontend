@@ -18,6 +18,7 @@ import DailyWords from "@/pages/learn/DailyWords";
 import DailyKanji from "@/pages/learn/DailyKanji";
 import AnimatedShell from "@/components/layouts/AnimatedShell.tsx";
 import RootLayout from "@/components/layouts/RootLayout.tsx";
+import SpeakTheWord from "@/pages/learn/SpeakTheWord.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -42,6 +43,7 @@ export const router = createBrowserRouter([
                                         children: [
                                             { index: true, element: <WordsLearningMenu /> },
                                             { path: "daily", element: <DailyWords /> },
+                                            { path: "speakTheWord", element: <SpeakTheWord /> },
                                         ],
                                     },
                                     {

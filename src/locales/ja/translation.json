@@ -47,6 +47,7 @@
   "pendingAll": "全体の未完了",
   "playAudio": "音声再生",
   "questions": "質問",
+  "recording": "録音中...",
   "retry": "再試行",
   "saturday": "土",
   "save": "保存",
@@ -55,6 +56,8 @@
   "sessionCompleted": "セッション完了",
   "settings": "設定",
   "skip": "スキップ",
+  "speakNow": "今話してください",
+  "speakTheWord": "単語を話してください",
   "stats": "統計",
   "studyTimeLast7": "過去7日間の学習時間",
   "sunday": "日",
@@ -76,5 +79,6 @@
   "wordCatalog": "単語カタログ",
   "words": "単語",
   "wordsDueToday": "今日の単語",
-  "wrong": "不正解"
+  "wrong": "不正解",
+  "youSayed": "あなたが言ったのは"
 }

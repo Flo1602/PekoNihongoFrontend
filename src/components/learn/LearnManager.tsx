@@ -14,6 +14,7 @@ import WordKanjiSelect from "@/components/learn/learnview/WordKanjiSelect.tsx";
 import {useTranslation} from "react-i18next";
 import {useSwipeable} from "react-swipeable";
 import * as React from "react";
+import WordSpeaking from "@/components/learn/learnview/WordSpeaking.tsx";
 
 interface Props {
     currentView: LearnViewKey;
@@ -36,7 +37,8 @@ const viewRegistry: Record<LearnViewKey, ReactNode> = {
     kanjiDrawNoHint: <KanjiDraw traceMode="NO_HINTS"/>,
     kanjiDrawNextHint: <KanjiDraw traceMode="NEXT_HINT"/>,
     kanjiDrawHint: <KanjiDraw traceMode="ALL_HINTS"/>,
-    wordKanjiSelect: <WordKanjiSelect/>
+    wordKanjiSelect: <WordKanjiSelect/>,
+    wordSpeaking: <WordSpeaking/>,
 };
 
 const LearnManager = (probs: Props) => {

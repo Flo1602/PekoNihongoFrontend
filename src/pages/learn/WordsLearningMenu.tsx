@@ -4,6 +4,7 @@ import DailyIcon from "@/assets/icons/DailyIcon.tsx";
 import LearnProgress from "@/components/learn/LearnProgress.tsx";
 import {useEffect, useState} from "react";
 import {getWordProgress, type ProgressData} from "@/services/api/progressService.ts";
+import SpeakerPhone from "@/assets/icons/SpeakerPhone.tsx";
 
 const WordsLearningMenu = () => {
 
@@ -19,6 +20,7 @@ const WordsLearningMenu = () => {
 
     const elements = [
         {path: '/learning/words/daily', icon: DailyIcon, label: t('translation:dailyWords')},
+        {path: '/learning/words/speakTheWord', icon: SpeakerPhone, label: t('translation:speakTheWord')},
     ];
 
     return (

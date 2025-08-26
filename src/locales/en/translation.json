@@ -47,6 +47,7 @@
   "pendingAll": "pending overall",
   "playAudio": "Play Audio",
   "questions": "Questions",
+  "recording": "Recording…",
   "retry": "Retry",
   "saturday": "Sat",
   "save": "Save",
@@ -55,6 +56,8 @@
   "sessionCompleted": "Session Completed",
   "settings": "Settings",
   "skip": "Skip",
+  "speakNow": "Speak now",
+  "speakTheWord": "Speak the Word",
   "stats": "Statistics",
   "studyTimeLast7": "Study Time last 7 Days",
   "sunday": "Sun",
@@ -76,5 +79,6 @@
   "wordCatalog": "Word Catalog",
   "words": "Words",
   "wordsDueToday": "Words Today",
-  "wrong": "Wrong"
+  "wrong": "Wrong",
+  "youSayed": "You said"
 }

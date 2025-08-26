@@ -5,7 +5,7 @@ import type {LearnViewKey} from "@/components/learn/learnview/types.ts";
 import {LearnDataContext} from "@/contexts/LearnDataContext.tsx";
 import Loading from "@/components/Loading.tsx";
 import Result from "@/components/learn/Result.tsx";
-import useConfirmNavigation from "@/hooks/useConfirmNavigation.tsx";
+import useConfirmNavigation from "@/hooks/useConfirmNavigation.ts";
 
 interface Props{
     strategy: LearnSessionStrategy;
@@ -24,7 +24,7 @@ const LearnSession = (props: Props) => {
 
     const currentView = useRef<LearnViewKey>('empty');
     const startTimestamp = useRef(Date.now());
-    const block = useMemo<boolean>(() => currentIndex>0, [currentIndex]);
+    const block = useMemo<boolean>(() => currentIndex>0 && !(sessionFinished && !retry), [currentIndex, retry, sessionFinished]);
     useConfirmNavigation(block);
 
     useEffect(() => {
