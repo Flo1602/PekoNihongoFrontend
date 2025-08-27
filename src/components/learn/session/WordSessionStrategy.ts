@@ -20,10 +20,16 @@ export class WordSessionStrategy extends AbstractLearnSessionStrategy {
         const savedNoAudioExercises = localStorage.getItem("noAudioExercises");
         const audioExercisesDisabled =  savedNoAudioExercises !== null ? JSON.parse(savedNoAudioExercises) : false;
 
+        const savedNoSpeakingExercises = localStorage.getItem("noSpeakingExercises");
+        const speakingExercisesDisabled =  savedNoSpeakingExercises !== null ? JSON.parse(savedNoSpeakingExercises) : false;
+
         let listening: boolean = false;
+        let speaking: boolean = nextInt(4) !== 0;
         for (let i = 0; i < 5; i++) {
             const listeningAvailable: boolean = !listening && i > 2 && !audioExercisesDisabled;
-            switch (nextInt((listeningAvailable) ? 4 : 3)){
+            const speakingAvailable: boolean = !speaking && i > 2 && !speakingExercisesDisabled;
+            const increase = (listeningAvailable ? 1:0) + (speakingAvailable ? 2:0);
+            switch (nextInt(3 + increase)){
                 case 0:
                     this.viewSequence = [...this.viewSequence, 'jteMatchR'];
                     break;
@@ -35,7 +41,15 @@ export class WordSessionStrategy extends AbstractLearnSessionStrategy {
                     this.viewSequence = [...this.viewSequence, 'ateMatch'];
                     listening = true;
                     break;
+                case 4: case 5:
+                    this.viewSequence = [...this.viewSequence, 'wordSpeaking'];
+                    speaking = true;
+                    break;
             }
+        }
+
+        if(!speaking && !speakingExercisesDisabled) {
+            this.viewSequence = [...this.viewSequence, 'wordSpeaking'];
         }
     }
 

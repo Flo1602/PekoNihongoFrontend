@@ -17,6 +17,10 @@ export const Settings = () => {
         const saved = localStorage.getItem("noAudioExercises");
         return saved !== null ? JSON.parse(saved) : false;
     });
+    const [noSpeakingExercises, setNoSpeakingExercises] = useState<boolean>(() => {
+        const saved = localStorage.getItem("noSpeakingExercises");
+        return saved !== null ? JSON.parse(saved) : false;
+    });
     const [error, setError] = useState(false);
     const [theme, setLocalTheme] = useState(() =>
         typeof window !== 'undefined'
@@ -90,6 +94,11 @@ export const Settings = () => {
     const changeAudioExercises = (e: ChangeEvent<HTMLInputElement>) => {
         localStorage.setItem('noAudioExercises', e.target.checked.toString());
         setNoAudioExercises(e.target.checked);
+    }
+
+    const changeSpeakingExercises = (e: ChangeEvent<HTMLInputElement>) => {
+        localStorage.setItem('noSpeakingExercises', e.target.checked.toString());
+        setNoSpeakingExercises(e.target.checked);
     }
 
     useEffect(() => {
@@ -175,21 +184,29 @@ export const Settings = () => {
                             <input id="volume" type="range" onChange={changeVolume} min={0} max="100" defaultValue={volume} className="range range-primary w-full"/>
                         </div>
                         <div className="w-full flex flex-wrap justify-between gap-y-6">
-                            <div className="form-control">
+                            <div className="form-control w-full md:w-1/2 flow-root pr-8">
                                 <label htmlFor="noAudioExercises" className="label pr-2">
-                                <span className="label-text flex items-center gap-2">
+                                <span className="label-text flex items-center float-left">
                                     {t("translation:noAudioExercises")}:
                                 </span>
                                 </label>
-                                <input id="noAudioExercises" checked={noAudioExercises} onChange={changeAudioExercises} type="checkbox" className="checkbox checkbox-primary"/>
+                                <input id="noAudioExercises" checked={noAudioExercises} onChange={changeAudioExercises} type="checkbox" className="checkbox checkbox-primary float-right"/>
                             </div>
-                            <div className="form-control">
+                            <div className="form-control w-full md:w-1/2 flow-root pr-8">
+                                <label htmlFor="noSpeakingExercises" className="label pr-2">
+                                <span className="label-text flex items-center float-left">
+                                    {t("translation:noSpeakingExercises")}:
+                                </span>
+                                </label>
+                                <input id="noSpeakingExercises" checked={noSpeakingExercises} onChange={changeSpeakingExercises} type="checkbox" className="checkbox checkbox-primary float-right"/>
+                            </div>
+                            <div className="form-control w-full md:w-1/2 flow-root pr-8">
                                 <label htmlFor="useAlwaysVoiceVox" className="label pr-2">
-                                <span className="label-text flex items-center gap-2">
+                                <span className="label-text flex items-center float-left">
                                     {t("translation:useAlwaysVoiceVox")}:
                                 </span>
                                 </label>
-                                <input id="useAlwaysVoiceVox" checked={settings.useAlwaysVoiceVox} onChange={changeSettings} type="checkbox" className="checkbox checkbox-primary"/>
+                                <input id="useAlwaysVoiceVox" checked={settings.useAlwaysVoiceVox} onChange={changeSettings} type="checkbox" className="checkbox checkbox-primary float-right"/>
                             </div>
                         </div>
                     </section>

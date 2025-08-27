@@ -13,6 +13,7 @@ import {
     type Transition,
     type Variants,
 } from "framer-motion";
+import Hearts from "@/components/learn/learnview/Hearts.tsx";
 
 const MAX_TRIES = 3;
 
@@ -75,8 +76,11 @@ const WordSpeaking = () => {
     const [wordIndex, setWordIndex] = useState<number>(0);
     const [tries, setTries] = useState<number>(MAX_TRIES);
     const [feedback, setFeedback] = useState<Feedback>(null);
+    const [write, setWrite] = useState<boolean>(false);
+    const [textTry, setTextTry] = useState<string>("");
     const advanceQueue = useRef<null | { correct: boolean }>(null);
     const result = useRef<LearnResult[]>([]);
+    const textField = useRef<HTMLInputElement | null>(null)
 
     useEffect(() => () => { stop(); }, [stop]);
 
@@ -116,9 +120,7 @@ const WordSpeaking = () => {
         advanceQueue.current = { correct };
     };
 
-    useEffect(() => {
-        if (!isFinal) return;
-        if (!transcript || transcript.trim().length === 0) return;
+    const checkSimilarity = (transcript: string) => {
         const similarity = stringSimilarityPercent(words[wordIndex].japanese, transcript);
 
         if (similarity >= 75) {
@@ -134,6 +136,13 @@ const WordSpeaking = () => {
                 })
                 .catch(() => setTries((t) => t - 1));
         }
+    };
+
+    useEffect(() => {
+        if (!isFinal) return;
+        if (!transcript || transcript.trim().length === 0) return;
+
+        checkSimilarity(transcript);
     }, [transcript, isFinal]);
 
     useEffect(() => {
@@ -145,6 +154,33 @@ const WordSpeaking = () => {
     const startListening = () => {
         if (!listening && !feedback) start();
     };
+
+    const textChange = (changeEvent: React.ChangeEvent<HTMLInputElement>)=> {
+        setTextTry(changeEvent.target.value);
+    }
+
+    useEffect(() => {
+        if(!write && textTry.trim() !== ""){
+            checkSimilarity(textTry);
+            setTextTry("");
+
+            if(textField.current)
+                textField.current.value = "";
+        } else if(write){
+            textField.current?.focus();
+        }
+    }, [write]);
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Enter" && !(listening || !!feedback)) {
+                setWrite(!write);
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [feedback, listening, write]);
 
     if (words.length === 0) return <div className="flex-1"></div>;
 
@@ -158,7 +194,7 @@ const WordSpeaking = () => {
                     </h1>
 
                     <div className="flex items-center gap-2">
-                        <Hearts tries={tries} />
+                        <Hearts tries={tries} max={MAX_TRIES} />
                     </div>
                 </header>
 
@@ -173,13 +209,11 @@ const WordSpeaking = () => {
                             className="relative select-none"
                         >
                             <motion.div
-                                // feedback nudge (shake/pulse)
                                 variants={wordFeedback}
                                 animate={feedback ?? "idle"}
-                                aria-busy={!!listening}
+                                aria-busy={listening}
                                 className="relative px-6 py-6 rounded-2xl border border-base-300 bg-base-100 shadow-md"
                             >
-                                {/* colored overlay for quick visual cue */}
                                 <motion.div
                                     className="absolute inset-0 rounded-2xl pointer-events-none"
                                     variants={overlayVariants}
@@ -187,7 +221,7 @@ const WordSpeaking = () => {
                                 />
 
                                 <div className="relative z-10 text-center">
-                                    <div className="text-5xl md:text-6xl font-japanese leading-tight">
+                                    <div className="text-5xl md:text-6xl font-japanese leading-tight tooltip tooltip-top" data-tip={currentWord.english}>
                                         {currentWord.japanese}
                                     </div>
 
@@ -223,30 +257,43 @@ const WordSpeaking = () => {
                         </motion.div>
                     </AnimatePresence>
 
-                    <div className="flex items-center justify-center pt-10">
+                    <div className="flex flex-col items-center justify-center pt-10 gap-5">
                         <button
                             onClick={startListening}
                             disabled={listening || !!feedback}
                             aria-controls="practice-status"
                             className="btn btn-primary btn-lg w-full md:w-auto"
+                            hidden={write}
                         >
                             {listening ? (
                                 <span className="inline-flex items-center gap-2">
-              <span className="loading loading-spinner" aria-hidden="true" />
-              🎙️ {t("translation:recording")}
-            </span>
+                                    <span className="loading loading-bars" aria-hidden="true" />
+                                    🎙️ {t("translation:recording")}
+                                </span>
                             ) : (
                                 <span className="inline-flex items-center gap-2">
-              🎤 {t("translation:speakNow")}
-              <span className="hidden md:inline text-base-content/70">
-              </span>
-            </span>
+                                    🎤 {t("translation:speakNow")}
+                                    <span className="hidden md:inline text-base-content/70"/>
+                                </span>
                             )}
                         </button>
+                        <button
+                            onClick={() => { setWrite(!write); }}
+                            disabled={listening || !!feedback}
+                            aria-controls="practice-status"
+                            className={"btn btn-primary w-full md:w-auto " + (!write ? "btn-outline" : "")}
+                        >
+                            <span className="inline-flex items-center">
+                                {write ? t("translation:submit") : "✒️ " + t("translation:write")}
+                                <span className="hidden md:inline"/>
+                            </span>
+                        </button>
+
+                        <input id="textTry" ref={textField} type="text" placeholder={t("translation:typeHere")} className="input" onChange={textChange} hidden={!write}/>
                     </div>
 
                     {error && (
-                        <p role="alert" className="text-error text-sm md:text-base">
+                        <p role="alert" className="text-error text-sm md:text-base pt-5">
                             {error}
                         </p>
                     )}
@@ -254,79 +301,5 @@ const WordSpeaking = () => {
         </div>
     );
 };
+
 export default WordSpeaking;
-
-const POP_EASE: Transition["ease"] = [0.16, 1, 0.3, 1];
-const DURATION_GAIN = 0.45;
-const DURATION_LOSE = 0.45;
-const DURATION_IDLE = 0.2;
-const STAGGER = 0.06;
-
-type Change = { from: number; to: number } | null;
-
-export function Hearts({ tries, max = MAX_TRIES }: { tries: number; max?: number }) {
-    const prevTriesRef = useRef(tries);
-    const [change, setChange] = useState<Change>(null);
-    const remaining = useRef(0);
-
-    useEffect(() => {
-        const prev = prevTriesRef.current;
-        if (tries !== prev) {
-            setChange({ from: prev, to: tries });
-            remaining.current = Math.abs(tries - prev);
-            prevTriesRef.current = tries;
-        }
-    }, [tries]);
-
-    const getTransition = (isGain: boolean, isLose: boolean, delay: number): Transition => {
-        if (isGain) return { duration: DURATION_GAIN, ease: POP_EASE, delay };
-        if (isLose) return { duration: DURATION_LOSE, ease: POP_EASE, delay };
-        return { duration: DURATION_IDLE, ease: "easeOut" };
-    };
-
-    return (
-        <div className="inline-flex items-center gap-1 align-middle" aria-label={`${tries} Leben`}>
-            {Array.from({ length: max }).map((_, i) => {
-                const active = i < tries;
-
-                const isGain = !!change && change.to > change.from && i >= change.from && i < change.to;
-                const isLose = !!change && change.to < change.from && i >= change.to && i < change.from;
-
-                const delay =
-                    change == null
-                        ? 0
-                        : isGain
-                            ? (i - change.from) * STAGGER
-                            : isLose
-                                ? (i - change.to) * STAGGER
-                                : 0;
-
-                return (
-                    <motion.span
-                        key={i}
-                        className={`text-2xl leading-none ${active ? "" : "opacity-40 grayscale"}`}
-                        initial={isGain ? { scale: 0, opacity: 0 } : false}
-                        animate={
-                            isLose
-                                ? { scale: [1, 1.2, 0], rotate: [0, -10, 0], opacity: [1, 1, 0] }
-                                : isGain
-                                    ? { scale: [0, 1.4, 1], opacity: [0, 1, 1] }
-                                    : { scale: 1, opacity: active ? 1 : 0.4 }
-                        }
-                        transition={getTransition(isGain, isLose, delay)}
-                        onAnimationComplete={() => {
-                            if (isGain || isLose) {
-                                remaining.current -= 1;
-                                if (remaining.current <= 0) setChange(null);
-                            }
-                        }}
-                        role="img"
-                        aria-label={active ? "volles Herz" : "leeres Herz"}
-                    >
-                        ❤️
-                    </motion.span>
-                );
-            })}
-        </div>
-    );
-}

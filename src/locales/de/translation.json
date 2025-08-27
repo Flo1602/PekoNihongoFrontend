@@ -41,6 +41,7 @@
   "minutesShort": "m",
   "monday": "Mo",
   "noAudioExercises": "Audioübungen deaktivieren",
+  "noSpeakingExercises": "Sprachübungen deaktivieren",
   "noWordsFound": "Keine Wörter Gefunden",
   "notImplementedInfo": "Wir arbeiten an dieser Funktion. Schauen Sie später noch einmal vorbei, um Updates zu erhalten!",
   "password": "Passwort",
@@ -60,6 +61,7 @@
   "speakTheWord": "Sprich das Wort",
   "stats": "Statistiken",
   "studyTimeLast7": "Lernzeit letzte 7 Tage",
+  "submit": "Absenden",
   "sunday": "So",
   "theme": "Farbschema",
   "thursday": "Do",
@@ -69,7 +71,8 @@
   "totalKanji": "Kanji Gesamt",
   "totalWords": "Wörter Gesamt",
   "tuesday": "Di",
-  "useAlwaysVoiceVox": "Immer Voice Vox Engine verwenden",
+  "typeHere": "Hier schreiben",
+  "useAlwaysVoiceVox": "Immer KI Audio verwenden",
   "username": "Benutzername",
   "vocabulary": "Vokabel",
   "voiceId": "Stimm ID",
@@ -79,6 +82,7 @@
   "wordCatalog": "Wort Katalog",
   "words": "Wörter",
   "wordsDueToday": "Heutige Wörter",
+  "write": "Schreiben",
   "wrong": "Falsch",
   "youSayed": "Du hast gesagt"
 }

@@ -41,6 +41,7 @@
   "minutesShort": "分",
   "monday": "月",
   "noAudioExercises": "音声練習を無効にする",
+  "noSpeakingExercises": "発音練習を無効にする",
   "noWordsFound": "単語が見つかりません",
   "notImplementedInfo": "この機能は現在開発中です。後ほどご確認ください！",
   "password": "パスワード",
@@ -60,6 +61,7 @@
   "speakTheWord": "単語を話してください",
   "stats": "統計",
   "studyTimeLast7": "過去7日間の学習時間",
+  "submit": "送信",
   "sunday": "日",
   "theme": "テーマ",
   "thursday": "木",
@@ -69,6 +71,7 @@
   "totalKanji": "合計漢字数",
   "totalWords": "合計単語数",
   "tuesday": "火",
+  "typeHere": "ここに入力してください",
   "useAlwaysVoiceVox": "常にVoiceVoxエンジンを使用",
   "username": "ユーザー名",
   "vocabulary": "語彙",
@@ -79,6 +82,7 @@
   "wordCatalog": "単語カタログ",
   "words": "単語",
   "wordsDueToday": "今日の単語",
+  "write": "書く",
   "wrong": "不正解",
   "youSayed": "あなたが言ったのは"
 }
