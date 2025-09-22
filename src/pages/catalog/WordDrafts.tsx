@@ -1,13 +1,20 @@
-import {getWordPage, addWord, type Word, updateWord, deleteWord} from "@/services/api/wordService.ts";
-import CatalogList from "@/components/catalog/CatalogList.tsx";
 import {useCallback, useEffect, useState} from "react";
-import WordListEntry from "@/components/catalog/WordListEntry.tsx";
-import WordModal from "@/components/catalog/WordModal.tsx";
+import {type Word} from "@/services/api/wordService.ts";
 import {useSearchParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
-import CatalogSearchField from "@/components/catalog/CatalogSearchField.tsx";
+import CatalogList from "@/components/catalog/CatalogList.tsx";
+import WordListEntry from "@/components/catalog/WordListEntry.tsx";
+import WordModal from "@/components/catalog/WordModal.tsx";
+import {
+    addWordDraft,
+    deleteWordDraft,
+    getWordDraftPage,
+    setActiveVocab,
+    updateWordDraft
+} from "@/services/api/wordDraftService.ts";
+import QuickAddWordModal from "@/components/catalog/QuickAddWordModal.tsx";
 
-const WordList = () => {
+const WordDrafts = () => {
     const [words, setWords] = useState<Word[]>([]);
     const [loading, setLoading] = useState(true);
     const [pages, setPages] = useState(0);
@@ -17,24 +24,17 @@ const WordList = () => {
 
     const pageParam = Number.parseInt(searchParams.get("page") ?? "1", 10);
     const currentPage = Math.max(0, (isFinite(pageParam) ? pageParam : 1) - 1);
-    const searchParam = searchParams.get("search") || "";
 
-    const [search, setSearch] = useState<string>(searchParam);
-
-    useEffect(() => {
-        setSearch(searchParam);
-    }, [searchParam]);
-
-    const fetchPageFromApi = useCallback((page: number, query: string) => {
+    const fetchPageFromApi = useCallback((page: number) => {
         setLoading(true);
-        getWordPage({ page: page, size: 20, search: query })
+        getWordDraftPage({ page: page, size: 20 })
             .then((response) => {
                 setWords(response.data.content);
 
                 setPages(response.data.pageCount);
 
                 if(page >= response.data.pageCount && response.data.pageCount > 0){
-                    setSearchParams({ page: String(response.data.pageCount), search: query });
+                    setSearchParams({ page: String(response.data.pageCount) });
                 }
             })
             .catch(console.error)
@@ -42,32 +42,27 @@ const WordList = () => {
     }, [setSearchParams]);
 
     useEffect(() => {
-        fetchPageFromApi(currentPage, search);
-    }, [currentPage, search]);
+        fetchPageFromApi(currentPage);
+    }, [currentPage]);
 
     const goToPage = (page: number) => {
-        setSearchParams({ page: String(page + 1), search });
-    };
-
-    const onSearchChange = (value: string) => {
-        if(value === search) return;
-        setSearchParams({ page: "1", search: value });
+        setSearchParams({ page: String(page + 1) });
     };
 
     const refetchPage = () => {
-        fetchPageFromApi(currentPage, search);
+        fetchPageFromApi(currentPage);
     };
 
-    const addWordFetch = (formdata: Word) => {
-        addWord(formdata).then(response => {
+    const addWordDraftFetch = (formdata: Word) => {
+        addWordDraft(formdata).then(response => {
             const newWord = response.data;
             setWords(prev => [newWord, ...prev]);
         }).catch(console.error);
     }
 
-    const editWordFetch = (formdata: Word) => {
+    const editWordDraftFetch = (formdata: Word) => {
         console.log(formdata);
-        updateWord(formdata)
+        updateWordDraft(formdata)
             .then(response => {
                 const newWord = response.data;
                 setWords(prev =>
@@ -77,13 +72,20 @@ const WordList = () => {
             .catch(console.error);
     };
 
-    const deleteWordFetch = (id: number) => {
-        deleteWord(id).then((res) => {
-                if(res.data === true){
-                    refetchPage();
-                }
+    const deleteWordDraftFetch = (id: number) => {
+        deleteWordDraft(id).then((res) => {
+            if(res.data === true){
+                refetchPage();
             }
-        ).catch(console.error);
+        }).catch(console.error);
+    }
+
+    const activateWordDraftFetch = (id: number) => {
+        setActiveVocab(id).then((res) => {
+            if(res.data === true){
+                refetchPage();
+            }
+        }).catch(console.error);
     }
 
     const openAddWordModal = () => {
@@ -95,6 +97,10 @@ const WordList = () => {
         (document.getElementById('editWordModal') as HTMLDialogElement)?.showModal();
     }
 
+    const openQuickAddModal = () => {
+        (document.getElementById('quickAddModal') as HTMLDialogElement)?.showModal();
+    }
+
     return (
         <section className="flex-1 bg-base-300 py-10 flex justify-center">
             <div
@@ -104,18 +110,22 @@ const WordList = () => {
                   md:max-w-2xl    /* tablets / small desktop */
                   lg:max-w-3xl    /* big desktop */
                   flex flex-col gap-4"
-                >
+            >
 
                 <header className="flex flex-col">
-                    <h1 className="text-lg font-semibold">{t("translation:wordCatalog")}</h1>
+                    <h1 className="text-lg font-semibold">{t("translation:wordDrafts")}</h1>
                     <div className="flex items-center justify-between mt-3 gap-8">
-                        <CatalogSearchField defaultSearch={search} setSearchDebounced={onSearchChange}/>
-
                         <button
                             onClick={openAddWordModal}
                             className="btn btn-primary btn-sm md:btn-md"
                         >
                             + {t("translation:addWord")}
+                        </button>
+                        <button
+                            onClick={openQuickAddModal}
+                            className="btn btn-primary btn-sm md:btn-md"
+                        >
+                            + {t("translation:quickAdd")}
                         </button>
                     </div>
                 </header>
@@ -127,23 +137,31 @@ const WordList = () => {
                     currentPage={currentPage}
                 >
                     {words.map(word => (
-                        <WordListEntry key={word.id} word={word} openEditWordModal={openEditWordModal} deleteWordFetch={deleteWordFetch}/>
+                        <WordListEntry key={word.id}
+                                       word={word}
+                                       openEditWordModal={openEditWordModal}
+                                       deleteWordFetch={deleteWordDraftFetch}
+                                       draft={true}
+                                       activateWordDraftFetch={activateWordDraftFetch}/>
                     ))}
                 </CatalogList>
             </div>
 
             <WordModal
                 elementId="addWordModal"
-                onSubmitHandler={addWordFetch}
+                onSubmitHandler={addWordDraftFetch}
                 title={t("translation:addWord")}
+                draft={true}
             />
             <WordModal
                 elementId="editWordModal"
-                onSubmitHandler={editWordFetch}
+                onSubmitHandler={editWordDraftFetch}
                 title={t("translation:editWord")}
                 word={editWord}
+                draft={true}
             />
+            <QuickAddWordModal elementId={"quickAddModal"} createDraft={addWordDraftFetch}/>
         </section>
     );
 }
-export default WordList
+export default WordDrafts

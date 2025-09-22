@@ -7,6 +7,7 @@ interface Props {
     onSubmitHandler: (data: Word) => void;
     word?: Word;
     title: string;
+    draft?: boolean;
 }
 
 const emptyWord: Word = {
@@ -17,7 +18,7 @@ const emptyWord: Word = {
     ttsPath: "",
 };
 
-const WordModal = ({word, onSubmitHandler, elementId, title }: Props) => {
+const WordModal = ({word, onSubmitHandler, elementId, title, draft }: Props) => {
     const [formData, setFormData] = useState<Word>(word ?? emptyWord);
     const dialogRef = useRef<HTMLDialogElement>(null);
     const firstInput = useRef<HTMLInputElement>(null);
@@ -66,7 +67,8 @@ const WordModal = ({word, onSubmitHandler, elementId, title }: Props) => {
         };
     }, []);
 
-    const isValid = formData.japanese && formData.kana && formData.english;
+    const isValid = (!draft && formData.japanese && formData.kana && formData.english) ||
+        (draft && (formData.japanese || formData.kana || formData.english));
 
     return (
         <dialog
@@ -101,7 +103,7 @@ const WordModal = ({word, onSubmitHandler, elementId, title }: Props) => {
                             autoComplete="off"
                             value={formData.japanese}
                             onChange={handleChange}
-                            required
+                            required={!draft}
                         />
                     </div>
 
@@ -118,7 +120,7 @@ const WordModal = ({word, onSubmitHandler, elementId, title }: Props) => {
                             autoComplete="off"
                             value={formData.kana}
                             onChange={handleChange}
-                            required
+                            required={!draft}
                         />
                     </div>
 
@@ -135,7 +137,7 @@ const WordModal = ({word, onSubmitHandler, elementId, title }: Props) => {
                             autoComplete="off"
                             value={formData.english}
                             onChange={handleChange}
-                            required
+                            required={!draft}
                         />
                     </div>
 

@@ -28,9 +28,9 @@ const TitleBar = ({isVisible}: Props) => {
         },
         {id: 2, path: '/catalog', icon: CatalogIcon, label: t('translation:catalog'), details: [
                 {id: 201, innerPath: '/catalog/words', innerLabel: t('translation:words')},
-                {id: 202, innerPath: '/catalog/kanji', innerLabel: t('translation:kanji')},
-                {id: 203, innerPath: '/catalog/sentences', innerLabel: t('translation:sentences')},
-                {id: 204, innerPath: '/catalog/questions', innerLabel: t('translation:questions')}
+                {id: 203, innerPath: '/catalog/kanji', innerLabel: t('translation:kanji')},
+                {id: 204, innerPath: '/catalog/sentences', innerLabel: t('translation:sentences')},
+                {id: 205, innerPath: '/catalog/questions', innerLabel: t('translation:questions')}
             ]
         },
         {id: 3, path: '/stats', icon: StatsIcon, label: t('translation:stats'), details: null},

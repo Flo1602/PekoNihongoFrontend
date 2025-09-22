@@ -19,6 +19,7 @@ import DailyKanji from "@/pages/learn/DailyKanji";
 import AnimatedShell from "@/components/layouts/AnimatedShell.tsx";
 import RootLayout from "@/components/layouts/RootLayout.tsx";
 import SpeakTheWord from "@/pages/learn/SpeakTheWord.tsx";
+import WordDrafts from "@/pages/catalog/WordDrafts.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -62,7 +63,10 @@ export const router = createBrowserRouter([
                                 path: "catalog",
                                 children: [
                                     { index: true, element: <Catalog /> },
-                                    { path: "words", element: <WordList /> },
+                                    { path: "words", children: [
+                                        { index: true, element: <WordList/> },
+                                        { path: "drafts", element: <WordDrafts/> }
+                                    ] },
                                     { path: "kanji", element: <KanjiList /> },
                                     { path: "sentences", element: <SentenceList /> },
                                     { path: "questions", element: <QuestionList /> },

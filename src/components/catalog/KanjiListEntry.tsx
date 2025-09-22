@@ -45,7 +45,7 @@ const KanjiListEntry = ({ kanji, refetechPage }: Props) => {
                 </span>
             </div>
 
-            <div className="flex shrink-0 gap-5">
+            <div className="flex shrink-0 gap-5 items-center">
 
                 { kanji.words.length === 0 && (<button
                     aria-label="Delete word"

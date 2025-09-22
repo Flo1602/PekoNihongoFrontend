@@ -4,6 +4,7 @@ import WordsIcon from "@/assets/icons/WordsIcon.tsx";
 import QuestionIcon from "@/assets/icons/QuestionIcon.tsx";
 import KanjiIcon from "@/assets/icons/KanjiIcon.tsx";
 import SentenceIcon from "@/assets/icons/SentenceIcon.tsx";
+import WordDraftsIcon from "@/assets/icons/WordDraftsIcon.tsx";
 
 const Catalog = () => {
 
@@ -11,6 +12,7 @@ const Catalog = () => {
 
     const elements = [
         {path: '/catalog/words', icon: WordsIcon, label: t('translation:words')},
+        {path: '/catalog/words/drafts', icon: WordDraftsIcon, label: t('translation:wordDrafts')},
         {path: '/catalog/kanji', icon: KanjiIcon, label: t('translation:kanji')},
         {path: '/catalog/sentences', icon: SentenceIcon, label: t('translation:sentences')},
         {path: '/catalog/questions', icon: QuestionIcon, label: t('translation:questions')},
