@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from "react";
+import {type ChangeEvent, useCallback, useEffect, useState} from "react";
 import {type Word} from "@/services/api/wordService.ts";
 import {useSearchParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
@@ -8,14 +8,18 @@ import WordModal from "@/components/catalog/WordModal.tsx";
 import {
     addWordDraft,
     deleteWordDraft,
-    getWordDraftPage,
+    getWordDraftPage, getWordInfo,
     setActiveVocab,
-    updateWordDraft
+    updateWordDraft, type WordInfo
 } from "@/services/api/wordDraftService.ts";
 import QuickAddWordModal from "@/components/catalog/QuickAddWordModal.tsx";
+import WordInfoCard from "@/components/catalog/WordInfoCard.tsx";
 
 const WordDrafts = () => {
     const [words, setWords] = useState<Word[]>([]);
+    const [wordInfo, setWordInfo] = useState<Map<number, WordInfo>>(
+        () => new Map()
+    );
     const [loading, setLoading] = useState(true);
     const [pages, setPages] = useState(0);
     const [editWord, setEditWord] = useState<Word>();
@@ -40,6 +44,16 @@ const WordDrafts = () => {
             .catch(console.error)
             .finally(() => setLoading(false));
     }, [setSearchParams]);
+
+    const fetchWordInfo = (wordDraftId: number) => {
+        getWordInfo(wordDraftId).then((response) => {
+            setWordInfo(prev => {
+                const next = new Map(prev);
+                next.set(wordDraftId, response.data);
+                return next;
+            });
+        }).catch(console.error);
+    }
 
     useEffect(() => {
         fetchPageFromApi(currentPage);
@@ -84,6 +98,10 @@ const WordDrafts = () => {
         setActiveVocab(id).then((res) => {
             if(res.data === true){
                 refetchPage();
+            } else {
+                window.alert(
+                    t("translation:draftActivateError")
+                );
             }
         }).catch(console.error);
     }
@@ -99,6 +117,12 @@ const WordDrafts = () => {
 
     const openQuickAddModal = () => {
         (document.getElementById('quickAddModal') as HTMLDialogElement)?.showModal();
+    }
+
+    const openCollapse = (e: ChangeEvent<HTMLInputElement>) => {
+        if(e.target.checked){
+            fetchWordInfo(Number(e.target.id));
+        }
     }
 
     return (
@@ -119,13 +143,13 @@ const WordDrafts = () => {
                             onClick={openAddWordModal}
                             className="btn btn-primary btn-sm md:btn-md"
                         >
-                            + {t("translation:addWord")}
+                            {t("translation:addWord")}
                         </button>
                         <button
                             onClick={openQuickAddModal}
                             className="btn btn-primary btn-sm md:btn-md"
                         >
-                            + {t("translation:quickAdd")}
+                            {t("translation:quickAdd")}
                         </button>
                     </div>
                 </header>
@@ -137,12 +161,20 @@ const WordDrafts = () => {
                     currentPage={currentPage}
                 >
                     {words.map(word => (
-                        <WordListEntry key={word.id}
-                                       word={word}
-                                       openEditWordModal={openEditWordModal}
-                                       deleteWordFetch={deleteWordDraftFetch}
-                                       draft={true}
-                                       activateWordDraftFetch={activateWordDraftFetch}/>
+                        <div key={word.id} tabIndex={word.id} className="collapse overflow-visible">
+                            <input id={word.id.toString()} type="checkbox" className="peer" onChange={openCollapse}/>
+                            <div className="collapse-title p-0 pe-0 overflow-x-hidden md:overflow-x-visible">
+                                <WordListEntry key={word.id}
+                                               word={word}
+                                               openEditWordModal={openEditWordModal}
+                                               deleteWordFetch={deleteWordDraftFetch}
+                                               draft={true}
+                                               activateWordDraftFetch={activateWordDraftFetch}/>
+                            </div>
+                            <div className="collapse-content overflow-hidden">
+                                <WordInfoCard info={wordInfo.get(word.id)}/>
+                            </div>
+                        </div>
                     ))}
                 </CatalogList>
             </div>

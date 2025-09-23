@@ -6,6 +6,7 @@ import {useAudio} from "@/hooks/useAudio.ts";
 import SpeakerDisabledIcon from "@/assets/icons/SpeakerDisabledIcon.tsx";
 import * as React from "react";
 import type {Word} from "@/services/api/wordService.ts";
+import DoubleCheckIcon from "@/assets/icons/DoubleCheckIcon.tsx";
 
 interface Props {
     word: Word;
@@ -57,12 +58,12 @@ const WordListEntry = ({word, openEditWordModal, deleteWordFetch, noEdit, draft,
 
     return (
         <li className="
-            flex items-center justify-between gap-3
+            flex items-center justify-between
             px-4 py-3
             rounded-lg bg-base-200/60
             hover:bg-base-300/60
             transition-colors cursor-pointer
-            shadow-sm focus-within:ring focus-within:ring-primary/50"
+            shadow-sm"
             onContextMenu={handleContextClick}
         >
             <div className="flex flex-col min-w-0">
@@ -76,7 +77,7 @@ const WordListEntry = ({word, openEditWordModal, deleteWordFetch, noEdit, draft,
                 </span>
             </div>
 
-            <div className="flex shrink-0 gap-1 items-center">
+            <div className="flex shrink-0 gap-1 items-center z-10">
                 { !draft && !draftCreate &&
                     <button
                         className="btn btn-circle btn-ghost btn-xs tooltip"
@@ -97,11 +98,11 @@ const WordListEntry = ({word, openEditWordModal, deleteWordFetch, noEdit, draft,
 
                 { draft && word.japanese.trim() !== "" && word.kana.trim() !== "" && word.english.trim() !== "" &&
                     <button
-                        className="btn btn-ghost btn-sm tooltip btn-outline btn-info"
+                        className="btn btn-circle btn-ghost btn-xs tooltip text-success"
                         data-tip={t("translation:activateWordDraft")}
                         onClick={activateHandler}
                     >
-                        {t("translation:activate")}
+                        <DoubleCheckIcon className="h-4 w-4"/>
                     </button>
                 }
 

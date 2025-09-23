@@ -66,7 +66,6 @@ const WordList = () => {
     }
 
     const editWordFetch = (formdata: Word) => {
-        console.log(formdata);
         updateWord(formdata)
             .then(response => {
                 const newWord = response.data;
