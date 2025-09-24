@@ -6,6 +6,8 @@ export class UnicodeFilenameFileProvider implements IFileProvider {
     private readonly expectedFilenameLength: number;
     private readonly extension: string;
     private charForFilename?: string;
+    private fileCache: File;
+    private fileCacheUrl: string;
 
     constructor(
         resourcePath: string,
@@ -17,6 +19,8 @@ export class UnicodeFilenameFileProvider implements IFileProvider {
         this.prefix = prefix;
         this.expectedFilenameLength = expectedFilenameLength;
         this.extension = extension;
+        this.fileCache = new File([], "");
+        this.fileCacheUrl = "";
     }
 
     setCharForFilename(charForFilename: string): void {
@@ -38,12 +42,18 @@ export class UnicodeFilenameFileProvider implements IFileProvider {
         const fileName = this.prefix.repeat(paddingLength > 0 ? paddingLength : 0) + charCodeHex + "." + this.extension;
         const fileUrl = `${this.resourcePath}/${fileName}`;
 
+        if(this.fileCacheUrl === fileUrl) {
+            return this.fileCache;
+        }
+
         const response = await fetch(fileUrl);
         if (!response.ok) {
             throw new Error(`Failed to fetch file from ${fileUrl}`);
         }
 
         const blob = await response.blob();
-        return new File([blob], fileName, { type: blob.type });
+        this.fileCacheUrl = fileUrl;
+        this.fileCache = new File([blob], fileName, { type: blob.type });
+        return this.fileCache;
     }
 }

@@ -3,9 +3,10 @@ import CatalogList from "@/components/catalog/CatalogList.tsx";
 import {useCallback, useEffect, useState} from "react";
 import WordListEntry from "@/components/catalog/WordListEntry.tsx";
 import WordModal from "@/components/catalog/WordModal.tsx";
-import {useSearchParams} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import CatalogSearchField from "@/components/catalog/CatalogSearchField.tsx";
+import {useIsMobile} from "@/hooks/useIdMobile.ts";
 
 const WordList = () => {
     const [words, setWords] = useState<Word[]>([]);
@@ -13,6 +14,8 @@ const WordList = () => {
     const [pages, setPages] = useState(0);
     const [editWord, setEditWord] = useState<Word>();
     const [searchParams, setSearchParams] = useSearchParams();
+    const isMobile = useIsMobile();
+    const navigate = useNavigate();
     const {t} = useTranslation();
 
     const pageParam = Number.parseInt(searchParams.get("page") ?? "1", 10);
@@ -110,12 +113,23 @@ const WordList = () => {
                     <div className="flex items-center justify-between mt-3 gap-8">
                         <CatalogSearchField defaultSearch={search} setSearchDebounced={onSearchChange}/>
 
-                        <button
-                            onClick={openAddWordModal}
-                            className="btn btn-primary btn-sm md:btn-md"
-                        >
-                            + {t("translation:addWord")}
-                        </button>
+                        <div className="flex items-center justify-between gap-6">
+                            {!isMobile &&
+                                <button
+                                    onClick={() => {navigate("/catalog/words/drafts")}}
+                                    className="btn btn-primary btn-sm md:btn-md"
+                                >
+                                    {t("translation:wordDrafts")}
+                                </button>
+                            }
+
+                            <button
+                                onClick={openAddWordModal}
+                                className="btn btn-primary btn-sm md:btn-md"
+                            >
+                                + {t("translation:addWord")}
+                            </button>
+                        </div>
                     </div>
                 </header>
 

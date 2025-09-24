@@ -163,7 +163,7 @@ const WordDrafts = () => {
                     {words.map(word => (
                         <div key={word.id} tabIndex={word.id} className="collapse overflow-visible">
                             <input id={word.id.toString()} type="checkbox" className="peer" onChange={openCollapse}/>
-                            <div className="collapse-title p-0 pe-0 overflow-x-hidden md:overflow-x-visible">
+                            <div className={"collapse-title p-0 pe-0 md:overflow-x-visible" + (word.kana.length > 6 ? " overflow-x-hidden":"")}>
                                 <WordListEntry key={word.id}
                                                word={word}
                                                openEditWordModal={openEditWordModal}
