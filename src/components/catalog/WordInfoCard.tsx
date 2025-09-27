@@ -20,7 +20,6 @@ const WordInfoCard = ({ info }: Props) => {
                 aria-live="polite"
             >
                 <div className="card-body gap-4">
-                    {/* Header Skeleton */}
                     <div className="flex items-start justify-between gap-4">
                         <div className="min-w-0 w-full">
                             <div className="skeleton h-7 w-48 rounded"></div>
@@ -35,13 +34,11 @@ const WordInfoCard = ({ info }: Props) => {
                         </button>
                     </div>
 
-                    {/* Progress Skeleton */}
                     <div className="flex items-center gap-4">
                         <div className="skeleton h-4 w-64 rounded-full"></div>
                         <div className="skeleton h-4 w-24 rounded"></div>
                     </div>
 
-                    {/* Kanji Grid Skeleton */}
                     <div className="grid grid-cols-5 sm:grid-cols-8 gap-2">
                         {Array.from({ length: SKELETON_KANJI }).map((_, i) => (
                             <div key={i} className="skeleton h-10 rounded-xl"></div>
@@ -85,7 +82,6 @@ const WordInfoCard = ({ info }: Props) => {
                     </a>
                 </div>
 
-                {/* Progress */}
                 <div className="flex items-center gap-4">
                     <progress
                         className="progress progress-primary w-48 sm:w-64"
@@ -97,7 +93,6 @@ const WordInfoCard = ({ info }: Props) => {
                     </span>
                 </div>
 
-                {/* Kanji Grid */}
                 {total > 0 ? (
                     <div
                         className="grid grid-cols-5 sm:grid-cols-8 gap-2"
@@ -108,7 +103,7 @@ const WordInfoCard = ({ info }: Props) => {
                         ))}
                     </div>
                 ) : (
-                    <p className="opacity-70">Keine Kanji-Infos vorhanden.</p>
+                    <p className="opacity-70">{t("translation:noKanjiInfo")}</p>
                 )}
             </div>
         </div>

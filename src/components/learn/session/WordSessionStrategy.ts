@@ -12,6 +12,9 @@ export class WordSessionStrategy extends AbstractLearnSessionStrategy {
 
     results: LearnResult[] = [];
 
+    private retryWords: Word[] = [];
+    private retryCntr: number = 0;
+
     constructor() {
         super();
 
@@ -29,7 +32,11 @@ export class WordSessionStrategy extends AbstractLearnSessionStrategy {
             const listeningAvailable: boolean = !listening && i > 2 && !audioExercisesDisabled;
             const speakingAvailable: boolean = !speaking && i > 2 && !speakingExercisesDisabled;
             const increase = (listeningAvailable ? 1:0) + (speakingAvailable ? 2:0);
-            switch (nextInt(3 + increase)){
+            let rand = nextInt(3 + increase);
+            if(rand === 3 && !listeningAvailable && speakingAvailable) {
+                rand++;
+            }
+            switch (rand){
                 case 0:
                     this.viewSequence = [...this.viewSequence, 'jteMatchR'];
                     break;
@@ -46,10 +53,12 @@ export class WordSessionStrategy extends AbstractLearnSessionStrategy {
                     speaking = true;
                     break;
             }
+            this.retryCntr++;
         }
 
         if(!speaking && !speakingExercisesDisabled) {
             this.viewSequence = [...this.viewSequence, 'wordSpeaking'];
+            this.retryCntr++;
         }
     }
 
@@ -60,19 +69,28 @@ export class WordSessionStrategy extends AbstractLearnSessionStrategy {
 
         const unlearnedWords = this.learningWords.filter(word => !this.results.find(result => result.id === word.id));
         let randomElements = getRandomElements<Word>(unlearnedWords, 5);
+        const unfilledCount = 5 - randomElements.length;
 
-        if (randomElements.length < 5) {
+        if(this.retryCntr <= 0 && unfilledCount > 0) {
+            const elements = getRandomElements(this.retryWords, unfilledCount);
+            randomElements = [...randomElements, ...elements];
+            this.retryWords = this.retryWords.filter(word => !elements.includes(word));
+            if(this.retryWords.length > 0) {
+                this.addRetryExercise();
+            }
+        } else if (unfilledCount > 0) {
             const chosenIds = new Set(randomElements.map(w => w.id));
-            const fillCount = 5 - randomElements.length;
 
             const fillerPool = this.learningWords.filter(
                 word => !chosenIds.has(word.id)
             );
 
-            const filler = getRandomElements<Word>(fillerPool, fillCount);
+            const filler = getRandomElements<Word>(fillerPool, unfilledCount);
 
             randomElements = [...randomElements, ...filler];
         }
+
+        this.retryCntr--;
 
         return {
             words: randomElements!,
@@ -89,10 +107,30 @@ export class WordSessionStrategy extends AbstractLearnSessionStrategy {
         learnResult.forEach(result => {
             if (!(filteredResult.find(r => r.id === result.id && !r.correct) && result.correct)) {
                 filteredResult.push(result);
+
+                if(!result.correct && this.retryCntr > 0 && !this.retryWords.find(res => res.id === result.id) && this.learningWords) {
+                    const word = this.learningWords.find(word => word.id == result.id);
+                    if(word && !this.retryWords.includes(word)) {
+                        if(this.retryWords.length === 0) {
+                            this.addRetryExercise();
+                        }
+                        this.retryWords.push(word);
+                    }
+                }
             }
         })
 
         this.results = [...this.results, ...filteredResult]
+    }
+
+    private addRetryExercise(): void {
+        const savedNoSpeakingExercises = localStorage.getItem("noSpeakingExercises");
+        const speakingExercisesDisabled =  savedNoSpeakingExercises !== null ? JSON.parse(savedNoSpeakingExercises) : false;
+        if(speakingExercisesDisabled){
+            this.viewSequence.push('jteMatch');
+        } else {
+            this.viewSequence.push('wordSpeaking');
+        }
     }
 
     private fetchWords(): Promise<Word[]> {

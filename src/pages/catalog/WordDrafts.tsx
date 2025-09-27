@@ -75,7 +75,6 @@ const WordDrafts = () => {
     }
 
     const editWordDraftFetch = (formdata: Word) => {
-        console.log(formdata);
         updateWordDraft(formdata)
             .then(response => {
                 const newWord = response.data;

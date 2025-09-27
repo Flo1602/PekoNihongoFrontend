@@ -260,6 +260,7 @@ const WordSpeaking = () => {
                     <div className="flex flex-col items-center justify-center pt-10 gap-5">
                         <button
                             onClick={startListening}
+                            onContextMenu={(e) => { e.preventDefault(); setTries(0)}}
                             disabled={listening || !!feedback}
                             aria-controls="practice-status"
                             className="btn btn-primary btn-lg w-full md:w-auto"
