@@ -20,6 +20,7 @@ import AnimatedShell from "@/components/layouts/AnimatedShell.tsx";
 import RootLayout from "@/components/layouts/RootLayout.tsx";
 import SpeakTheWord from "@/pages/learn/SpeakTheWord.tsx";
 import WordDrafts from "@/pages/catalog/WordDrafts.tsx";
+import DailyQuests from "@/pages/DailyQuests.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -56,6 +57,7 @@ export const router = createBrowserRouter([
                                     },
                                     { path: "sentences", element: <SentenceLearnMenu /> },
                                     { path: "questions", element: <QuestionLearnMenu /> },
+                                    { path: "dailyQuests", element: <DailyQuests /> },
                                 ],
                             },
 

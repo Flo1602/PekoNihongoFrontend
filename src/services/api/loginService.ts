@@ -16,3 +16,7 @@ export interface User {
 export async function apiLogin(credentials: Credentials){
     return  api.post<LoginResponse>('/auth/login', credentials);
 }
+
+export async function autoLogin(){
+    return api.get<User>('/user/autoLogin');
+}

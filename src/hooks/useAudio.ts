@@ -33,7 +33,7 @@ export function useAudio(
             audioRef.current = null;
         }
 
-        if (!src) {
+        if (!src || src.includes("10.0.0.")) {
             setPlaying(false);
             return;
         }

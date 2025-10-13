@@ -1,5 +1,5 @@
 import DeleteIcon from "@/assets/icons/DeleteIcon.tsx";
-import SentenceIcon from "@/assets/icons/SentenceIcon.tsx";
+import PenIcon from "@/assets/icons/PenIcon.tsx";
 import SpeakerIcon from "@/assets/icons/SpeakerIcon.tsx";
 import {useTranslation} from "react-i18next";
 import {useAudio} from "@/hooks/useAudio.ts";
@@ -122,7 +122,7 @@ const WordListEntry = ({word, openEditWordModal, deleteWordFetch, noEdit, draft,
                         data-tip={t("translation:edit")}
                         onClick={editHandler}
                     >
-                        <SentenceIcon className="h-4 w-4"/>
+                        <PenIcon className="h-4 w-4"/>
                     </button>
 
                     <button
