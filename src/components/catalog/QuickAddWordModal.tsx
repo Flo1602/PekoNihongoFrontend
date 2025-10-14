@@ -154,7 +154,7 @@ const QuickAddWordModal = ({elementId, createDraft}: Props) => {
 
                     <div>
                         {words.map(word => (
-                            <WordListEntry key={word.id}
+                            <WordListEntry key={word.japanese}
                                            word={word}
                                            noEdit={true}
                                            draftCreate={true}

@@ -4,6 +4,7 @@ import KanjiIcon from "@/assets/icons/KanjiIcon.tsx";
 import PenIcon from "@/assets/icons/PenIcon.tsx";
 import QuestionIcon from "@/assets/icons/QuestionIcon.tsx";
 import SubMenu from "@/components/SubMenu.tsx";
+import FlameIcon from "@/assets/icons/FlameIcon.tsx";
 
 const LearnMenu = () => {
     const {t} = useTranslation();
@@ -13,7 +14,7 @@ const LearnMenu = () => {
         {path: '/learning/kanji', icon: KanjiIcon, label: t('translation:kanji')},
         {path: '/learning/sentences', icon: PenIcon, label: t('translation:sentences')},
         {path: '/learning/questions', icon: QuestionIcon, label: t('translation:questions')},
-        {path: '/learning/dailyQuests', icon: QuestionIcon, label: t('translation:dailyQuests')},
+        {path: '/learning/dailyQuests', icon: FlameIcon, label: t('translation:dailyQuests')},
     ];
 
     return (

@@ -194,7 +194,7 @@ const OverviewCard = ({ title, value }: OverviewCardProps) => (
     <div className="card bg-base-100 shadow">
         <div className="card-body flex flex-col items-center justify-center p-4">
             <span className="text-sm text-gray-500">{title}</span>
-            <span className="text-2xl font-bold">{value}</span>
+            <span className={"font-bold " + ((value.length > 6) ? "text-xl" : "text-2xl")}>{value}</span>
         </div>
     </div>
 );

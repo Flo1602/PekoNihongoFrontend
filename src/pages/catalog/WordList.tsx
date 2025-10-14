@@ -110,7 +110,7 @@ const WordList = () => {
 
                 <header className="flex flex-col">
                     <h1 className="text-lg font-semibold">{t("translation:wordCatalog")}</h1>
-                    <div className="flex items-center justify-between mt-3 gap-8">
+                    <div className="flex items-center justify-between mt-3 gap-8 max-w-11/12">
                         <CatalogSearchField defaultSearch={search} setSearchDebounced={onSearchChange}/>
 
                         <div className="flex items-center justify-between gap-6">
