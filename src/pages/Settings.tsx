@@ -3,6 +3,7 @@ import {useAuth} from "@/hooks/useAuth.ts";
 import {type ChangeEvent, useEffect, useRef, useState} from "react";
 import {getSettings, type SettingsType, updateSettings} from "@/services/api/settingsService.ts";
 import {useDebounce} from "react-use";
+import Loading from "@/components/Loading.tsx";
 
 export const Settings = () => {
     const {t} = useTranslation();
@@ -33,6 +34,7 @@ export const Settings = () => {
         maxDailyKanji: 0,
         useAlwaysVoiceVox: false,
     });
+    const [loading, setLoading] = useState(true);
 
     const [debouncedSettings, setDebouncedSettings] = useState<SettingsType>();
 
@@ -52,6 +54,7 @@ export const Settings = () => {
                 maxDailyKanji: res.data.maxDailyKanji ?? 0,
                 useAlwaysVoiceVox: res.data.useAlwaysVoiceVox ?? false,
             });
+            setLoading(false);
         });
 
         return () => {
@@ -60,6 +63,8 @@ export const Settings = () => {
     }, []);
 
     const saveSettings = (settings: SettingsType) =>{
+        if(loading) return;
+
         updateSettings(settings).then((res) => {
             if(res.data !== true) {
                 setError(true)
@@ -218,6 +223,7 @@ export const Settings = () => {
                     {error && <div role="alert" className="alert alert-error alert-soft">Error Saving Settings</div>}
                 </div>
             </div>
+            <Loading isLoading={loading}/>
         </div>
     );
 }

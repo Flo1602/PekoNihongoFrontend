@@ -114,7 +114,7 @@ export const StreakCalendar: React.FC<StreakCalendarProps> = ({
 
                         let tooltipText =
                             s
-                                ? `${date.toString()} • ${t("translation:streak")}: ${s.streak}`
+                                ? `${date.toString()} • ${t("translation:streak")}: ${s.streak || 0}`
                                 : date.toString();
                         if(isMobile){
                             tooltipText =date.toString();

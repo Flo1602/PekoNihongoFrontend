@@ -7,7 +7,7 @@ import {
     QuestTypes, updateQuest
 } from "@/services/api/questService.ts";
 import {useTranslation} from "react-i18next";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import QuestCard from "@/components/learn/QuestCard.tsx";
 import StreakCalendar from "@/components/learn/StreakCalendar.tsx";
 import {getStatsBetween, type Stats} from "@/services/api/statsService.ts";
@@ -20,6 +20,8 @@ const DailyQuests = () => {
     const [streakStats, setStreakStats] = useState<Stats[]>([]);
     const [statsMonth, setStatsMonth] = useState<Temporal.PlainYearMonth>(Temporal.Now.plainDateISO().toPlainYearMonth());
     const [streakInfo, setStreakInfo] = useState<{currStreak: number, streakExtended: boolean}>({currStreak:0, streakExtended:false})
+
+    const currStreakCache = useRef<{currStreak: number, streakExtended: boolean}>({currStreak:0, streakExtended:false});
 
     useEffect(() => {
         refreshQuestsAndStreak();
@@ -45,11 +47,14 @@ const DailyQuests = () => {
     }
 
     const refreshQuestsAndStreak = (): void =>{
+        refreshQuests();
+        refreshStreak();
+    }
+
+    const refreshQuests = (): void =>{
         getDailyQuests().then(res =>{
             setQuests(res.data);
         });
-
-        refreshStreak();
     }
 
     const refreshStreak = (): void =>{
@@ -57,6 +62,11 @@ const DailyQuests = () => {
         const lastDayOfMonth = statsMonth.toPlainDate({ day: statsMonth.daysInMonth });
         getStatsBetween(firstDayOfMonth, lastDayOfMonth).then(res =>{
             setStreakStats(res);
+
+            if(Temporal.PlainDate.compare(Temporal.Now.plainDateISO(), lastDayOfMonth) > 0 || Temporal.PlainDate.compare(Temporal.Now.plainDateISO(), firstDayOfMonth) < 0){
+                setStreakInfo(currStreakCache.current);
+                return;
+            }
 
             if(res.length === 0 || res.length === 1 && res[0].streak == null || !isDateToday(res[res.length-1].date)){
                 setStreakInfo({
@@ -73,18 +83,22 @@ const DailyQuests = () => {
                 let lastEntry = res[res.length-1];
                 let extended = res[res.length-1].streak !== null && res[res.length-1].streak > 0;
 
-                if(lastEntry.streak === null || (lastEntry.streak < 1 && isDateYesterday(res[res.length-2].date))){
+                if(lastEntry.streak < 1 && isDateYesterday(res[res.length-2].date)){
                     lastEntry = res[res.length-2];
                     extended = false;
                 }
 
                 setStreakInfo({
-                    currStreak: lastEntry.streak,
+                    currStreak: lastEntry.streak || 0,
                     streakExtended: extended
                 })
             }
         })
     }
+
+    useEffect(() => {
+        currStreakCache.current = streakInfo;
+    }, [streakInfo]);
 
     const isDateToday = (date: Temporal.PlainDate): boolean =>{
         const today = Temporal.Now.plainDateISO();
@@ -97,15 +111,21 @@ const DailyQuests = () => {
     }
 
     const deleteQuestHandler = (questId: number): void =>{
-        deleteQuest(questId).then(() =>{
-            refreshQuestsAndStreak();
-        });
+        deleteQuest(questId).then(() => refreshAfterUpdate());
     }
 
     const updateQuestHandler = (quest: Quest): void =>{
-        updateQuest(quest).then(() =>{
+        updateQuest(quest).then(() => refreshAfterUpdate());
+    }
+
+    const refreshAfterUpdate = (): void =>{
+        const currMonth = Temporal.Now.plainDateISO().toPlainYearMonth();
+        if(statsMonth.equals(currMonth)){
             refreshQuestsAndStreak();
-        });
+        } else {
+            setStatsMonth(currMonth);
+            refreshQuests();
+        }
     }
 
     return (
