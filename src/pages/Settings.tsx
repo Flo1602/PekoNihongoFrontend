@@ -1,6 +1,6 @@
 import {useTranslation} from "react-i18next";
 import {useAuth} from "@/hooks/useAuth.ts";
-import {type ChangeEvent, useEffect, useRef, useState} from "react";
+import {type ChangeEvent, useCallback, useEffect, useRef, useState} from "react";
 import {getSettings, type SettingsType, updateSettings} from "@/services/api/settingsService.ts";
 import {useDebounce} from "react-use";
 import Loading from "@/components/Loading.tsx";
@@ -46,6 +46,21 @@ export const Settings = () => {
         settingsRef.current = settings;
     }, [settings]);
 
+    const saveSettings = useCallback((settings: SettingsType) =>{
+        if(loading) return;
+
+        updateSettings(settings).then((res) => {
+            if(res.data !== true) {
+                setError(true)
+            } else {
+                setError(false)
+            }
+        }).catch(console.error);
+    }, [loading])
+
+    const saveSettingsRef = useRef(saveSettings);
+    useEffect(() => { saveSettingsRef.current = saveSettings; }, [saveSettings]);
+
     useEffect(() => {
         getSettings().then((res) =>{
             setSettings({
@@ -58,25 +73,13 @@ export const Settings = () => {
         });
 
         return () => {
-            saveSettings(settingsRef.current);
+            saveSettingsRef.current(settingsRef.current);
         };
     }, []);
 
-    const saveSettings = (settings: SettingsType) =>{
-        if(loading) return;
-
-        updateSettings(settings).then((res) => {
-            if(res.data !== true) {
-                setError(true)
-            } else {
-                setError(false)
-            }
-        }).catch(console.error);
-    }
-
     useEffect(() => {
         if(debouncedSettings === undefined) return;
-        saveSettings(debouncedSettings);
+            saveSettingsRef.current(debouncedSettings);
     }, [debouncedSettings]);
 
     const changeLanguage = (e: ChangeEvent<HTMLSelectElement>) => {

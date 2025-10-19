@@ -23,9 +23,9 @@ export const StreakCalendar: React.FC<StreakCalendarProps> = ({
     const today = Temporal.Now.plainDateISO();
     const isMobile = useIsMobile();
 
-    const weekdayLabels = [t("translation:sunday"), t("translation:monday"),
+    const weekdayLabels = [t("translation:monday"),
         t("translation:tuesday"),t("translation:wednesday"),t("translation:thursday"),
-        t("translation:friday"),t("translation:saturday")];
+        t("translation:friday"),t("translation:saturday"), t("translation:sunday")];
 
     function formatMonthTitle(m: Temporal.PlainYearMonth, longForm: boolean) {
         // einfache deutschsprachige Anzeige, z.B. "Oktober 2025"
@@ -63,7 +63,7 @@ export const StreakCalendar: React.FC<StreakCalendarProps> = ({
     const goThisMonth = () => onChangeMonth(today.toPlainYearMonth());
 
     return (
-        <div className="flex-1 card bg-base-200 shadow-xl max-w-md w-full">
+        <div className="flex-1 card bg-base-100 shadow-xl max-w-md w-full">
             <div className="card-body p-4 sm:p-6">
                 {/* Header */}
                 <div className="flex items-center justify-between gap-2">
