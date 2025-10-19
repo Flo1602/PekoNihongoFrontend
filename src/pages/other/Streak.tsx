@@ -8,12 +8,12 @@ import {
 } from "@/services/api/questService.ts";
 import {useTranslation} from "react-i18next";
 import {useEffect, useRef, useState} from "react";
-import QuestCard from "@/components/learn/QuestCard.tsx";
-import StreakCalendar from "@/components/learn/StreakCalendar.tsx";
+import QuestCard from "@/components/other/QuestCard.tsx";
+import StreakCalendar from "@/components/other/StreakCalendar.tsx";
 import {getStatsBetween, type Stats} from "@/services/api/statsService.ts";
 import {Temporal} from "@js-temporal/polyfill";
 
-const DailyQuests = () => {
+const Streak = () => {
     const {t} = useTranslation();
 
     const [quests, setQuests] = useState<Quest[]>([]);
@@ -38,7 +38,11 @@ const DailyQuests = () => {
             category: 'DAILY_QUEST',
             text: "",
             goal: 1,
-            progress: 0
+            progress: 0,
+        }
+
+        if(questType === 'EXERCISE_TIME'){
+            quest.goal *= 60;
         }
 
         createDailyQuest(quest).then(() =>{
@@ -204,4 +208,4 @@ const DailyQuests = () => {
         </div>
     );
 }
-export default DailyQuests
+export default Streak

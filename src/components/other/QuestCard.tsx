@@ -1,5 +1,5 @@
 import React, {useMemo, useState} from "react";
-import type {Quest} from "@/services/api/questService.ts";
+import {type Quest, type QuestType} from "@/services/api/questService.ts";
 import {useTranslation} from "react-i18next";
 import PenIcon from "@/assets/icons/PenIcon.tsx";
 import DoubleCheckIcon from "@/assets/icons/DoubleCheckIcon.tsx";
@@ -15,6 +15,22 @@ function clamp(v: number, min = 0, max = 100) {
     return Math.min(max, Math.max(min, v));
 }
 
+function getGoal(quest: Quest) {
+    if(quest.type !== 'EXERCISE_TIME'){
+        return Math.max(quest.goal, 1);
+    }
+
+    return Math.max(Math.round(quest.goal/60), 1);
+}
+
+function getProgress(quest: Quest) {
+    if(quest.type !== 'EXERCISE_TIME'){
+        return Math.max(quest.progress ?? 0, 0);
+    }
+
+    return Math.max(Math.floor(quest.progress / 60) ?? 0, 0);
+}
+
 export const QuestCard: React.FC<Props> = ({
                                                quest,
                                                className,
@@ -23,9 +39,11 @@ export const QuestCard: React.FC<Props> = ({
                                            }) => {
     const {t} = useTranslation();
 
-    const goal = Math.max(quest.goal, 1);
-    const progress = Math.max(quest.progress ?? 0, 0);
+    const goal = getGoal(quest);
+    const progress = getProgress(quest);
     const done = progress >= goal;
+
+    const goalUnit = (quest.type === 'EXERCISE_TIME' ? t("translation:minutesShort") : "");
 
     const percent = clamp((progress / goal) * 100);
 
@@ -62,12 +80,17 @@ export const QuestCard: React.FC<Props> = ({
     const [tempGoal, setTempGoal] = useState<number>(goal);
 
     const startEditGoal = () => {
-        if (quest.type !== "NEW_DRAFTS") return;
+        if (!canEditGoal(quest.type)) return;
         setTempGoal(goal);
         setIsEditingGoal(true);
     };
     const saveGoal = () => {
         quest.goal = Math.max(Number.isFinite(+tempGoal) ? Math.floor(+tempGoal) : 1, 1);
+
+        if(quest.type === 'EXERCISE_TIME'){
+            quest.goal *= 60;
+        }
+
         onEdit?.(quest);
         setIsEditingGoal(false);
     };
@@ -81,28 +104,33 @@ export const QuestCard: React.FC<Props> = ({
         onEdit?.(quest);
     };
 
+    const canEditGoal = (type: QuestType) => {
+        return type === "NEW_DRAFTS" || type === "EXERCISE_TIME" || type === "EXERCISE_COUNT";
+    }
+
     return (
         <div
             className={`relative card bg-base-200 border ${done ? "border-success/40" : "border-base-300"} shadow-sm ${className ?? ""}`}
             aria-label={`Quest: ${computedTitle}`}
         >
-            {/* Delete (rot) */}
-            <button
-                type="button"
-                className="btn btn-xs btn-circle btn-error absolute -right-2 -top-2"
-                aria-label={t("translation:delete")}
-                onClick={() => onDelete?.(quest.id)}
-                title={t("translation:delete")}
-            >
-                ✕
-            </button>
+            {onDelete &&
+                <button
+                    type="button"
+                    className="btn btn-xs btn-circle btn-error absolute -right-2 -top-2"
+                    aria-label={t("translation:delete")}
+                    onClick={() => onDelete?.(quest.id)}
+                    title={t("translation:delete")}
+                >
+                    ✕
+                </button>
+            }
 
             <div className="card-body gap-3 py-4">
                 {/* Header */}
                 <div className="flex items-center justify-between gap-3">
                     {/* Titel */}
                     <div className="flex min-w-0 items-center gap-2">
-                        {quest.type === "CUSTOM" ? (
+                        {(quest.type === "CUSTOM" && onEdit) ? (
                             isEditingTitle ? (
                                 <div className="flex items-center gap-2">
                                     <input
@@ -138,8 +166,7 @@ export const QuestCard: React.FC<Props> = ({
 
                     {/* Rechts: kompakte Actions + Prozent */}
                     <div className="flex items-center gap-2">
-                        {/* CUSTOM: klar erkennbarer Button zum Abschließen */}
-                        {quest.type === "CUSTOM" && (
+                        {(quest.type === "CUSTOM" && onEdit) && (
                             done ? (
                                 <div className="tooltip tooltip-left" data-tip={t("translation:done")}>
                                     <button
@@ -188,10 +215,9 @@ export const QuestCard: React.FC<Props> = ({
 
                 {/* Fußzeile */}
                 <div className="flex items-center justify-between text-sm text-base-content/70">
-                    {/* NEW_DRAFTS: Goal inline edit */}
                     {isEditingGoal ? (
                         <div className="flex items-center gap-2">
-                            <span className="opacity-80">{progress} /</span>
+                            <span className="opacity-80">{progress}{goalUnit} /</span>
                             <input
                                 type="number"
                                 min={1}
@@ -209,8 +235,8 @@ export const QuestCard: React.FC<Props> = ({
                         </div>
                     ) : (
                         <div className="flex items-center gap-2">
-                            <span className="opacity-80">{progress} / {goal}</span>
-                            {quest.type === "NEW_DRAFTS" && (
+                            <span className="opacity-80">{progress}{goalUnit} / {goal}{goalUnit}</span>
+                            {(canEditGoal(quest.type) && onEdit) && (
                                 <button
                                     className="btn btn-ghost btn-xs p-1"
                                     onClick={startEditGoal}
@@ -221,6 +247,9 @@ export const QuestCard: React.FC<Props> = ({
                                 </button>
                             )}
                         </div>
+                    )}
+                    {(quest.expirationDate && !done) && (
+                        <span className="opacity-80 text-error">{t("translation:expiration")}: {quest.expirationDate.toString()}</span>
                     )}
                 </div>
             </div>

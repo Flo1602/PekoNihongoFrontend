@@ -1,9 +1,10 @@
 import {api} from "@/services/api/client.ts";
+import {Temporal} from "@js-temporal/polyfill";
 
-export const QuestTypes = ['CUSTOM', 'DAILY_WORDS', 'DAILY_KANJI', 'NEW_DRAFTS'] as const;
+export const QuestTypes = ['CUSTOM', 'DAILY_WORDS', 'DAILY_KANJI', 'NEW_DRAFTS', 'EXERCISE_COUNT', 'EXERCISE_TIME'] as const;
 export type QuestType = typeof QuestTypes[number];
 
-export type QuestCategory = 'DAILY_QUEST';
+export type QuestCategory = 'DAILY_QUEST' | 'CHALLENGE_QUEST' | 'WEEKLY_QUEST';
 
 export interface Quest {
     id: number;
@@ -12,10 +13,15 @@ export interface Quest {
     text: string;
     goal: number;
     progress: number;
+    expirationDate?: Temporal.PlainDate;
 }
 
 export async function getDailyQuests() {
     return api.get('/quests/daily');
+}
+
+export async function getAllQuests() {
+    return api.get('/quests');
 }
 
 export async function createDailyQuest(quest: Quest) {

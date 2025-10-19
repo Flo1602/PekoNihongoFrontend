@@ -4,8 +4,8 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import HomeIcon from "@/assets/icons/HomeIcon.tsx";
 import CatalogIcon from "@/assets/icons/CatalogIcon.tsx";
 import StatsIcon from "@/assets/icons/StatsIcon.tsx";
-import SettingsIcon from "@/assets/icons/SettingsIcon.tsx";
 import { AnimatePresence, motion } from "framer-motion";
+import OtherIcon from "@/assets/icons/OtherIcon.tsx";
 
 interface Props {
     isVisible: boolean;
@@ -34,7 +34,12 @@ const TitleBar = ({isVisible}: Props) => {
             ]
         },
         {id: 3, path: '/stats', icon: StatsIcon, label: t('translation:stats'), details: null},
-        {id: 4, path: '/settings', icon: SettingsIcon, label: t('translation:settings'), details: null},
+        {id: 4, path: '/other', icon: OtherIcon, label: t('translation:other'), details: [
+                {id: 401, innerPath: '/other/shop', innerLabel: t('translation:shop')},
+                {id: 403, innerPath: '/other/streak', innerLabel: t('translation:streak')},
+                {id: 404, innerPath: '/other/quests', innerLabel: t('translation:quests')},
+                {id: 405, innerPath: '/other/settings', innerLabel: t('translation:settings')},
+            ]},
     ];
 
     if (isMobile) return (

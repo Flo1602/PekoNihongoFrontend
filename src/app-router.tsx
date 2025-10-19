@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import {createBrowserRouter, Navigate} from "react-router-dom";
 
 import RequireAuth from "@/components/RequireAuth";
 import Login from "@/pages/Login";
@@ -13,70 +13,83 @@ import WordsLearningMenu from "@/pages/learn/WordsLearningMenu";
 import KanjiLearnMenu from "@/pages/learn/KanjiLearnMenu";
 import SentenceLearnMenu from "@/pages/learn/SentenceLearnMenu";
 import QuestionLearnMenu from "@/pages/learn/QuestionLearnMenu";
-import Settings from "@/pages/Settings";
+import Settings from "@/pages/other/Settings.tsx";
 import DailyWords from "@/pages/learn/DailyWords";
 import DailyKanji from "@/pages/learn/DailyKanji";
 import AnimatedShell from "@/components/layouts/AnimatedShell.tsx";
 import RootLayout from "@/components/layouts/RootLayout.tsx";
 import SpeakTheWord from "@/pages/learn/SpeakTheWord.tsx";
 import WordDrafts from "@/pages/catalog/WordDrafts.tsx";
-import DailyQuests from "@/pages/DailyQuests.tsx";
+import Streak from "@/pages/other/Streak.tsx";
+import Shop from "@/pages/other/Shop.tsx";
+import OtherMenu from "@/pages/other/OtherMenu.tsx";
+import Quests from "@/pages/other/Quests.tsx";
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <RootLayout />,
+        element: <RootLayout/>,
         children: [
-            { path: "login", element: <Login /> },
+            {path: "login", element: <Login/>},
             {
-                element: <RequireAuth />,
+                element: <RequireAuth/>,
                 children: [
                     {
-                        element: <AnimatedShell />,
+                        element: <AnimatedShell/>,
                         children: [
-                            { index: true, element: <Navigate to="/learning" replace /> },
+                            {index: true, element: <Navigate to="/learning" replace/>},
 
                             {
                                 path: "learning",
                                 children: [
-                                    { index: true, element: <LearnMenu /> },
+                                    {index: true, element: <LearnMenu/>},
                                     {
                                         path: "words",
                                         children: [
-                                            { index: true, element: <WordsLearningMenu /> },
-                                            { path: "daily", element: <DailyWords /> },
-                                            { path: "speakTheWord", element: <SpeakTheWord /> },
+                                            {index: true, element: <WordsLearningMenu/>},
+                                            {path: "daily", element: <DailyWords/>},
+                                            {path: "speakTheWord", element: <SpeakTheWord/>},
                                         ],
                                     },
                                     {
                                         path: "kanji",
                                         children: [
-                                            { index: true, element: <KanjiLearnMenu /> },
-                                            { path: "daily", element: <DailyKanji /> },
+                                            {index: true, element: <KanjiLearnMenu/>},
+                                            {path: "daily", element: <DailyKanji/>},
                                         ],
                                     },
-                                    { path: "sentences", element: <SentenceLearnMenu /> },
-                                    { path: "questions", element: <QuestionLearnMenu /> },
-                                    { path: "dailyQuests", element: <DailyQuests /> },
+                                    {path: "sentences", element: <SentenceLearnMenu/>},
+                                    {path: "questions", element: <QuestionLearnMenu/>},
                                 ],
                             },
 
                             {
                                 path: "catalog",
                                 children: [
-                                    { index: true, element: <Catalog /> },
-                                    { path: "words", children: [
-                                        { index: true, element: <WordList/> },
-                                        { path: "drafts", element: <WordDrafts/> }
-                                    ] },
-                                    { path: "kanji", element: <KanjiList /> },
-                                    { path: "sentences", element: <SentenceList /> },
-                                    { path: "questions", element: <QuestionList /> },
+                                    {index: true, element: <Catalog/>},
+                                    {
+                                        path: "words", children: [
+                                            {index: true, element: <WordList/>},
+                                            {path: "drafts", element: <WordDrafts/>}
+                                        ]
+                                    },
+                                    {path: "kanji", element: <KanjiList/>},
+                                    {path: "sentences", element: <SentenceList/>},
+                                    {path: "questions", element: <QuestionList/>},
                                 ],
                             },
 
-                            { path: "stats", element: <Stats /> },
-                            { path: "settings", element: <Settings /> },
+                            {path: "stats", element: <Stats/>},
+
+                            {
+                                path: "other", children: [
+                                    {index: true, element: <OtherMenu/>},
+                                    {path: "settings", element: <Settings/>},
+                                    {path: "streak", element: <Streak/>},
+                                    {path: "shop", element: <Shop/>},
+                                    {path: "quests", element: <Quests/>},
+                                ]
+                            },
                         ],
                     },
                 ],
