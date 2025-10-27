@@ -10,6 +10,7 @@ import {
 } from "@/services/api/shopService.ts";
 import {useTranslation} from "react-i18next";
 import {useIsMobile} from "@/hooks/useIdMobile.ts";
+import {Temporal} from "@js-temporal/polyfill";
 
 type Toast = { id: number; type: "success" | "error" | "info"; msg: string };
 
@@ -33,7 +34,7 @@ const Shop: React.FC = () => {
         setLoading(true);
         try {
             const [itemsRes, moneyRes] = await Promise.all([getAllItems(), getCurrMoney()]);
-            setItems(itemsRes.data as ShopItem[]);
+            setItems(parseShopItems(itemsRes.data));
             setCurrMoney(moneyRes.data as number);
         } catch {
             pushToast({ id: Date.now(), type: "error", msg: "Error while loading shop." });
@@ -80,6 +81,11 @@ const Shop: React.FC = () => {
                         pending={pendingType === it.type}
                         onBuy={handleBuy}
                         onGamble={handleGamble}
+                        refresh={() => {
+                            getAllItems().then((res) => {
+                                setItems(parseShopItems(res.data));
+                            });
+                        }}
                     />
                 ))}
             </div>
@@ -96,7 +102,8 @@ const Shop: React.FC = () => {
                 pushToast({ id: Date.now(), type: "success", msg: t("translation:buySuccess") });
                 // Items ggf. neu laden, falls Verfügbarkeit sich ändert
                 const itemsRes = await getAllItems();
-                setItems(itemsRes.data as ShopItem[]);
+
+                setItems(parseShopItems(itemsRes.data));
             } else {
                 pushToast({ id: Date.now(), type: "error", msg: t("translation:buyFailed") });
             }
@@ -105,6 +112,16 @@ const Shop: React.FC = () => {
         } finally {
             setPendingType(null);
         }
+    }
+
+    function parseShopItems(items: ShopItem[]): ShopItem[] {
+        items.forEach((item) => {
+            if(item.activeTill){
+                item.activeTill = Temporal.PlainDateTime.from(item.activeTill);
+            }
+        })
+
+        return items;
     }
 
     async function handleGamble(type: ShopItemType, amount: number) {

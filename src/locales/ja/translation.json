@@ -36,6 +36,8 @@
   "cumStudyTime30": "累積学習時間（30日間）",
   "cumulativeHours": "累積時間",
   "dailyKanji": "毎日の漢字",
+  "dailyQuestEdit": "デイリークエスト編集",
+  "dailyQuestEditDesc": "現在のデイリークエストを15分間編集・削除できます。",
   "dailyQuests": "デイリークエスト",
   "dailyWords": "毎日の単語",
   "delete": "削除",

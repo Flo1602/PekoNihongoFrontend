@@ -1,12 +1,14 @@
 import {api} from "@/services/api/client.ts";
+import {Temporal} from "@js-temporal/polyfill";
 
 export interface ShopItem {
     type: ShopItemType;
     price: number;
     available: boolean;
+    activeTill: Temporal.PlainDateTime;
 }
 
-export const SHOP_ITEM_TYPES = ['STREAK_EXTENDER', 'MONEY_GAMBLE', 'MONEY_GAMBLE_HIGH_RISK', 'CHALLENGE_QUEST'] as const;
+export const SHOP_ITEM_TYPES = ['STREAK_EXTENDER', 'MONEY_GAMBLE', 'MONEY_GAMBLE_HIGH_RISK', 'CHALLENGE_QUEST', 'DAILY_QUEST_EDIT_15_MIN'] as const;
 export type ShopItemType = typeof SHOP_ITEM_TYPES[number];
 
 export async function getAllItems() {

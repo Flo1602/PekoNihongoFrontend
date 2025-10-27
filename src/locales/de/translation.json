@@ -36,6 +36,8 @@
   "cumStudyTime30": "Kumulative Lernzeit (30 Tage)",
   "cumulativeHours": "Kumulative Stunden",
   "dailyKanji": "Tägliche Kanji",
+  "dailyQuestEdit": "Tägliche Quests bearbeiten",
+  "dailyQuestEditDesc": "Ermöglicht das Bearbeiten und Löschen der aktuellen täglichen Quests für die nächsten 15 Minuten.",
   "dailyQuests": "Tägliche Quests",
   "dailyWords": "Tägliche Wörter",
   "delete": "Löschen",

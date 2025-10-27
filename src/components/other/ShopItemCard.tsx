@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import type {ShopItem, ShopItemType} from "@/services/api/shopService.ts";
 import {useTranslation} from "react-i18next";
+import Countdown from "@/components/other/Countdown.tsx";
 
 type Props = {
     item: ShopItem;
@@ -8,9 +9,10 @@ type Props = {
     pending?: boolean;
     onBuy: (type: ShopItemType, price: number) => void;
     onGamble: (type: ShopItemType, amount: number) => void;
+    refresh: () => void;
 };
 
-const ShopItemCard: React.FC<Props> = ({ item, currMoney, pending, onBuy, onGamble }) => {
+const ShopItemCard: React.FC<Props> = ({ item, currMoney, pending, onBuy, onGamble, refresh }) => {
 
     const {t} = useTranslation();
 
@@ -24,6 +26,8 @@ const ShopItemCard: React.FC<Props> = ({ item, currMoney, pending, onBuy, onGamb
                 return t("translation:gamble") + " (" + t("translation:highRisk") + ")";
             case "CHALLENGE_QUEST":
                 return t("translation:challengeQuest")
+            case "DAILY_QUEST_EDIT_15_MIN":
+                return t("translation:dailyQuestEdit")
             default:
                 return String(type);
         }
@@ -39,6 +43,8 @@ const ShopItemCard: React.FC<Props> = ({ item, currMoney, pending, onBuy, onGamb
                 return t("translation:gambleHighRiskDesc");
             case "CHALLENGE_QUEST":
                 return t("translation:challengeQuestDesc")
+            case "DAILY_QUEST_EDIT_15_MIN":
+                return t("translation:dailyQuestEditDesc")
             default:
                 return "";
         }
@@ -95,7 +101,12 @@ const ShopItemCard: React.FC<Props> = ({ item, currMoney, pending, onBuy, onGamb
                     </div>
                 )}
 
-                <div className="card-actions justify-end mt-4">
+                <div className="flex items-center card-actions justify-end mt-4">
+                    {item.activeTill &&
+                        <div className="pr-2">
+                            <Countdown target={item.activeTill} countdownEndHandler={refresh}/>
+                        </div>
+                    }
                     {!isGamble ? (
                         <button
                             className={`btn btn-primary ${pending ? "disabled" : ""}`}

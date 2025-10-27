@@ -12,6 +12,7 @@ import QuestCard from "@/components/other/QuestCard.tsx";
 import StreakCalendar from "@/components/other/StreakCalendar.tsx";
 import {getStatsBetween, type Stats} from "@/services/api/statsService.ts";
 import {Temporal} from "@js-temporal/polyfill";
+import {isEffectActive} from "@/services/api/effectService.ts";
 
 const Streak = () => {
     const {t} = useTranslation();
@@ -20,11 +21,17 @@ const Streak = () => {
     const [streakStats, setStreakStats] = useState<Stats[]>([]);
     const [statsMonth, setStatsMonth] = useState<Temporal.PlainYearMonth>(Temporal.Now.plainDateISO().toPlainYearMonth());
     const [streakInfo, setStreakInfo] = useState<{currStreak: number, streakExtended: boolean}>({currStreak:0, streakExtended:false})
+    const canEditQuests = useRef(false);
+    const newQuestIds = useRef<number[]>([]);
 
     const currStreakCache = useRef<{currStreak: number, streakExtended: boolean}>({currStreak:0, streakExtended:false});
 
     useEffect(() => {
-        refreshQuestsAndStreak();
+        isEffectActive('ALLOW_DAILY_QUESTS_EDIT').then(res =>{
+            canEditQuests.current = res.data;
+
+            refreshQuests();
+        })
     }, []);
 
     useEffect(() => {
@@ -45,7 +52,9 @@ const Streak = () => {
             quest.goal *= 60;
         }
 
-        createDailyQuest(quest).then(() =>{
+        createDailyQuest(quest).then((res) =>{
+            const quest: Quest = res.data;
+            newQuestIds.current.push(quest.id);
             refreshQuestsAndStreak();
         });
     }
@@ -59,6 +68,10 @@ const Streak = () => {
         getDailyQuests().then(res =>{
             setQuests(res.data);
         });
+    }
+
+    const canEditQuest = (id: number):boolean => {
+        return canEditQuests.current || newQuestIds.current.includes(id);
     }
 
     const refreshStreak = (): void =>{
@@ -196,6 +209,7 @@ const Streak = () => {
                                                 quest={quest}
                                                 onDelete={deleteQuestHandler}
                                                 onEdit={updateQuestHandler}
+                                                disableEdit={!canEditQuest(quest.id)}
                                             />
                                         </li>
                                     ))}
