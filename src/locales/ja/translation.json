@@ -112,6 +112,8 @@
   "streakExtended": "ストリークが延長されました",
   "streakExtender": "ストリーク延長アイテム",
   "streakExtenderDesc": "今日のクエストを完了しなくてもストリークが続きます。",
+  "streakRepair": "ストリーク修復",
+  "streakRepairDesc": "最新の欠損日を修復してストリークを回復します。該当日がない場合は失敗します。",
   "studyTimeLast7": "過去7日間の学習時間",
   "submit": "送信",
   "sunday": "日",

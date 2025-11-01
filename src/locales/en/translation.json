@@ -112,6 +112,8 @@
   "streakExtended": "Streak Extended",
   "streakExtender": "Streak-Extender",
   "streakExtenderDesc": "Extends your current streak for today without the need of completing your daily quests.",
+  "streakRepair": "Streak Repair",
+  "streakRepairDesc": "Fixes your streak by restoring the most recent missed day. Fails if no eligible day is found.",
   "studyTimeLast7": "Study Time last 7 Days",
   "submit": "Submit",
   "sunday": "Sun",

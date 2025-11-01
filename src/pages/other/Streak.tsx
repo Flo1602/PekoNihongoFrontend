@@ -75,9 +75,14 @@ const Streak = () => {
     }
 
     const refreshStreak = (): void =>{
-        const firstDayOfMonth = statsMonth.toPlainDate({ day: 1 });
+        let firstDayOfMonth = statsMonth.toPlainDate({ day: 1 });
         const lastDayOfMonth = statsMonth.toPlainDate({ day: statsMonth.daysInMonth });
-        getStatsBetween(firstDayOfMonth, lastDayOfMonth).then(res =>{
+
+        if(firstDayOfMonth.equals(Temporal.Now.plainDateISO())){
+            firstDayOfMonth = firstDayOfMonth.subtract({days: 1});
+        }
+
+        getStatsBetween(firstDayOfMonth.subtract({days: 1}), lastDayOfMonth).then(res =>{
             setStreakStats(res);
 
             if(Temporal.PlainDate.compare(Temporal.Now.plainDateISO(), lastDayOfMonth) > 0 || Temporal.PlainDate.compare(Temporal.Now.plainDateISO(), firstDayOfMonth) < 0){

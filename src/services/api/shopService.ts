@@ -8,7 +8,7 @@ export interface ShopItem {
     activeTill: Temporal.PlainDateTime;
 }
 
-export const SHOP_ITEM_TYPES = ['STREAK_EXTENDER', 'MONEY_GAMBLE', 'MONEY_GAMBLE_HIGH_RISK', 'CHALLENGE_QUEST', 'DAILY_QUEST_EDIT_15_MIN'] as const;
+export const SHOP_ITEM_TYPES = ['STREAK_EXTENDER', 'MONEY_GAMBLE', 'MONEY_GAMBLE_HIGH_RISK', 'CHALLENGE_QUEST', 'DAILY_QUEST_EDIT_15_MIN', 'STREAK_REPAIR'] as const;
 export type ShopItemType = typeof SHOP_ITEM_TYPES[number];
 
 export async function getAllItems() {

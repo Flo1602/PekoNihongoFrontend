@@ -28,6 +28,8 @@ const ShopItemCard: React.FC<Props> = ({ item, currMoney, pending, onBuy, onGamb
                 return t("translation:challengeQuest")
             case "DAILY_QUEST_EDIT_15_MIN":
                 return t("translation:dailyQuestEdit")
+            case "STREAK_REPAIR":
+                return t("streakRepair")
             default:
                 return String(type);
         }
@@ -45,6 +47,8 @@ const ShopItemCard: React.FC<Props> = ({ item, currMoney, pending, onBuy, onGamb
                 return t("translation:challengeQuestDesc")
             case "DAILY_QUEST_EDIT_15_MIN":
                 return t("translation:dailyQuestEditDesc")
+            case "STREAK_REPAIR":
+                return t("streakRepairDesc")
             default:
                 return "";
         }

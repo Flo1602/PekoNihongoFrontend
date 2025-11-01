@@ -112,6 +112,8 @@
   "streakExtended": "Streak verlängert",
   "streakExtender": "Streak-Verlängerer",
   "streakExtenderDesc": "Verlängert deinen heutigen Streak, ohne dass du tägliche Quests abschließen musst.",
+  "streakRepair": "Streak-Reparatur",
+  "streakRepairDesc": "Stellt deinen Streak wieder her, indem der zuletzt verpasste Tag repariert wird. Wird fehlgeschlagen, wenn kein geeigneter Tag gefunden wird.",
   "studyTimeLast7": "Lernzeit letzte 7 Tage",
   "submit": "Absenden",
   "sunday": "So",
