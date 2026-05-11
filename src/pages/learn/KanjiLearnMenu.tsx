@@ -17,20 +17,20 @@ const KanjiLearnMenu = () => {
     }, []);
 
     const elements = [
-        {path: '/learning/kanji/daily', icon: DailyIcon, label: t('translation:dailyKanji')},
+        {path: '/learning/kanji/daily', icon: DailyIcon, label: t('dailyKanji')},
     ];
 
     return (
         <div className="flex flex-col flex-1">
             <SubMenu elements={elements}>
-                {t('translation:kanji')}
+                {t('kanji')}
             </SubMenu>
 
             <div
                 className="fixed bottom-20 lg:bottom-0 left-0 w-full bg-base-300/80 backdrop-blur p-4 z-50">
                 <LearnProgress
-                    label={t('translation:kanji')}
-                    todayDueText={t("translation:kanjiDueToday")}
+                    label={t('kanji')}
+                    todayDueText={t("kanjiDueToday")}
                     dueToday={progressData.dueToday}
                     completedToday={progressData.completedToday}
                     totalPending={progressData.totalPending}

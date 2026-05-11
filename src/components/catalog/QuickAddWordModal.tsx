@@ -105,7 +105,7 @@ const QuickAddWordModal = ({elementId, createDraft}: Props) => {
                     </button>
                 </form>
 
-                <h3 className="font-bold text-lg mb-4 text-center">{t("translation:quickAdd")}</h3>
+                <h3 className="font-bold text-lg mb-4 text-center">{t("quickAdd")}</h3>
 
                 <div className="flex-1 flex flex-col space-y-5">
                     <button
@@ -117,11 +117,11 @@ const QuickAddWordModal = ({elementId, createDraft}: Props) => {
                         {listening ? (
                             <span className="inline-flex items-center gap-2">
                                     <span className="loading loading-bars" aria-hidden="true" />
-                                    🎙️ {t("translation:recording")}
+                                    🎙️ {t("recording")}
                                 </span>
                         ) : (
                             <span className="inline-flex items-center gap-2">
-                                    🎤 {t("translation:speakNow")}
+                                    🎤 {t("speakNow")}
                                 <span className="hidden md:inline text-base-content/70"/>
                                 </span>
                         )}
@@ -129,14 +129,14 @@ const QuickAddWordModal = ({elementId, createDraft}: Props) => {
 
                     <div className="space-y-1">
                         <label className="label" htmlFor="kana">
-                            <span className="label-text">{t("translation:textSearch")}:</span>
+                            <span className="label-text">{t("textSearch")}:</span>
                         </label>
                         <input
                             id="entry"
                             name="entry"
                             ref={searchFieldRef}
                             type="text"
-                            placeholder={t("translation:query")}
+                            placeholder={t("query")}
                             className="input input-bordered w-full"
                             autoComplete="off"
                             onKeyDown={handleKeyDown}
@@ -149,7 +149,7 @@ const QuickAddWordModal = ({elementId, createDraft}: Props) => {
                         disabled={false}
                         onClick={handleSearch}
                     >
-                        {t("translation:search")}
+                        {t("search")}
                     </button>
 
                     <div>

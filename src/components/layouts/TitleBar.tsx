@@ -19,26 +19,26 @@ const TitleBar = ({isVisible}: Props) => {
     const {pathname} = useLocation();
 
     const tabs = [
-        {id: 1, path: '/learning', icon: HomeIcon, label: t('translation:learn'), details: [
-                {id: 101, innerPath: '/learning/words', innerLabel: t('translation:words')},
-                {id: 102, innerPath: '/learning/kanji', innerLabel: t('translation:kanji')},
-                {id: 103, innerPath: '/learning/sentences', innerLabel: t('translation:sentences')},
-                {id: 104, innerPath: '/learning/questions', innerLabel: t('translation:questions')}
+        {id: 1, path: '/learning', icon: HomeIcon, label: t('learn'), details: [
+                {id: 101, innerPath: '/learning/words', innerLabel: t('words')},
+                {id: 102, innerPath: '/learning/kanji', innerLabel: t('kanji')},
+                {id: 103, innerPath: '/learning/sentences', innerLabel: t('sentences')},
+                {id: 104, innerPath: '/learning/questions', innerLabel: t('questions')}
             ]
         },
-        {id: 2, path: '/catalog', icon: CatalogIcon, label: t('translation:catalog'), details: [
-                {id: 201, innerPath: '/catalog/words', innerLabel: t('translation:words')},
-                {id: 203, innerPath: '/catalog/kanji', innerLabel: t('translation:kanji')},
-                {id: 204, innerPath: '/catalog/sentences', innerLabel: t('translation:sentences')},
-                {id: 205, innerPath: '/catalog/questions', innerLabel: t('translation:questions')}
+        {id: 2, path: '/catalog', icon: CatalogIcon, label: t('catalog'), details: [
+                {id: 201, innerPath: '/catalog/words', innerLabel: t('words')},
+                {id: 203, innerPath: '/catalog/kanji', innerLabel: t('kanji')},
+                {id: 204, innerPath: '/catalog/sentences', innerLabel: t('sentences')},
+                {id: 205, innerPath: '/catalog/questions', innerLabel: t('questions')}
             ]
         },
-        {id: 3, path: '/stats', icon: StatsIcon, label: t('translation:stats'), details: null},
-        {id: 4, path: '/other', icon: OtherIcon, label: t('translation:other'), details: [
-                {id: 401, innerPath: '/other/shop', innerLabel: t('translation:shop')},
-                {id: 403, innerPath: '/other/streak', innerLabel: t('translation:streak')},
-                {id: 404, innerPath: '/other/quests', innerLabel: t('translation:quests')},
-                {id: 405, innerPath: '/other/settings', innerLabel: t('translation:settings')},
+        {id: 3, path: '/stats', icon: StatsIcon, label: t('stats'), details: null},
+        {id: 4, path: '/other', icon: OtherIcon, label: t('other'), details: [
+                {id: 401, innerPath: '/other/shop', innerLabel: t('shop')},
+                {id: 403, innerPath: '/other/streak', innerLabel: t('streak')},
+                {id: 404, innerPath: '/other/quests', innerLabel: t('quests')},
+                {id: 405, innerPath: '/other/settings', innerLabel: t('settings')},
             ]},
     ];
 
@@ -76,7 +76,7 @@ const TitleBar = ({isVisible}: Props) => {
     return (
         <div className="navbar bg-base-100 shadow-sm">
             <div className="navbar-start w-screen">
-                <Link to={{pathname: "/"}} className="btn btn-ghost text-xl">{t("translation:appName")}</Link>
+                <Link to={{pathname: "/"}} className="btn btn-ghost text-xl">{t("appName")}</Link>
                 <ul className="menu menu-horizontal px-1 ml-10">
                     {tabs.map(({id, path, icon: Icon, label, details}) => (
                         <li key={id} className="pl-4">

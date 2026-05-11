@@ -109,7 +109,7 @@ const WordList = () => {
                 >
 
                 <header className="flex flex-col">
-                    <h1 className="text-lg font-semibold">{t("translation:wordCatalog")}</h1>
+                    <h1 className="text-lg font-semibold">{t("wordCatalog")}</h1>
                     <div className="flex items-center justify-between mt-3 gap-8 max-w-11/12">
                         <CatalogSearchField defaultSearch={search} setSearchDebounced={onSearchChange}/>
 
@@ -119,7 +119,7 @@ const WordList = () => {
                                     onClick={() => {navigate("/catalog/words/drafts")}}
                                     className="btn btn-primary btn-sm md:btn-md"
                                 >
-                                    {t("translation:wordDrafts")}
+                                    {t("wordDrafts")}
                                 </button>
                             }
 
@@ -127,7 +127,7 @@ const WordList = () => {
                                 onClick={openAddWordModal}
                                 className="btn btn-primary btn-sm md:btn-md"
                             >
-                                + {t("translation:addWord")}
+                                + {t("addWord")}
                             </button>
                         </div>
                     </div>
@@ -148,12 +148,12 @@ const WordList = () => {
             <WordModal
                 elementId="addWordModal"
                 onSubmitHandler={addWordFetch}
-                title={t("translation:addWord")}
+                title={t("addWord")}
             />
             <WordModal
                 elementId="editWordModal"
                 onSubmitHandler={editWordFetch}
-                title={t("translation:editWord")}
+                title={t("editWord")}
                 word={editWord}
             />
         </section>

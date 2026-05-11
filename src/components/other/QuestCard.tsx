@@ -45,7 +45,7 @@ export const QuestCard: React.FC<Props> = ({
     const progress = getProgress(quest);
     const done = progress >= goal;
 
-    const goalUnit = (quest.type === 'EXERCISE_TIME' ? t("translation:minutesShort") : "");
+    const goalUnit = (quest.type === 'EXERCISE_TIME' ? t("minutesShort") : "");
 
     const percent = clamp((progress / goal) * 100);
 
@@ -119,9 +119,9 @@ export const QuestCard: React.FC<Props> = ({
                 <button
                     type="button"
                     className="btn btn-xs btn-circle btn-error absolute -right-2 -top-2"
-                    aria-label={t("translation:delete")}
+                    aria-label={t("delete")}
                     onClick={() => onDelete?.(quest.id)}
-                    title={t("translation:delete")}
+                    title={t("delete")}
                 >
                     ✕
                 </button>
@@ -145,8 +145,8 @@ export const QuestCard: React.FC<Props> = ({
                                         }}
                                         autoFocus
                                     />
-                                    <button className="btn btn-xs btn-success" onClick={saveTitle} title={t("translation:save")}>✓</button>
-                                    <button className="btn btn-xs btn-ghost" onClick={cancelTitle} title={t("translation:cancel")}>✕</button>
+                                    <button className="btn btn-xs btn-success" onClick={saveTitle} title={t("save")}>✓</button>
+                                    <button className="btn btn-xs btn-ghost" onClick={cancelTitle} title={t("cancel")}>✕</button>
                                 </div>
                             ) : (
                                 <>
@@ -154,8 +154,8 @@ export const QuestCard: React.FC<Props> = ({
                                     <button
                                         className="btn btn-ghost btn-xs p-1"
                                         onClick={startEditTitle}
-                                        aria-label={t("translation:editTitle")}
-                                        title={t("translation:editTitle")}
+                                        aria-label={t("editTitle")}
+                                        title={t("editTitle")}
                                     >
                                         <PenIcon className={"w-4 h-4"}/>
                                     </button>
@@ -170,23 +170,23 @@ export const QuestCard: React.FC<Props> = ({
                     <div className="flex items-center gap-2">
                         {(quest.type === "CUSTOM" && onEdit) && (
                             done ? (
-                                <div className="tooltip tooltip-left" data-tip={t("translation:done")}>
+                                <div className="tooltip tooltip-left" data-tip={t("done")}>
                                     <button
                                         className="btn btn-xs btn-success btn-outline btn-disabled"
                                         aria-pressed="true"
-                                        aria-label={t("translation:done")}
+                                        aria-label={t("done")}
                                         disabled
                                     >
                                         <DoubleCheckIcon className={"w-4 h-4"}/>
                                     </button>
                                 </div>
                             ) : (
-                                <div className="tooltip tooltip-left" data-tip={t("translation:complete")}>
+                                <div className="tooltip tooltip-left" data-tip={t("complete")}>
                                     <button
                                         className="btn btn-xs btn-success btn-outline"
                                         onClick={() => onComplete()}
                                         aria-pressed="false"
-                                        aria-label={t("translation:complete")}
+                                        aria-label={t("complete")}
                                     >
                                         <DoubleCheckIcon className={"w-4 h-4"}/>
                                     </button>
@@ -232,8 +232,8 @@ export const QuestCard: React.FC<Props> = ({
                                 }}
                                 autoFocus
                             />
-                            <button className="btn btn-xs btn-success" onClick={saveGoal} title={t("translation:save")}>✓</button>
-                            <button className="btn btn-xs btn-ghost" onClick={cancelGoal} title={t("translation:cancel")}>✕</button>
+                            <button className="btn btn-xs btn-success" onClick={saveGoal} title={t("save")}>✓</button>
+                            <button className="btn btn-xs btn-ghost" onClick={cancelGoal} title={t("cancel")}>✕</button>
                         </div>
                     ) : (
                         <div className="flex items-center gap-2">
@@ -242,8 +242,8 @@ export const QuestCard: React.FC<Props> = ({
                                 <button
                                     className="btn btn-ghost btn-xs p-1"
                                     onClick={startEditGoal}
-                                    aria-label={t("translation:editGoal")}
-                                    title={t("translation:editGoal")}
+                                    aria-label={t("editGoal")}
+                                    title={t("editGoal")}
                                 >
                                     <PenIcon className={"w-4 h-4"}/>
                                 </button>
@@ -251,7 +251,7 @@ export const QuestCard: React.FC<Props> = ({
                         </div>
                     )}
                     {(quest.expirationDate && !done) && (
-                        <span className="opacity-80 text-error">{t("translation:expiration")}: {quest.expirationDate.toString()}</span>
+                        <span className="opacity-80 text-error">{t("expiration")}: {quest.expirationDate.toString()}</span>
                     )}
                 </div>
             </div>

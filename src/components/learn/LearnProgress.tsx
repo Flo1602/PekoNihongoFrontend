@@ -77,7 +77,7 @@ const LearnProgress = ({dueToday, completedToday, totalPending, label, todayDueT
             </div>
 
             <div className="text-xs text-right mt-1 opacity-80">
-                {totalPending.toLocaleString()} {t("translation:pendingAll")}
+                {totalPending.toLocaleString()} {t("pendingAll")}
             </div>
         </div>
     );

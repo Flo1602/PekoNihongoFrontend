@@ -229,7 +229,7 @@ const WordSpeaking = () => {
                                     {transcript && (
                                         <div className="mt-3 flex items-center justify-center gap-3 text-sm md:text-base">
                                             <span className="opacity-90">
-                                                {t("translation:youSayed")}: <strong>{transcript}</strong>
+                                                {t("youSayed")}: <strong>{transcript}</strong>
                                             </span>
                                         </div>
                                     )}
@@ -269,11 +269,11 @@ const WordSpeaking = () => {
                             {listening ? (
                                 <span className="inline-flex items-center gap-2">
                                     <span className="loading loading-bars" aria-hidden="true" />
-                                    🎙️ {t("translation:recording")}
+                                    🎙️ {t("recording")}
                                 </span>
                             ) : (
                                 <span className="inline-flex items-center gap-2">
-                                    🎤 {t("translation:speakNow")}
+                                    🎤 {t("speakNow")}
                                     <span className="hidden md:inline text-base-content/70"/>
                                 </span>
                             )}
@@ -285,12 +285,12 @@ const WordSpeaking = () => {
                             className={"btn btn-primary w-full md:w-auto " + (!write ? "btn-outline" : "")}
                         >
                             <span className="inline-flex items-center">
-                                {write ? t("translation:submit") : "✒️ " + t("translation:write")}
+                                {write ? t("submit") : "✒️ " + t("write")}
                                 <span className="hidden md:inline"/>
                             </span>
                         </button>
 
-                        <input id="textTry" ref={textField} type="text" placeholder={t("translation:typeHere")} className="input" onChange={textChange} hidden={!write}/>
+                        <input id="textTry" ref={textField} type="text" placeholder={t("typeHere")} className="input" onChange={textChange} hidden={!write}/>
                     </div>
 
                     {error && (

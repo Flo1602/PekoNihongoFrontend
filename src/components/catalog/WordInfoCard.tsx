@@ -30,7 +30,7 @@ const WordInfoCard = ({ info }: Props) => {
                         </div>
                         <button className="btn btn-ghost btn-sm gap-2" disabled>
                             <span className="loading loading-spinner loading-sm" aria-hidden="true" />
-                            <span className="hidden sm:inline">{t("translation:loading")}…</span>
+                            <span className="hidden sm:inline">{t("loading")}…</span>
                         </button>
                     </div>
 
@@ -78,7 +78,7 @@ const WordInfoCard = ({ info }: Props) => {
                         title="Externer Wörterbuch-Link"
                     >
                         <ExternalLink className="w-4 h-4" />
-                        <span className="hidden sm:inline">{t("translation:open")}</span>
+                        <span className="hidden sm:inline">{t("open")}</span>
                     </a>
                 </div>
 
@@ -89,7 +89,7 @@ const WordInfoCard = ({ info }: Props) => {
                         max={Math.max(total, 1)}
                     />
                     <span className="text-sm opacity-70">
-                        {learnedCount} / {total} {t("translation:learned")}
+                        {learnedCount} / {total} {t("learned")}
                     </span>
                 </div>
 
@@ -103,7 +103,7 @@ const WordInfoCard = ({ info }: Props) => {
                         ))}
                     </div>
                 ) : (
-                    <p className="opacity-70">{t("translation:noKanjiInfo")}</p>
+                    <p className="opacity-70">{t("noKanjiInfo")}</p>
                 )}
             </div>
         </div>

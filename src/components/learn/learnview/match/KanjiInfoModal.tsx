@@ -86,7 +86,7 @@ const KanjiInfoModal = ({elementId, kanji}: Props) => {
                         }
                     </div>
 
-                    {words.length === 0 ? <p className="h-[50vh] text-error text-center font-bold pt-5 pb-5">{t("translation:noWordsFound")}</p> :
+                    {words.length === 0 ? <p className="h-[50vh] text-error text-center font-bold pt-5 pb-5">{t("noWordsFound")}</p> :
                         <div className="h-[50vh] overflow-y-auto scrollbar-thin bg-base-200/60 rounded-xl shadow-lg">
                             <CatalogList
                                 loading={false}

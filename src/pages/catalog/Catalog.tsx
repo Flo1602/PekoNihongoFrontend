@@ -11,15 +11,15 @@ const Catalog = () => {
     const {t} = useTranslation();
 
     const elements = [
-        {path: '/catalog/words', icon: WordsIcon, label: t('translation:words')},
-        {path: '/catalog/words/drafts', icon: WordDraftsIcon, label: t('translation:wordDrafts')},
-        {path: '/catalog/kanji', icon: KanjiIcon, label: t('translation:kanji')},
-        {path: '/catalog/sentences', icon: PenIcon, label: t('translation:sentences')},
-        {path: '/catalog/questions', icon: QuestionIcon, label: t('translation:questions')},
+        {path: '/catalog/words', icon: WordsIcon, label: t('words')},
+        {path: '/catalog/words/drafts', icon: WordDraftsIcon, label: t('wordDrafts')},
+        {path: '/catalog/kanji', icon: KanjiIcon, label: t('kanji')},
+        {path: '/catalog/sentences', icon: PenIcon, label: t('sentences')},
+        {path: '/catalog/questions', icon: QuestionIcon, label: t('questions')},
     ];
 
     return (
-        <SubMenu elements={elements}>{t('translation:catalog')}</SubMenu>
+        <SubMenu elements={elements}>{t('catalog')}</SubMenu>
     );
 }
 export default Catalog

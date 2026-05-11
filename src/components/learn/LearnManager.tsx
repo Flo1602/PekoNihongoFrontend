@@ -160,8 +160,8 @@ const LearnManager = (probs: Props) => {
                             .join(" ")
                     }
                 >
-                    {learnViewCorrect === true && t("translation:correct")}
-                    {learnViewCorrect === false &&  t("translation:wrong")}
+                    {learnViewCorrect === true && t("correct")}
+                    {learnViewCorrect === false &&  t("wrong")}
                 </span>
 
                 {toolbarActions.map((a) => (
@@ -198,7 +198,7 @@ const LearnManager = (probs: Props) => {
                     }
                     onClick={onNextHandler}
                 >
-                    {t("translation:continue")}
+                    {t("continue")}
                 </button>
             </div>
         </div>

@@ -1,4 +1,5 @@
 {
+  "AiEnhance": "AI強化",
   "CUSTOM": "カスタム",
   "DAILY_KANJI": "毎日の漢字",
   "DAILY_WORDS": "毎日の単語",
@@ -91,6 +92,7 @@
   "pendingAll": "全体の未完了",
   "playAudio": "音声再生",
   "price": "価格",
+  "query": "検索",
   "questions": "質問",
   "quests": "クエスト",
   "quickAdd": "クイック追加",

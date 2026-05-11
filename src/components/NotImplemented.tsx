@@ -12,17 +12,17 @@ const NotImplemented = () => {
                 <ConstructionIcon/>
                 <div className="text-center lg:text-left">
                     <h1 className="text-5xl font-bold text-primary mb-4">
-                        {t("translation:comingSoon")}
+                        {t("comingSoon")}
                     </h1>
                     <p className="py-3 text-lg text-gray-600">
-                        {t("translation:notImplementedInfo")}
+                        {t("notImplementedInfo")}
                     </p>
                     <div className="mt-6 flex justify-center lg:justify-start space-x-4">
                         <Link to="/" className="btn btn-primary">
-                            ← {t("translation:backHome")}
+                            ← {t("backHome")}
                         </Link>
                         <button className="btn btn-outline" onClick={() => window.location.reload()}>
-                            {t("translation:retry")}
+                            {t("retry")}
                         </button>
                     </div>
                 </div>

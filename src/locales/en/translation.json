@@ -1,4 +1,5 @@
 {
+  "AiEnhance": "AI Enhance",
   "CUSTOM": "Custom",
   "DAILY_KANJI": "Daily Kanji",
   "DAILY_WORDS": "Daily Words",
@@ -91,6 +92,7 @@
   "pendingAll": "pending overall",
   "playAudio": "Play Audio",
   "price": "Price",
+  "query": "Query",
   "questions": "Questions",
   "quests": "Quests",
   "quickAdd": "Quick Add",

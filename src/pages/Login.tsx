@@ -54,23 +54,23 @@ const Login = () => {
 
     return (
         <>
-            <h1 className="flex justify-center bg-base-300 items-center text-4xl font-semibold pt-5">{t("translation:welcome")}</h1>
+            <h1 className="flex justify-center bg-base-300 items-center text-4xl font-semibold pt-5">{t("welcome")}</h1>
             <div className="bg-base-300 flex justify-center items-center flex-1">
                 <fieldset className="fieldset bg-base-200 border-base-100 drop-shadow-2xl rounded-box w-xs border p-4">
                     {error && <div role="alert" className="alert alert-error alert-soft">
-                        <span>{t("translation:loginFailed")}</span>
+                        <span>{t("loginFailed")}</span>
                     </div>}
-                    <legend className="fieldset-legend">{t("translation:login")}</legend>
+                    <legend className="fieldset-legend">{t("login")}</legend>
 
-                    <label className="label">{t("translation:username")}</label>
+                    <label className="label">{t("username")}</label>
                     <input id="username" onChange={handleChange} type="username" className="input"
-                           placeholder={t("translation:username")}/>
+                           placeholder={t("username")}/>
 
-                    <label className="label">{t("translation:password")}</label>
+                    <label className="label">{t("password")}</label>
                     <input id="password" onChange={handleChange} type="password" className="input"
-                           placeholder={t("translation:password")}/>
+                           placeholder={t("password")}/>
 
-                    <button onClick={handleSubmit} className="btn btn-neutral mt-4">{t("translation:login")}</button>
+                    <button onClick={handleSubmit} className="btn btn-neutral mt-4">{t("login")}</button>
                 </fieldset>
             </div>
         </>

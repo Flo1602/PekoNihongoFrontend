@@ -99,7 +99,7 @@ const WordDrafts = () => {
                 refetchPage();
             } else {
                 window.alert(
-                    t("translation:draftActivateError")
+                    t("draftActivateError")
                 );
             }
         }).catch(console.error);
@@ -136,19 +136,19 @@ const WordDrafts = () => {
             >
 
                 <header className="flex flex-col">
-                    <h1 className="text-lg font-semibold">{t("translation:wordDrafts")}</h1>
+                    <h1 className="text-lg font-semibold">{t("wordDrafts")}</h1>
                     <div className="flex items-center justify-between mt-3 gap-8">
                         <button
                             onClick={openAddWordModal}
                             className="btn btn-primary btn-sm md:btn-md"
                         >
-                            {t("translation:addWord")}
+                            {t("addWord")}
                         </button>
                         <button
                             onClick={openQuickAddModal}
                             className="btn btn-primary btn-sm md:btn-md"
                         >
-                            {t("translation:quickAdd")}
+                            {t("quickAdd")}
                         </button>
                     </div>
                 </header>
@@ -181,13 +181,13 @@ const WordDrafts = () => {
             <WordModal
                 elementId="addWordModal"
                 onSubmitHandler={addWordDraftFetch}
-                title={t("translation:addWord")}
+                title={t("addWord")}
                 draft={true}
             />
             <WordModal
                 elementId="editWordModal"
                 onSubmitHandler={editWordDraftFetch}
-                title={t("translation:editWord")}
+                title={t("editWord")}
                 word={editWord}
                 draft={true}
             />

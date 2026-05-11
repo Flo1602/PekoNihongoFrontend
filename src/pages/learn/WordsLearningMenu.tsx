@@ -19,21 +19,21 @@ const WordsLearningMenu = () => {
     }, []);
 
     const elements = [
-        {path: '/learning/words/daily', icon: DailyIcon, label: t('translation:dailyWords')},
-        {path: '/learning/words/speakTheWord', icon: SpeakerPhone, label: t('translation:speakTheWord')},
+        {path: '/learning/words/daily', icon: DailyIcon, label: t('dailyWords')},
+        {path: '/learning/words/speakTheWord', icon: SpeakerPhone, label: t('speakTheWord')},
     ];
 
     return (
         <div className="flex flex-col flex-1">
             <SubMenu elements={elements}>
-                {t('translation:vocabulary')}
+                {t('vocabulary')}
             </SubMenu>
 
             <div
                 className="fixed bottom-20 lg:bottom-0 left-0 w-full bg-base-300/80 backdrop-blur p-4 z-50">
                 <LearnProgress
-                    label={t('translation:words')}
-                    todayDueText={t("translation:wordsDueToday")}
+                    label={t('words')}
+                    todayDueText={t("wordsDueToday")}
                     dueToday={progressData.dueToday}
                     completedToday={progressData.completedToday}
                     totalPending={progressData.totalPending}

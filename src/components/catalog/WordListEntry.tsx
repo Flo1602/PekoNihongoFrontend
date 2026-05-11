@@ -26,7 +26,7 @@ const WordListEntry = ({word, openEditWordModal, deleteWordFetch, noEdit, draft,
 
     const deleteHandler = () => {
         const confirmed = window.confirm(
-            t("translation:confirmDeleteWord")
+            t("confirmDeleteWord")
         );
         if (!confirmed) return;
 
@@ -81,7 +81,7 @@ const WordListEntry = ({word, openEditWordModal, deleteWordFetch, noEdit, draft,
                 { !draft && !draftCreate &&
                     <button
                         className="btn btn-circle btn-ghost btn-xs tooltip"
-                        data-tip={error ? "" : t("translation:playAudio")}
+                        data-tip={error ? "" : t("playAudio")}
                         onClick={play}
                         disabled={!word.ttsPath}
                     >
@@ -99,7 +99,7 @@ const WordListEntry = ({word, openEditWordModal, deleteWordFetch, noEdit, draft,
                 { draft && word.japanese.trim() !== "" && word.kana.trim() !== "" && word.english.trim() !== "" &&
                     <button
                         className="btn btn-circle btn-ghost btn-xs tooltip text-success"
-                        data-tip={t("translation:activateWordDraft")}
+                        data-tip={t("activateWordDraft")}
                         onClick={activateHandler}
                     >
                         <DoubleCheckIcon className="h-4 w-4"/>
@@ -109,17 +109,17 @@ const WordListEntry = ({word, openEditWordModal, deleteWordFetch, noEdit, draft,
                 { draftCreate &&
                     <button
                         className="btn btn-ghost btn-sm tooltip btn-outline btn-info"
-                        data-tip={t("translation:addDraft")}
+                        data-tip={t("addDraft")}
                         onClick={createDraftHandler}
                     >
-                        {t("translation:add")}
+                        {t("add")}
                     </button>
                 }
 
                 {!noEdit && (<>
                     <button
                         className="btn btn-circle btn-ghost btn-xs tooltip"
-                        data-tip={t("translation:edit")}
+                        data-tip={t("edit")}
                         onClick={editHandler}
                     >
                         <PenIcon className="h-4 w-4"/>
@@ -127,7 +127,7 @@ const WordListEntry = ({word, openEditWordModal, deleteWordFetch, noEdit, draft,
 
                     <button
                         className="btn btn-circle btn-ghost btn-xs tooltip text-error"
-                        data-tip={t("translation:delete")}
+                        data-tip={t("delete")}
                         onClick={deleteHandler}
                     >
                         <DeleteIcon className="h-4 w-4"/>

@@ -1,4 +1,5 @@
 {
+  "AiEnhance": "KI Verbesserung",
   "CUSTOM": "Benutzerdefiniert",
   "DAILY_KANJI": "Tägliche Kanji",
   "DAILY_WORDS": "Tägliche Wörter",
@@ -91,6 +92,7 @@
   "pendingAll": "insegsamt fällig",
   "playAudio": "Audio Abspielen",
   "price": "Preis",
+  "query": "Suche",
   "questions": "Fragen",
   "quests": "Quests",
   "quickAdd": "Schnell Hinzufügen",

@@ -31,7 +31,7 @@ const CatalogSearchField = ({setSearchDebounced, defaultSearch}: Props) => {
                     <path d="m21 21-4.3-4.3"></path>
                 </g>
             </svg>
-            <input name="search" type="search" defaultValue={defaultSearch} onChange={changeSearch} placeholder={t("translation:search")} />
+            <input name="search" type="search" defaultValue={defaultSearch} onChange={changeSearch} placeholder={t("search")} />
         </label>
     )
 }

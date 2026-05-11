@@ -62,9 +62,9 @@ export const Stats = () => {
     const timeTodayMinutes = todayStats ? durationToMinutes(todayStats.duration) : 0;
     const exercisesToday = todayStats ? todayStats.exercises : 0;
 
-    const weekdayLabels = [t("translation:sunday"), t("translation:monday"),
-        t("translation:tuesday"),t("translation:wednesday"),t("translation:thursday"),
-        t("translation:friday"),t("translation:saturday")];
+    const weekdayLabels = [t("sunday"), t("monday"),
+        t("tuesday"),t("wednesday"),t("thursday"),
+        t("friday"),t("saturday")];
     const last7Days = useMemo(() => {
         const arr: ChartPoint[] = [];
         for (let i = 6; i >= 0; i--) {
@@ -98,7 +98,7 @@ export const Stats = () => {
     const minutesToString = (minutesTotal: number): string => {
         const hours = Math.floor(minutesTotal / 60);
         const minutes = Math.floor(minutesTotal % 60);
-        return `${hours}${t("translation:hoursShort")} ${minutes.toString().padStart(2, "0")}${t("translation:minutesShort")}`;
+        return `${hours}${t("hoursShort")} ${minutes.toString().padStart(2, "0")}${t("minutesShort")}`;
     };
 
     if (loading) {
@@ -129,18 +129,18 @@ export const Stats = () => {
     return (
         <div className="mx-auto max-w-6xl space-y-8 lg:pt-4 pt-12 max-h-[80vh] overflow-y-auto scrollbar-hide">
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
-                <OverviewCard title={t("translation:totalKanji")} value={kanjiCount.toLocaleString()} />
-                <OverviewCard title={t("translation:totalWords")} value={wordsCount.toLocaleString()} />
-                <OverviewCard title={t("translation:timeToday")} value={minutesToString(timeTodayMinutes)} />
-                <OverviewCard title={t("translation:timeTotal")} value={minutesToString(durationToMinutes(totalDuration))} />
-                <OverviewCard title={t("translation:exercisesToday")} value={exercisesToday.toString()} />
-                <OverviewCard title={t("translation:exercisesTotal")} value={totalExercises.toString()} />
+                <OverviewCard title={t("totalKanji")} value={kanjiCount.toLocaleString()} />
+                <OverviewCard title={t("totalWords")} value={wordsCount.toLocaleString()} />
+                <OverviewCard title={t("timeToday")} value={minutesToString(timeTodayMinutes)} />
+                <OverviewCard title={t("timeTotal")} value={minutesToString(durationToMinutes(totalDuration))} />
+                <OverviewCard title={t("exercisesToday")} value={exercisesToday.toString()} />
+                <OverviewCard title={t("exercisesTotal")} value={totalExercises.toString()} />
             </div>
 
             <div className="grid grid-cols-1 gap-8">
                 <div className="card bg-base-100 shadow h-80">
                     <div className="card-body p-4">
-                        <h2 className="mb-2 text-lg font-semibold">{t("translation:studyTimeLast7")}</h2>
+                        <h2 className="mb-2 text-lg font-semibold">{t("studyTimeLast7")}</h2>
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={last7Days} margin={{ left: -20 }}>
                                 <XAxis dataKey="label" />
@@ -150,7 +150,7 @@ export const Stats = () => {
                                     contentStyle={tooltipProps.contentStyle}
                                     labelStyle={tooltipProps.labelStyle}
                                     itemStyle={tooltipProps.itemStyle}
-                                    formatter={(value: number) => [`${value}`, t("translation:minutes")]}
+                                    formatter={(value: number) => [`${value}`, t("minutes")]}
                                 />
                                 <Bar dataKey="minutes" className="fill-primary" />
                             </BarChart>
@@ -160,7 +160,7 @@ export const Stats = () => {
 
                 <div className="card bg-base-100 shadow h-80">
                     <div className="card-body p-4">
-                        <h2 className="mb-2 text-lg font-semibold">{t("translation:cumStudyTime30")}</h2>
+                        <h2 className="mb-2 text-lg font-semibold">{t("cumStudyTime30")}</h2>
                         <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={cumulative30Data} margin={{ left: -20 }}>
                                 <XAxis dataKey="date" />
@@ -172,7 +172,7 @@ export const Stats = () => {
                                     contentStyle={tooltipProps.contentStyle}
                                     labelStyle={tooltipProps.labelStyle}
                                     itemStyle={tooltipProps.itemStyle}
-                                    formatter={(value: number) => [`${value}${t("translation:hoursShort")}`, t("translation:cumulativeHours")]}
+                                    formatter={(value: number) => [`${value}${t("hoursShort")}`, t("cumulativeHours")]}
                                 />
                                 <Line type="monotone" stroke="var(--color-primary)" dataKey="cumulativeHours" strokeWidth={2} />
                             </LineChart>

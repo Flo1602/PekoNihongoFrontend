@@ -19,15 +19,15 @@ const ShopItemCard: React.FC<Props> = ({ item, currMoney, pending, onBuy, onGamb
     function typeLabel(type: ShopItemType): string {
         switch (type) {
             case "STREAK_EXTENDER":
-                return t("translation:streakExtender");
+                return t("streakExtender");
             case "MONEY_GAMBLE":
-                return t("translation:gamble");
+                return t("gamble");
             case "MONEY_GAMBLE_HIGH_RISK":
-                return t("translation:gamble") + " (" + t("translation:highRisk") + ")";
+                return t("gamble") + " (" + t("highRisk") + ")";
             case "CHALLENGE_QUEST":
-                return t("translation:challengeQuest")
+                return t("challengeQuest")
             case "DAILY_QUEST_EDIT_15_MIN":
-                return t("translation:dailyQuestEdit")
+                return t("dailyQuestEdit")
             case "STREAK_REPAIR":
                 return t("streakRepair")
             default:
@@ -38,15 +38,15 @@ const ShopItemCard: React.FC<Props> = ({ item, currMoney, pending, onBuy, onGamb
     function typeDescription(type: ShopItemType): string {
         switch (type) {
             case "STREAK_EXTENDER":
-                return t("translation:streakExtenderDesc");
+                return t("streakExtenderDesc");
             case "MONEY_GAMBLE":
-                return t("translation:gambleDesc");
+                return t("gambleDesc");
             case "MONEY_GAMBLE_HIGH_RISK":
-                return t("translation:gambleHighRiskDesc");
+                return t("gambleHighRiskDesc");
             case "CHALLENGE_QUEST":
-                return t("translation:challengeQuestDesc")
+                return t("challengeQuestDesc")
             case "DAILY_QUEST_EDIT_15_MIN":
-                return t("translation:dailyQuestEditDesc")
+                return t("dailyQuestEditDesc")
             case "STREAK_REPAIR":
                 return t("streakRepairDesc")
             default:
@@ -75,12 +75,12 @@ const ShopItemCard: React.FC<Props> = ({ item, currMoney, pending, onBuy, onGamb
                 {/* Preis / Einsatz */}
                 {!isGamble ? (
                     <div className="mt-3 flex-1 flex-col items-center justify-between">
-                        <div className="text-sm opacity-70">{t("translation:price")}</div>
+                        <div className="text-sm opacity-70">{t("price")}</div>
                         <div className="text-3xl font-bold">{item.price} 💰</div>
                     </div>
                 ) : (
                     <div className="mt-3">
-                        <div className="text-sm opacity-70 mb-2">{t("translation:chooseBet")}</div>
+                        <div className="text-sm opacity-70 mb-2">{t("chooseBet")}</div>
                         <input
                             type="range"
                             min={0}
@@ -100,7 +100,7 @@ const ShopItemCard: React.FC<Props> = ({ item, currMoney, pending, onBuy, onGamb
                                 value={Math.min(amount, maxStake)}
                                 onChange={(e) => setAmount(Math.max(0, Math.min(Number(e.target.value || 0), maxStake)))}
                             />
-                            <span className="opacity-70">/ {maxStake} 💰 {t("translation:available")}</span>
+                            <span className="opacity-70">/ {maxStake} 💰 {t("available")}</span>
                         </div>
                     </div>
                 )}
@@ -117,7 +117,7 @@ const ShopItemCard: React.FC<Props> = ({ item, currMoney, pending, onBuy, onGamb
                             disabled={disabled}
                             onClick={() => onBuy(item.type, item.price)}
                         >
-                            {!pending ? t('translation:buy') : t("translation:buying")}
+                            {!pending ? t('buy') : t("buying")}
                         </button>
                     ) : (
                         <button
@@ -125,7 +125,7 @@ const ShopItemCard: React.FC<Props> = ({ item, currMoney, pending, onBuy, onGamb
                             disabled={pending || disabledByAvailability || amount <= 0 || amount > currMoney}
                             onClick={() => onGamble(item.type, amount)}
                         >
-                            {!pending ? `${t('translation:gambleFor')} ${amount} 💰` : t("translation:gambling")}
+                            {!pending ? `${t('gambleFor')} ${amount} 💰` : t("gambling")}
                         </button>
                     )}
                 </div>

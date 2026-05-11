@@ -14,11 +14,11 @@ const QuestList = ({quests, questCategory}: Props) => {
     const categoryLabel = (category: QuestCategory): string => {
         switch (category) {
             case "DAILY_QUEST":
-                return t("translation:dailyQuests");
+                return t("dailyQuests");
             case "WEEKLY_QUEST":
-                return t("translation:weeklyQuests");
+                return t("weeklyQuests");
             case "CHALLENGE_QUEST":
-                return t("translation:challengeQuests");
+                return t("challengeQuests");
             default:
                 return String(category);
         }
@@ -35,7 +35,7 @@ const QuestList = ({quests, questCategory}: Props) => {
             <div className="overflow-y-auto scrollbar-thin px-4 md:px-6 py-4 space-y-4 h-full">
                 {quests.length === 0 ? (
                     <div className="text-sm opacity-70 py-8 text-center">
-                        {t("translation:noItems")}
+                        {t("noItems")}
                     </div>
                 ) : (
                     <ul className="space-y-4">

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent, type KeyboardEvent } from "react";
 import type { Word } from "@/services/api/wordService.ts";
+import AiIcon from "@/assets/icons/AiIcon.tsx";
 import { useTranslation } from "react-i18next";
 
 interface Props {
@@ -91,7 +92,7 @@ const WordModal = ({word, onSubmitHandler, elementId, title, draft }: Props) => 
                 <form onSubmit={handleSubmit} onKeyDown={handleKeyDown} className="space-y-4">
                     <div className="form-control">
                         <label className="label" htmlFor="japanese">
-                            <span className="label-text">{t("translation:japanese")}</span>
+                            <span className="label-text">{t("japanese")}</span>
                         </label>
                         <input
                             ref={firstInput}
@@ -109,7 +110,7 @@ const WordModal = ({word, onSubmitHandler, elementId, title, draft }: Props) => 
 
                     <div className="form-control">
                         <label className="label" htmlFor="kana">
-                            <span className="label-text">{t("translation:kana")}</span>
+                            <span className="label-text">{t("kana")}</span>
                         </label>
                         <input
                             id="kana"
@@ -126,7 +127,7 @@ const WordModal = ({word, onSubmitHandler, elementId, title, draft }: Props) => 
 
                     <div className="form-control">
                         <label className="label" htmlFor="english">
-                            <span className="label-text">{t("translation:english")}</span>
+                            <span className="label-text">{t("english")}</span>
                         </label>
                         <input
                             id="english"
@@ -141,13 +142,23 @@ const WordModal = ({word, onSubmitHandler, elementId, title, draft }: Props) => 
                         />
                     </div>
 
-                    <div className="mt-6 flex justify-end">
+                    <div className="flex justify-between w-full mt-6">
+
+                        <button
+                            type="button"
+                            className="btn btn-ghost btn-primary"
+                            disabled={!isValid}
+                        >
+                            <AiIcon className={"w-4 h-4"}/>
+                            {t("AiEnhance")}
+                        </button>
+
                         <button
                             type="submit"
                             className="btn btn-primary"
                             disabled={!isValid}
                         >
-                            {t("translation:save")}
+                            {t("save")}
                         </button>
                     </div>
                 </form>

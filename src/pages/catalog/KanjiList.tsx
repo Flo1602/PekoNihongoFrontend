@@ -54,7 +54,7 @@ const KanjiList = () => {
             >
 
                 <header className="flex items-center justify-between">
-                    <h1 className="text-lg font-semibold">{t("translation:kanjiCatalog")}</h1>
+                    <h1 className="text-lg font-semibold">{t("kanjiCatalog")}</h1>
                 </header>
 
                 <CatalogList

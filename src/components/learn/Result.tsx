@@ -61,12 +61,12 @@ const Result = ({ duration, correctness }: Props) => {
                         animate={{ scale: 1 }}
                         transition={{ type: 'spring', stiffness: 300 }}
                     >
-                        🎉 {t("translation:sessionCompleted")} 🎉
+                        🎉 {t("sessionCompleted")} 🎉
                     </motion.h1>
 
                     <div className="mb-6 text-left">
                         <div className="flex justify-between mb-2">
-                            <span className="font-medium">{t("translation:correctness")}</span>
+                            <span className="font-medium">{t("correctness")}</span>
                             <motion.span className="font-semibold" style={{ display: 'block' }}>
                                 {correctnessText}
                             </motion.span>
@@ -81,14 +81,14 @@ const Result = ({ duration, correctness }: Props) => {
                     </div>
 
                     <div className="mb-8 text-left">
-                        <span className="font-medium">{t("translation:duration")}:</span>
+                        <span className="font-medium">{t("duration")}:</span>
                         <motion.span className="ml-2 font-semibold inline-block">
                             {durationText}
                         </motion.span>
                     </div>
 
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                        <button onClick={() => navigate(-1)} className="btn btn-primary btn-lg w-full">{t("translation:finish")}</button>
+                        <button onClick={() => navigate(-1)} className="btn btn-primary btn-lg w-full">{t("finish")}</button>
                     </motion.div>
                 </div>
             </motion.div>

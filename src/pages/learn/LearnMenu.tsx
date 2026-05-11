@@ -9,14 +9,14 @@ const LearnMenu = () => {
     const {t} = useTranslation();
 
     const elements = [
-        {path: '/learning/words', icon: WordsIcon, label: t('translation:words')},
-        {path: '/learning/kanji', icon: KanjiIcon, label: t('translation:kanji')},
-        {path: '/learning/sentences', icon: PenIcon, label: t('translation:sentences')},
-        {path: '/learning/questions', icon: QuestionIcon, label: t('translation:questions')},
+        {path: '/learning/words', icon: WordsIcon, label: t('words')},
+        {path: '/learning/kanji', icon: KanjiIcon, label: t('kanji')},
+        {path: '/learning/sentences', icon: PenIcon, label: t('sentences')},
+        {path: '/learning/questions', icon: QuestionIcon, label: t('questions')},
     ];
 
     return (
-        <SubMenu elements={elements}>{t('translation:learn')}</SubMenu>
+        <SubMenu elements={elements}>{t('learn')}</SubMenu>
     );
 }
 export default LearnMenu

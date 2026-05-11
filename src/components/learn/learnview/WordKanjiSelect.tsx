@@ -64,7 +64,7 @@ const WordKanjiSelect = () => {
             learnManagerContext?.setToolbarActions([]);
         } else {
             learnManagerContext?.setToolbarActions([{key: "check",
-                label: t("translation:check"),
+                label: t("check"),
                 onClick: checkCorrect,
                 disabled: true,
                 className: ""}]);
@@ -74,7 +74,7 @@ const WordKanjiSelect = () => {
     useEffect(() => {
         if(!toolBarActive.current){
             learnManagerContext?.setToolbarActions([{key: "check",
-                label: t("translation:check"),
+                label: t("check"),
                 onClick: checkCorrect,
                 disabled: false,
                 className: ""}]);
@@ -123,7 +123,7 @@ const WordKanjiSelect = () => {
                             onMouseLeave={() => {setSkipKanji(SKIP_SYMBOL)}}
                             onClick={learnManagerContext?.skipToLastView}
                             disabled={disabled}
-                            className="text-lg btn btn-primary btn-soft font-bold whitespace-pre inline-block">{t("translation:skip")}: {skipKanji}</button>
+                            className="text-lg btn btn-primary btn-soft font-bold whitespace-pre inline-block">{t("skip")}: {skipKanji}</button>
                 </div>
             </div>
         </div>

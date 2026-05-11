@@ -14,7 +14,7 @@ const KanjiListEntry = ({ kanji, refetechPage }: Props) => {
 
     const deleteHandler = () => {
         const confirmed = window.confirm(
-            t("translation:confirmDeleteKanji")
+            t("confirmDeleteKanji")
         );
         if (!confirmed) return;
 
@@ -50,7 +50,7 @@ const KanjiListEntry = ({ kanji, refetechPage }: Props) => {
                 { kanji.words.length === 0 && (<button
                     aria-label="Delete word"
                     className="btn btn-circle btn-ghost btn-xs tooltip text-error"
-                    data-tip={t("translation:delete")}
+                    data-tip={t("delete")}
                     onClick={deleteHandler}
                 >
                     <DeleteIcon className="h-4 w-4"/>
@@ -61,7 +61,7 @@ const KanjiListEntry = ({ kanji, refetechPage }: Props) => {
                         aria-label="Example sentence"
                         className="btn btn-ghost btn-sm tooltip btn-outline btn-info"
                     >
-                        {t("translation:words")}
+                        {t("words")}
                     </button>
                 </Link>
             </div>

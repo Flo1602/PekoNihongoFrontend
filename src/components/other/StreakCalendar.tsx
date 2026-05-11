@@ -23,9 +23,9 @@ export const StreakCalendar: React.FC<StreakCalendarProps> = ({
     const today = Temporal.Now.plainDateISO();
     const isMobile = useIsMobile();
 
-    const weekdayLabels = [t("translation:monday"),
-        t("translation:tuesday"),t("translation:wednesday"),t("translation:thursday"),
-        t("translation:friday"),t("translation:saturday"), t("translation:sunday")];
+    const weekdayLabels = [t("monday"),
+        t("tuesday"),t("wednesday"),t("thursday"),
+        t("friday"),t("saturday"), t("sunday")];
 
     function formatMonthTitle(m: Temporal.PlainYearMonth, longForm: boolean) {
         // einfache deutschsprachige Anzeige, z.B. "Oktober 2025"
@@ -72,7 +72,7 @@ export const StreakCalendar: React.FC<StreakCalendarProps> = ({
                             <BackArrowIcon className=""/>
                         </button>
                         <button className="btn btn-ghost btn-sm join-item" onClick={goThisMonth}>
-                            {t("translation:today")}
+                            {t("today")}
                         </button>
                         <button className="btn btn-ghost btn-sm join-item" onClick={goNextMonth} aria-label="Nächster Monat">
                             <BackArrowIcon className="rotate-180"/>
@@ -114,7 +114,7 @@ export const StreakCalendar: React.FC<StreakCalendarProps> = ({
 
                         let tooltipText =
                             s
-                                ? `${date.toString()} • ${t("translation:streak")}: ${s.streak || 0}`
+                                ? `${date.toString()} • ${t("streak")}: ${s.streak || 0}`
                                 : date.toString();
                         if(isMobile){
                             tooltipText =date.toString();
@@ -152,7 +152,7 @@ export const StreakCalendar: React.FC<StreakCalendarProps> = ({
                     </div>
                     <div className="flex items-center gap-2">
                         <span className="inline-block h-4 w-4 rounded bg-base-300 ring-2 ring-primary" />
-                        <span>{t("translation:today")}</span>
+                        <span>{t("today")}</span>
                     </div>
                 </div>
             </div>
