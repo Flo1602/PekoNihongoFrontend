@@ -2,6 +2,8 @@ import { useEffect, useRef, useState, type ChangeEvent, type FormEvent, type Key
 import type { Word } from "@/services/api/wordService.ts";
 import AiIcon from "@/assets/icons/AiIcon.tsx";
 import { useTranslation } from "react-i18next";
+import {enhanceWordEntry} from "@/services/api/aiService.ts";
+import Loading from "@/components/Loading.tsx";
 
 interface Props {
     elementId: string;
@@ -23,11 +25,24 @@ const WordModal = ({word, onSubmitHandler, elementId, title, draft }: Props) => 
     const [formData, setFormData] = useState<Word>(word ?? emptyWord);
     const dialogRef = useRef<HTMLDialogElement>(null);
     const firstInput = useRef<HTMLInputElement>(null);
+    const [loading, setLoading] = useState(false);
     const {t} = useTranslation();
 
     useEffect(() => {
         setFormData(word ?? emptyWord);
     }, [word]);
+
+    const enhanceEntry = () => {
+        if (!word || !word.japanese) return;
+
+        setLoading(true);
+
+        enhanceWordEntry(word).then((res) => {
+            setFormData(res.data);
+        }).catch((err) => {
+            console.error("Error enhancing word entry:", err);
+        }).finally(() => setLoading(false));
+    }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
@@ -148,6 +163,7 @@ const WordModal = ({word, onSubmitHandler, elementId, title, draft }: Props) => 
                             type="button"
                             className="btn btn-ghost btn-primary"
                             disabled={!isValid}
+                            onClick={enhanceEntry}
                         >
                             <AiIcon className={"w-4 h-4"}/>
                             {t("AiEnhance")}
@@ -167,6 +183,7 @@ const WordModal = ({word, onSubmitHandler, elementId, title, draft }: Props) => 
             <form method="dialog" className="modal-backdrop">
                 <button aria-label="Close backdrop"/>
             </form>
+            <Loading isLoading={loading} />
         </dialog>
     );
 };
